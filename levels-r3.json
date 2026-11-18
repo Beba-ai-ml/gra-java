@@ -1,0 +1,901 @@
+[
+  {
+    "id": 1,
+    "title": "Każdy znak i jego numer",
+    "ref": "Ćwiczenie 3.1: każdy znak i jego numer",
+    "goal": "Napisz metodę wypiszKody(String text), która dla każdego znaku napisu wypisuje w osobnej linijce: znak, spację i jego numer. W main wywołaj wypiszKody(\"Ala\").",
+    "starter": "public static void wypiszKody(String text) {\n    // dla kazdego znaku: znak, spacja, numer\n\n}\n\npublic static void main(String[] args) {\n    wypiszKody(\"Ala\");\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "A 65\nl 108\na 97",
+        "calls": [
+          "wypiszKody"
+        ]
+      },
+      {
+        "call": "wypiszKody",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "Zz0"
+        ],
+        "out": "Z 90\nz 122\n0 48"
+      },
+      {
+        "call": "wypiszKody",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "b"
+        ],
+        "out": "b 98"
+      },
+      {
+        "call": "wypiszKody",
+        "types": [
+          "String"
+        ],
+        "args": [
+          ""
+        ],
+        "out": ""
+      }
+    ],
+    "hints": [
+      "Pętla po i od 0, dopóki i < text.length(). W środku jedna linijka println - jeden znak na jedną linijkę.",
+      "Znak spod numeru i daje text.charAt(i). Ten sam znak jako liczbę dostajesz, gdy przed nim napiszesz (int).",
+      "Uwaga na spację: musi być \" \" w cudzysłowie, nie ' ' w apostrofach. Ostatnia podpowiedź: System.out.println(text.charAt(i) + \" \" + (int) text.charAt(i));"
+    ],
+    "roles": {
+      "i": "numer znaku w napisie"
+    },
+    "tools": [
+      {
+        "code": "char",
+        "kind": "typ: jeden znak",
+        "desc": "Zmienna typu char trzyma dokładnie jeden znak. Znak piszesz w apostrofach. W środku to liczba z tabeli ASCII.",
+        "ex": "char z = 'K';\nSystem.out.println(z);   // K"
+      },
+      {
+        "code": "text.charAt(i)",
+        "kind": "znak spod numeru i",
+        "desc": "Daje znak z napisu spod numeru i. Numery liczysz od 0, tak jak szuflady.",
+        "ex": "String s = \"kot\";\nSystem.out.println(s.charAt(2));   // t"
+      },
+      {
+        "code": "(int) znak",
+        "kind": "numer znaku",
+        "desc": "Pokazuje numer znaku z tabeli ASCII zamiast samej litery.",
+        "ex": "char z = 'B';\nSystem.out.println((int) z);   // 66"
+      },
+      {
+        "code": "' ' a \" \"",
+        "kind": "apostrof czy cudzysłów",
+        "desc": "Apostrof to jeden znak, czyli liczba. Cudzysłów to napis. Znak + znak to dodawanie liczb, a znak + napis to sklejanie tekstu.",
+        "ex": "System.out.println('B' + ' ');   // 98, bo 66 + 32\nSystem.out.println('B' + \" \");   // B i spacja"
+      }
+    ],
+    "quiz": [
+      {
+        "q": "Co wypisze System.out.println((int) 'a'); ?",
+        "options": [
+          "97",
+          "a",
+          "65"
+        ],
+        "answer": 0,
+        "why": "'a' to mała litera, jej numer to 97. Wielkie litery mają mniejsze numery (A = 65)."
+      }
+    ],
+    "lesson": "Każdy znak to liczba. charAt(i) daje znak spod numeru i, a (int) pokazuje jego numer."
+  },
+  {
+    "id": 2,
+    "title": "Miejsce w alfabecie",
+    "ref": "Różnica dwóch znaków to miejsce w alfabecie",
+    "goal": "Napisz metodę miejsce(char c), która ZWRACA miejsce wielkiej litery w alfabecie, licząc od zera: 'A' to 0, 'C' to 2. W main wypisz miejsce('C'), miejsce('A') i miejsce('Z'), każde w osobnej linijce.",
+    "starter": "public static int miejsce(char c) {\n    // oddaj miejsce litery c w alfabecie (A = 0)\n\n}\n\npublic static void main(String[] args) {\n    // wypisz miejsce('C'), miejsce('A'), miejsce('Z')\n\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "2\n0\n25",
+        "calls": [
+          "miejsce"
+        ]
+      },
+      {
+        "call": "miejsce",
+        "types": [
+          "char"
+        ],
+        "args": [
+          "K"
+        ],
+        "ret": 10
+      },
+      {
+        "call": "miejsce",
+        "types": [
+          "char"
+        ],
+        "args": [
+          "B"
+        ],
+        "ret": 1
+      }
+    ],
+    "hints": [
+      "Odejmij od numeru litery numer litery 'A'. 'A' ma 65, więc 'A' - 'A' daje 0, a 'B' - 'A' daje 1.",
+      "Wynik odejmowania dwóch znaków to zwykła liczba int - pasuje do typu wyniku int.",
+      "Ostatnia podpowiedź: return c - 'A';"
+    ],
+    "roles": {
+      "c": "litera, która wchodzi do metody"
+    },
+    "tools": [
+      {
+        "code": "znak - 'A'",
+        "kind": "odejmowanie znaków",
+        "desc": "Znaki odejmujesz jak liczby. Wynik to int: o ile numerów jedna litera leży dalej niż druga.",
+        "ex": "char z = 'E';\nint ile = z - 'B';   // 69 - 66\nSystem.out.println(ile);   // 3"
+      },
+      {
+        "code": "char jako parametr",
+        "kind": "znak wchodzi do metody",
+        "desc": "Parametr może być typu char. Przy wywołaniu podajesz znak w apostrofach.",
+        "ex": "public static void pokaz(char z) {\n    System.out.println(\"znak: \" + z);\n}\n// pokaz('Q');   na ekranie: znak: Q"
+      }
+    ],
+    "quiz": [
+      {
+        "q": "Ile to 'E' - 'A'?",
+        "options": [
+          "4",
+          "5",
+          "69"
+        ],
+        "answer": 0,
+        "why": "'E' ma 69, 'A' ma 65. 69 - 65 = 4. Liczysz od zera: A0, B1, C2, D3, E4."
+      }
+    ],
+    "lesson": "c - 'A' to miejsce litery w alfabecie, liczone od zera - jak numer szuflady."
+  },
+  {
+    "id": 3,
+    "title": "Z numeru na literę",
+    "ref": "Z numeru z powrotem na literę",
+    "goal": "Metoda litera(int nr) ma ZWRACAĆ literę z tego miejsca w alfabecie: 0 to 'A', 2 to 'C'. Teraz oddaje liczbę i na ekranie są 67, 65 i 90. Napraw metodę tak, żeby wypisało C, A i Z.",
+    "starter": "public static int litera(int nr) {\n    return 'A' + nr;\n}\n\npublic static void main(String[] args) {\n    System.out.println(litera(2));\n    System.out.println(litera(0));\n    System.out.println(litera(25));\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "C\nA\nZ",
+        "calls": [
+          "litera"
+        ]
+      },
+      {
+        "call": "litera",
+        "types": [
+          "int"
+        ],
+        "args": [
+          7
+        ],
+        "ret": "H"
+      },
+      {
+        "call": "litera",
+        "types": [
+          "int"
+        ],
+        "args": [
+          1
+        ],
+        "ret": "B"
+      }
+    ],
+    "hints": [
+      "Popatrz na typ wyniku metody: int. Dopóki tam stoi int, metoda oddaje liczbę, a nie literę.",
+      "Zmień typ wyniku na char. Kompilator wtedy zaprotestuje, bo 'A' + nr to liczba int. Zamień ją na znak przez (char).",
+      "Ostatnia podpowiedź: public static char litera(int nr) { return (char) ('A' + nr); }"
+    ],
+    "roles": {
+      "nr": "miejsce w alfabecie (0 = A)"
+    },
+    "tools": [
+      {
+        "code": "(char)",
+        "kind": "liczba na znak",
+        "desc": "Zamienia liczbę na znak o tym numerze. Bez (char) dodawanie do znaku zostaje zwykłą liczbą.",
+        "ex": "int n = 75;\nchar z = (char) n;\nSystem.out.println(z);   // K"
+      },
+      {
+        "code": "char (typ wyniku)",
+        "kind": "metoda oddaje znak",
+        "desc": "Gdy przed nazwą metody stoi char, metoda oddaje jeden znak, a nie liczbę.",
+        "ex": "public static char gwiazdka() {\n    return '*';\n}\n// System.out.println(gwiazdka());   na ekranie: *"
+      }
+    ],
+    "quiz": [
+      {
+        "q": "Co wypisze System.out.println('A' + 1); ?",
+        "options": [
+          "66",
+          "B",
+          "A1"
+        ],
+        "answer": 0,
+        "why": "Dodawanie do znaku daje liczbę: 65 + 1 = 66. Żeby dostać B, trzeba (char) ('A' + 1)."
+      }
+    ],
+    "lesson": "(char) zamienia numer z powrotem na literę. Metoda, która ma oddać literę, ma typ wyniku char."
+  },
+  {
+    "id": 4,
+    "title": "Małe na wielkie",
+    "ref": "Ćwiczenie 3.2: małe na wielkie bez gotowych metod",
+    "goal": "Napisz metodę naWielkie(String text), która ZWRACA ten sam napis, ale z wielkimi literami - bez toUpperCase(). Spacje i inne znaki zostają bez zmian. W main wypisz naWielkie(\"ala ma kota\").",
+    "starter": "public static String naWielkie(String text) {\n    // 1. napis na tablice znakow\n    // 2. w petli: mala litera -> wielka (bez toUpperCase)\n    // 3. zloz tablice z powrotem w napis i oddaj\n\n}\n\npublic static void main(String[] args) {\n    System.out.println(naWielkie(\"ala ma kota\"));\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "ALA MA KOTA",
+        "calls": [
+          "naWielkie"
+        ]
+      },
+      {
+        "call": "naWielkie",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "Kot i Pies"
+        ],
+        "ret": "KOT I PIES"
+      },
+      {
+        "call": "naWielkie",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "ok 2!"
+        ],
+        "ret": "OK 2!"
+      },
+      {
+        "call": "naWielkie",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "a{z"
+        ],
+        "ret": "A{Z"
+      },
+      {
+        "call": "naWielkie",
+        "types": [
+          "String"
+        ],
+        "args": [
+          ""
+        ],
+        "ret": ""
+      }
+    ],
+    "code_checks": [
+      {
+        "re": "toUpperCase",
+        "want": false,
+        "label": "Bez toUpperCase()",
+        "msg": "Tu ćwiczysz numery znaków - zrób to bez toUpperCase(), odejmując 32."
+      },
+      {
+        "re": "toCharArray\\s*\\(",
+        "want": true,
+        "label": "Napis zamieniony na szuflady przez toCharArray()",
+        "msg": "Zamień napis na tablicę znaków przez toCharArray() - w napisie nie da się zmieniać liter."
+      }
+    ],
+    "hints": [
+      "Napis zamień na tablicę znaków. Potem idź pętlą po szufladach tej tablicy.",
+      "Mała litera to znak od 'a' do 'z'. Wielka leży 32 numery niżej: 'a' ma 97, a 'A' ma 65. Zmieniaj tylko małe litery - spacja i '!' zostają.",
+      "Na koniec złóż szuflady w napis przez new String(tab) i oddaj go przez return.",
+      "Ostatnia podpowiedź: if (tab[i] >= 'a' && tab[i] <= 'z') { tab[i] = (char) (tab[i] - 32); }"
+    ],
+    "roles": {
+      "i": "numer szuflady"
+    },
+    "tools": [
+      {
+        "code": "text.toCharArray()",
+        "kind": "napis na szuflady",
+        "desc": "Robi z napisu tablicę char[]: każda litera dostaje swoją szufladę. Szuflady możesz zmieniać, napisu nie.",
+        "ex": "String s = \"kot\";\nchar t[] = s.toCharArray();\nSystem.out.println(t[1]);   // o"
+      },
+      {
+        "code": "new String(tab)",
+        "kind": "szuflady z powrotem w napis",
+        "desc": "Składa litery z tablicy char[] w jeden napis.",
+        "ex": "char t[] = {'p', 'e', 's'};\nString s = new String(t);\nSystem.out.println(s);   // pes"
+      },
+      {
+        "code": "&&",
+        "kind": "i jedno, i drugie",
+        "desc": "Warunek z && jest prawdziwy tylko wtedy, gdy obie części są prawdziwe. Przydaje się do sprawdzania zakresu.",
+        "ex": "int wiek = 15;\nif (wiek >= 13 && wiek <= 19) {\n    System.out.println(\"nastolatek\");\n}"
+      },
+      {
+        "code": "- 32",
+        "kind": "mała litera na wielką",
+        "desc": "Wielka litera ma numer o 32 mniejszy niż mała. Wynik odejmowania to int, więc zamieniasz go na znak przez (char).",
+        "ex": "char m = 'd';\nchar w = (char) (m - 32);   // 100 - 32 = 68\nSystem.out.println(w);   // D"
+      }
+    ],
+    "quiz": [
+      {
+        "q": "Dlaczego od małej litery odejmujesz 32?",
+        "options": [
+          "Bo 'a' (97) i 'A' (65) dzieli dokładnie 32 numery",
+          "Bo alfabet ma 32 litery",
+          "Bo spacja ma numer 32 i trzeba ją usunąć"
+        ],
+        "answer": 0,
+        "why": "Małe litery leżą w tabeli 32 numery dalej niż wielkie: 97 - 65 = 32. Tak samo 'k' 107 - 32 = 75, czyli 'K'."
+      }
+    ],
+    "lesson": "toCharArray() daje szuflady z literami, w szufladach zmieniasz numery, new String(tab) składa napis z powrotem."
+  },
+  {
+    "id": 5,
+    "title": "Policz wielkie litery",
+    "ref": "Ćwiczenie 3.3: policz wielkie litery",
+    "goal": "Napisz metodę ileWielkich(String text), która ZWRACA, ile w napisie jest wielkich liter. Spacje i cyfry się nie liczą. W main wypisz \"wielkich liter: \" i wynik dla napisu \"Ala Ma Kota 2\".",
+    "starter": "public static int ileWielkich(String text) {\n    // policz znaki od 'A' do 'Z'\n\n}\n\npublic static void main(String[] args) {\n    // wypisz: wielkich liter: ...\n\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "wielkich liter: 3",
+        "calls": [
+          "ileWielkich"
+        ]
+      },
+      {
+        "call": "ileWielkich",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "ABC"
+        ],
+        "ret": 3
+      },
+      {
+        "call": "ileWielkich",
+        "types": [
+          "String"
+        ],
+        "args": [
+          ""
+        ],
+        "ret": 0
+      },
+      {
+        "call": "ileWielkich",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "abc @[ 1"
+        ],
+        "ret": 0
+      },
+      {
+        "call": "ileWielkich",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "Z"
+        ],
+        "ret": 1
+      }
+    ],
+    "hints": [
+      "Licznik startuje z 0. Pętla po każdym znaku napisu.",
+      "Wielka litera to znak od 'A' do 'Z' (numery 65..90). Spacja ma 32, a cyfra '2' ma 50 - leżą poza tym zakresem.",
+      "Ostatnia podpowiedź: if (text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') { licz++; }"
+    ],
+    "roles": {
+      "i": "numer znaku",
+      "licz": "ile wielkich liter już znaleziono"
+    },
+    "tools": [],
+    "tools_note": "Nic nowego: charAt(i) i length() z poziomu 1, zakres z && z poziomu 4, licznik i++ z rozdziału 1.",
+    "quiz": [
+      {
+        "q": "Czy '@' (numer 64) przejdzie warunek c >= 'A' && c <= 'Z'?",
+        "options": [
+          "Nie, bo 64 jest mniejsze niż 65",
+          "Tak, bo stoi tuż przed A",
+          "Tak, każdy znak to litera"
+        ],
+        "answer": 0,
+        "why": "'A' ma 65. 64 jest mniejsze, więc c >= 'A' jest fałszywe i cały warunek z && też."
+      }
+    ],
+    "lesson": "Porównujesz znaki jak liczby: wielka litera to numer od 65 do 90."
+  },
+  {
+    "id": 6,
+    "title": "Przesuń o 3 z zawinięciem",
+    "ref": "Ćwiczenie 3.4: przesuń literę o 3 z zawinięciem",
+    "goal": "Napisz dwie metody: przesunMala(char c) i przesunWielka(char c). Każda ZWRACA literę przesuniętą o 3 do przodu, a za końcem alfabetu wraca na początek (za z jest a). W main wypisz y -> ... i Y -> ... (bez pętli). Najpierw policz na kartce - pomoże pytanie pod kodem.",
+    "starter": "public static char przesunMala(char c) {\n    // mala litera: licz od 'a'\n\n}\n\npublic static char przesunWielka(char c) {\n    // wielka litera: licz od 'A'\n\n}\n\npublic static void main(String[] args) {\n    char c1 = 'y';\n    char c2 = 'Y';\n    // wypisz: y -> ...   i   Y -> ...\n\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "y -> b\nY -> B",
+        "calls": [
+          "przesunMala",
+          "przesunWielka"
+        ]
+      },
+      {
+        "call": "przesunMala",
+        "types": [
+          "char"
+        ],
+        "args": [
+          "a"
+        ],
+        "ret": "d"
+      },
+      {
+        "call": "przesunMala",
+        "types": [
+          "char"
+        ],
+        "args": [
+          "x"
+        ],
+        "ret": "a"
+      },
+      {
+        "call": "przesunMala",
+        "types": [
+          "char"
+        ],
+        "args": [
+          "w"
+        ],
+        "ret": "z"
+      },
+      {
+        "call": "przesunWielka",
+        "types": [
+          "char"
+        ],
+        "args": [
+          "Z"
+        ],
+        "ret": "C"
+      },
+      {
+        "call": "przesunWielka",
+        "types": [
+          "char"
+        ],
+        "args": [
+          "A"
+        ],
+        "ret": "D"
+      }
+    ],
+    "hints": [
+      "Trzy kroki: miejsce litery w alfabecie (c - 'a'), dodaj 3, zawiń przez % 26. Na końcu wróć na literę: dodaj 'a' i zamień przez (char).",
+      "Mała litera liczy się od 'a', wielka od 'A'. Dlatego są dwie metody - różnią się tylko tą jedną literą.",
+      "Ostatnia podpowiedź: return (char) ('a' + (c - 'a' + 3) % 26);"
+    ],
+    "roles": {
+      "c": "litera do przesunięcia"
+    },
+    "tools": [
+      {
+        "code": "% 26",
+        "kind": "zawijanie alfabetu",
+        "desc": "% daje resztę z dzielenia. Liczby od 0 do 25 zostają bez zmian, a 26 robi się 0, 27 robi się 1 - jak doba: po 23 jest 0.",
+        "ex": "int godz = 22 + 5;\nSystem.out.println(godz % 24);   // 3 - doba zawija po 24"
+      }
+    ],
+    "quiz": [
+      {
+        "q": "Policz na kartce: 'y' to miejsce 24. Ile to (24 + 3) % 26?",
+        "options": [
+          "1, czyli 'b'",
+          "27, czyli poza alfabetem",
+          "0, czyli 'a'"
+        ],
+        "answer": 0,
+        "why": "24 + 3 = 27. 27 % 26 to reszta z dzielenia przez 26, czyli 1. Miejsce 1 to 'b'."
+      },
+      {
+        "q": "'Z' to miejsce 25. Ile to (25 + 3) % 26?",
+        "options": [
+          "2, czyli 'C'",
+          "28",
+          "3, czyli 'D'"
+        ],
+        "answer": 0,
+        "why": "25 + 3 = 28, a 28 = 26 + 2. Reszta to 2, czyli 'C'."
+      }
+    ],
+    "lesson": "Wzór: miejsce = c - 'a', przesuń, % 26 zawija, (char) ('a' + ...) wraca na literę. To jest serce szyfru Cezara."
+  },
+  {
+    "id": 7,
+    "title": "Brakuje (char)",
+    "ref": "Typowe błędy",
+    "goal": "Metoda naMale(String text) ma zamienić wielkie litery na małe (dodać 32). Kod się nie kompiluje. Przeczytaj błąd i napraw jedną linijkę. Na ekranie ma być: kot ma 3 lapy.",
+    "starter": "public static String naMale(String text) {\n    char tab[] = text.toCharArray();\n    for (int i = 0; i < tab.length; i++) {\n        if (tab[i] >= 'A' && tab[i] <= 'Z') {\n            tab[i] = tab[i] + 32;\n        }\n    }\n    return new String(tab);\n}\n\npublic static void main(String[] args) {\n    System.out.println(naMale(\"KOT Ma 3 LAPY\"));\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "kot ma 3 lapy",
+        "calls": [
+          "naMale"
+        ]
+      },
+      {
+        "call": "naMale",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "ABC xyz"
+        ],
+        "ret": "abc xyz"
+      },
+      {
+        "call": "naMale",
+        "types": [
+          "String"
+        ],
+        "args": [
+          ""
+        ],
+        "ret": ""
+      }
+    ],
+    "hints": [
+      "Przeczytaj błąd kompilatora: tab[i] + 32 to liczba int, a szuflada tab[i] trzyma char.",
+      "(char) działa tylko na to, co stoi zaraz za nim. Weź całe działanie w nawias.",
+      "Ostatnia podpowiedź: tab[i] = (char) (tab[i] + 32);"
+    ],
+    "roles": {
+      "i": "numer szuflady"
+    },
+    "tools": [],
+    "tools_note": "Nic nowego - (char) znasz z poziomu 3. Tu trzeba go tylko postawić w dobrym miejscu.",
+    "quiz": [
+      {
+        "q": "Dlaczego tab[i] = (char) tab[i] + 32; nadal się nie kompiluje?",
+        "options": [
+          "(char) zamienia tylko tab[i], a potem + 32 znowu daje int",
+          "Bo 32 to nie znak",
+          "Bo szuflad z literami nie da się zmieniać"
+        ],
+        "answer": 0,
+        "why": "(char) działa na to, co stoi zaraz za nim. Potem + 32 znowu daje int. Trzeba (char) (tab[i] + 32)."
+      }
+    ],
+    "lesson": "Działanie na znakach daje int. Do szuflady char wraca dopiero po (char) przed całym nawiasem."
+  },
+  {
+    "id": 8,
+    "title": "Adres zamiast napisu",
+    "ref": "Typowe błędy",
+    "goal": "Metoda zmienPierwsza(String text, char c) ma oddać napis z pierwszą literą zamienioną na c. Na ekranie zamiast Xla jest dziwne [C@... Uruchom, zobacz i napraw.",
+    "starter": "public static String zmienPierwsza(String text, char c) {\n    char tab[] = text.toCharArray();\n    tab[0] = c;\n    return \"\" + tab;\n}\n\npublic static void main(String[] args) {\n    System.out.println(zmienPierwsza(\"Ala\", 'X'));\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "Xla",
+        "calls": [
+          "zmienPierwsza"
+        ]
+      },
+      {
+        "call": "zmienPierwsza",
+        "types": [
+          "String",
+          "char"
+        ],
+        "args": [
+          "kot",
+          "K"
+        ],
+        "ret": "Kot"
+      },
+      {
+        "call": "zmienPierwsza",
+        "types": [
+          "String",
+          "char"
+        ],
+        "args": [
+          "a",
+          "B"
+        ],
+        "ret": "B"
+      }
+    ],
+    "hints": [
+      "Uruchom i zobacz ekran: [C@ i dziwne cyfry. To nie litery, tylko adres tablicy w pamięci.",
+      "Tablicę liter składasz w napis tak samo jak na poziomie 4.",
+      "Ostatnia podpowiedź: return new String(tab);"
+    ],
+    "roles": {
+      "c": "nowa pierwsza litera"
+    },
+    "tools": [],
+    "tools_note": "Nic nowego - new String(tab) znasz z poziomu 4.",
+    "quiz": [
+      {
+        "q": "Co znaczy [C@1b6d3586 na ekranie?",
+        "options": [
+          "To adres tablicy znaków w pamięci, a nie jej litery",
+          "To zaszyfrowany napis",
+          "To błąd kompilacji"
+        ],
+        "answer": 0,
+        "why": "[C znaczy tablica char, a po @ jest numer miejsca w pamięci. Litery zobaczysz dopiero po new String(tab)."
+      }
+    ],
+    "lesson": "\"\" + tab pokazuje adres tablicy. Litery z szuflad składa w napis tylko new String(tab)."
+  },
+  {
+    "id": 9,
+    "title": "length czy length()",
+    "ref": "Typowe błędy",
+    "goal": "Dwie metody liczą znaki: ileSpacji(String text) liczy spacje w napisie, a ileKropek(char tab[]) liczy kropki w tablicy. Kompilator zgłasza dwa błędy przy długości. Napraw je. Na ekranie ma być 2 i 2.",
+    "starter": "public static int ileSpacji(String text) {\n    int licz = 0;\n    for (int i = 0; i < text.length; i++) {\n        if (text.charAt(i) == ' ') {\n            licz++;\n        }\n    }\n    return licz;\n}\n\npublic static int ileKropek(char tab[]) {\n    int licz = 0;\n    for (int i = 0; i < tab.length(); i++) {\n        if (tab[i] == '.') {\n            licz++;\n        }\n    }\n    return licz;\n}\n\npublic static void main(String[] args) {\n    System.out.println(ileSpacji(\"ala ma kota\"));\n    char k[] = \"a.b.c\".toCharArray();\n    System.out.println(ileKropek(k));\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "2\n2",
+        "calls": [
+          "ileSpacji",
+          "ileKropek"
+        ]
+      },
+      {
+        "call": "ileSpacji",
+        "types": [
+          "String"
+        ],
+        "args": [
+          " "
+        ],
+        "ret": 1
+      },
+      {
+        "call": "ileSpacji",
+        "types": [
+          "String"
+        ],
+        "args": [
+          ""
+        ],
+        "ret": 0
+      },
+      {
+        "call": "ileKropek",
+        "types": [
+          "char[]"
+        ],
+        "args": [
+          "..."
+        ],
+        "ret": 3
+      },
+      {
+        "call": "ileKropek",
+        "types": [
+          "char[]"
+        ],
+        "args": [
+          "x"
+        ],
+        "ret": 0
+      }
+    ],
+    "hints": [
+      "Kompilator pokazuje dwie linie z cannot find symbol. W obu chodzi o długość.",
+      "Napis (String) ma metodę length() - z nawiasami. Tablica ma length - bez nawiasów.",
+      "Ostatnia podpowiedź: i < text.length() w pierwszej metodzie i i < tab.length w drugiej."
+    ],
+    "roles": {
+      "i": "numer znaku / szuflady",
+      "licz": "licznik"
+    },
+    "tools": [],
+    "tools_note": "Nic nowego. Napis: text.length() z nawiasami. Tablica: tab.length bez nawiasów (rozdział 1).",
+    "quiz": [
+      {
+        "q": "Masz String s i char t[]. Co jest dobrze?",
+        "options": [
+          "s.length() i t.length",
+          "s.length i t.length()",
+          "s.length() i t.length()"
+        ],
+        "answer": 0,
+        "why": "Napis ma metodę length() z nawiasami. Tablica ma length bez nawiasów - jak w rozdziale 1."
+      }
+    ],
+    "lesson": "Napis: length(). Tablica: length. Te nawiasy to częsty błąd kompilacji."
+  },
+  {
+    "id": 10,
+    "title": "Napisu nie zmienisz",
+    "ref": "Typowe błędy",
+    "goal": "Metoda wielkaPierwsza(String text) ma oddać napis z wielką pierwszą literą. Próbuje wpisać literę prosto do napisu i kompilator protestuje. Napraw ją. Na ekranie ma być Ola.",
+    "starter": "public static String wielkaPierwsza(String text) {\n    text.charAt(0) = (char) (text.charAt(0) - 32);\n    return text;\n}\n\npublic static void main(String[] args) {\n    System.out.println(wielkaPierwsza(\"ola\"));\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "Ola",
+        "calls": [
+          "wielkaPierwsza"
+        ]
+      },
+      {
+        "call": "wielkaPierwsza",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "kot"
+        ],
+        "ret": "Kot"
+      },
+      {
+        "call": "wielkaPierwsza",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "x"
+        ],
+        "ret": "X"
+      }
+    ],
+    "hints": [
+      "Do wyniku metody nic nie wpiszesz. A sam napis i tak jest niezmienny.",
+      "Zamień napis na tablicę znaków, zmień szufladę 0 i złóż napis z powrotem.",
+      "Ostatnia podpowiedź: char tab[] = text.toCharArray(); tab[0] = (char) (tab[0] - 32); return new String(tab);"
+    ],
+    "roles": {},
+    "tools": [],
+    "tools_note": "Nic nowego: toCharArray() i new String(tab) z poziomu 4.",
+    "quiz": [
+      {
+        "q": "Dlaczego napis zamieniasz na char[], zanim zmienisz literę?",
+        "options": [
+          "Napisu nie da się zmienić w miejscu, a szuflady tablicy tak",
+          "Bo char[] jest krótszy",
+          "Bo String nie ma liter"
+        ],
+        "answer": 0,
+        "why": "String jest niezmienny. Zmieniasz szuflady tablicy, a potem składasz nowy napis."
+      }
+    ],
+    "lesson": "Napis tylko czytasz. Żeby zmienić literę: toCharArray(), zmiana szuflady, new String(tab)."
+  },
+  {
+    "id": 11,
+    "title": "Sprawdzian",
+    "ref": "Sprawdzian",
+    "goal": "Z pamięci, od pustego kodu: metoda zamienA(String text) oddaje napis, w którym każda mała litera a jest zamieniona na wielką A. Zamień napis na char[], w pętli zamień litery, złóż przez new String(tab). main wypisuje zamienA(\"Marek ma psa\"). Na koniec pytanie pod kodem.",
+    "starter": "",
+    "tests": [
+      {
+        "main": true,
+        "out": "MArek mA psA",
+        "calls": [
+          "zamienA"
+        ]
+      },
+      {
+        "call": "zamienA",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "aaa"
+        ],
+        "ret": "AAA"
+      },
+      {
+        "call": "zamienA",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "Ala"
+        ],
+        "ret": "AlA"
+      },
+      {
+        "call": "zamienA",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "bob"
+        ],
+        "ret": "bob"
+      },
+      {
+        "call": "zamienA",
+        "types": [
+          "String"
+        ],
+        "args": [
+          ""
+        ],
+        "ret": ""
+      }
+    ],
+    "code_checks": [
+      {
+        "re": "toCharArray\\s*\\(",
+        "want": true,
+        "label": "Napis zamieniony na tablicę przez toCharArray()",
+        "msg": "Zamień napis na tablicę znaków przez text.toCharArray()."
+      },
+      {
+        "re": "\\.length\\b(?!\\s*\\()",
+        "want": true,
+        "label": "Pętla po tablicy z length bez nawiasów",
+        "msg": "Pętla ma iść po tablicy: i < tab.length (bez nawiasów)."
+      },
+      {
+        "re": "new\\s+String\\s*\\(",
+        "want": true,
+        "label": "Wynik złożony przez new String(tab)",
+        "msg": "Złóż wynik przez new String(tab)."
+      },
+      {
+        "re": "\\bString\\s+(\\w+)\\b[\\s\\S]*\\b\\1\\s*\\+=",
+        "want": false,
+        "label": "Bez składania napisu przez +=",
+        "msg": "Nie składaj napisu przez += w pętli - zmieniaj szuflady i złóż przez new String(tab)."
+      }
+    ],
+    "hints": [
+      "Na sprawdzianie nie ma podpowiedzi. Jeśli utkniesz, wróć do poziomów 4 i 10, a potem spróbuj tu znowu od pustego kodu."
+    ],
+    "tools": [],
+    "tools_note": "Nic nowego. Wszystko znasz z poziomów 4 i 10 - piszesz z pamięci.",
+    "quiz": [
+      {
+        "q": "Czym różni się 'a' od \"a\"?",
+        "options": [
+          "'a' to jeden znak (liczba 97), \"a\" to napis (String)",
+          "Niczym",
+          "\"a\" to liczba 97"
+        ],
+        "answer": 0,
+        "why": "Apostrof to jeden znak, czyli numer z tabeli. Cudzysłów to napis, nawet gdy ma jedną literę."
+      }
+    ],
+    "lesson": "Rozdział 3 zaliczony: znak to liczba, toCharArray() daje szuflady z literami, new String(tab) składa napis. Gotowe do szyfru Cezara."
+  }
+]

@@ -1,0 +1,908 @@
+[
+ {
+  "id": 1,
+  "title": "Szuflada po szufladzie",
+  "ref": "Idziesz po kolei",
+  "goal": "To przykład z teorii: pętla otwiera szuflady po kolei i przy pierwszym trafieniu zatrzymuje się przez break. Uruchom go i patrz, jak gra zapala szufladę, trzyma obok szukaną liczbę i mówi „=” albo „≠”. Potem zmień kod tak, żeby szukał liczby 5 w tablicy {3, 5, 4, 2, 5}. Na ekranie ma być 1 - pierwsza piątka, a nie ostatnia.",
+  "starter": "public static void main(String[] args) {\n    int oceny[] = {3, 5, 4};\n    int pozycja = -1;          // na start: nie znaleziono\n    for (int i = 0; i < oceny.length; i++) {\n        if (oceny[i] == 4) {\n            pozycja = i;\n            break;\n        }\n    }\n    System.out.println(pozycja);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "1"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\{\\s*3\\s*,\\s*5\\s*,\\s*4\\s*,\\s*2\\s*,\\s*5\\s*\\}",
+    "label": "Tablica to {3, 5, 4, 2, 5}",
+    "msg": "Tablica ma być dokładnie {3, 5, 4, 2, 5}."
+   },
+   {
+    "re": "\\w+\\s*\\[\\s*\\w+\\s*\\]\\s*==\\s*(?:5\\b|[A-Za-z_])|(?:\\b5|\\b[A-Za-z_]\\w*)\\s*==\\s*\\w+\\s*\\[",
+    "label": "Pętla porównuje szuflady z szukaną liczbą",
+    "msg": "W if porównaj szufladę oceny[i] z szukaną liczbą (5 albo zmienną, w której jest 5)."
+   },
+   {
+    "re": "==\\s*5\\b|\\b5\\s*==|\\b[A-Za-z_]\\w*\\s*=\\s*5\\s*;",
+    "label": "Szukana liczba to 5",
+    "msg": "Szukasz liczby 5: wpisz ją w porównanie albo do zmiennej, np. int szukana = 5;."
+   },
+   {
+    "re": "println\\s*\\(\\s*[A-Za-z_]\\w*\\s*\\)",
+    "label": "Na ekran idzie zmienna z wynikiem",
+    "msg": "Wypisz zmienną z wynikiem (pozycja), a nie gotową liczbę - wynik ma przyjść z pętli."
+   },
+   {
+    "re": "\\bbreak\\s*;",
+    "label": "Pętla zatrzymuje się przez break",
+    "msg": "Zostaw break w if - to on zatrzymuje szukanie na pierwszym trafieniu."
+   }
+  ],
+  "hints": [
+   "Zmień tylko dwie rzeczy: liczby w nawiasach { } i liczbę po ==.",
+   "Tablica ma mieć pięć liczb: 3, 5, 4, 2, 5. W if porównujesz oceny[i] z 5.",
+   "Ostatnia podpowiedź: int oceny[] = {3, 5, 4, 2, 5}; i niżej if (oceny[i] == 5) {"
+  ],
+  "roles": {
+   "i": "numer sprawdzanej szuflady"
+  },
+  "tools": [
+   {
+    "code": "break",
+    "kind": "wyjście z pętli",
+    "desc": "break od razu kończy pętlę. Program idzie do pierwszej linijki za klamrą } pętli. Dalszych obiegów już nie ma.",
+    "ex": "for (int k = 1; k <= 10; k++) {\n    if (k * k > 20) {\n        break;          // 5 * 5 = 25, koniec petli\n    }\n    System.out.println(k);   // wypisze 1, 2, 3, 4\n}"
+   },
+   {
+    "code": "int pozycja = -1",
+    "kind": "znacznik „jeszcze nie ma”",
+    "desc": "Zanim zaczniesz szukać, wpisujesz -1. Jeśli nic nie trafi, zostaje -1 i wiesz, że nie znaleziono. -1 nie jest numerem żadnej szuflady.",
+    "ex": "int punkty = 30;\nint nagroda = -1;      // -1: jeszcze bez nagrody\nif (punkty > 50) {\n    nagroda = 1;\n}\nSystem.out.println(nagroda);   // -1"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Szukasz 5 w {3, 5, 4, 2, 5} z break. Ile szuflad otworzy pętla?",
+    "options": [
+     "1",
+     "2",
+     "5"
+    ],
+    "answer": 1,
+    "why": "Szuflada 0 (3 - nie), szuflada 1 (5 - tak) i break kończy pętlę. Szuflad 2, 3 i 4 już nie otwiera."
+   },
+   {
+    "q": "Co wypisze program, gdy usuniesz break?",
+    "options": [
+     "1",
+     "4",
+     "-1"
+    ],
+    "answer": 1,
+    "why": "Bez break pętla idzie dalej. Przy drugiej piątce robi pozycja = 4 i nadpisuje 1. Wychodzi ostatnie trafienie, a nie pierwsze."
+   }
+  ],
+  "lesson": "Wyszukiwanie liniowe: od szuflady 0, po kolei, aż do trafienia. break kończy szukanie na PIERWSZYM trafieniu."
+ },
+ {
+  "id": 2,
+  "title": "Metoda szukaj",
+  "ref": "Ćwiczenie 1 (plik `R8_cw1.java`)",
+  "goal": "Napisz metodę szukaj(int t[], int x). Idzie po tablicy od 0 i oddaje numer PIERWSZEGO elementu równego x. Gdy takiego nie ma, oddaje -1. W main zrób tablicę oceny = {3, 5, 4, 2, 5} i wypisz trzy linie dla 2, 5 i 6. Gra sprawdzi metodę też na innych tablicach: pustej, z x na samym początku i na samym końcu.",
+  "starter": "public static int szukaj(int t[], int x) {\n    // idz po kolei od 0 do konca tablicy\n    // gdy t[i] jest rowne x - oddaj i\n    // po petli (nic nie trafilo) - oddaj -1\n}\n\npublic static void main(String[] args) {\n    int oceny[] = {3, 5, 4, 2, 5};\n    System.out.println(\"szukam 2: pozycja \" + szukaj(oceny, 2));\n    // wypisz tak samo dla 5 i dla 6\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam 2: pozycja 3\nszukam 5: pozycja 1\nszukam 6: pozycja -1",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      8,
+      1,
+      8
+     ],
+     8
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      4,
+      1,
+      9
+     ],
+     9
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [],
+     3
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      1,
+      2,
+      3
+     ],
+     0
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      -4,
+      -2,
+      -4
+     ],
+     -2
+    ],
+    "ret": 1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      7
+     ],
+     7
+    ],
+    "ret": 0
+   }
+  ],
+  "hints": [
+   "Pętla for od i = 0, dopóki i < t.length. W środku jeden if: czy t[i] jest równe x?",
+   "Gdy if trafi, od razu oddaj i. Gdy pętla się skończy i nic nie trafiło, za klamrą pętli oddaj -1.",
+   "Ostatnia podpowiedź: w pętli if (t[i] == x) { return i; }, a po pętli return -1;"
+  ],
+  "roles": {
+   "i": "numer sprawdzanej szuflady"
+  },
+  "tools": [
+   {
+    "code": "return w środku pętli",
+    "kind": "koniec metody od razu",
+    "desc": "return nie czeka, aż pętla dojdzie do końca. Kończy całą metodę i od razu oddaje wynik. Dlatego szukanie oddaje PIERWSZE trafienie.",
+    "ex": "public static int pierwszaUjemna(int t[]) {\n    for (int k = 0; k < t.length; k++) {\n        if (t[k] < 0) {\n            return t[k];   // oddaje liczbe i konczy metode\n        }\n    }\n    return 0;\n}"
+   },
+   {
+    "code": "return po pętli",
+    "kind": "wynik „nic nie trafiło”",
+    "desc": "Linijka za klamrą } pętli wykona się tylko wtedy, gdy pętla przeszła wszystko i żaden return w środku nie zadziałał. To miejsce na wynik „nie ma”.",
+    "ex": "public static boolean czyJestZero(int t[]) {\n    for (int k = 0; k < t.length; k++) {\n        if (t[k] == 0) {\n            return true;\n        }\n    }\n    return false;   // tu tylko, gdy zera nie bylo\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "szukaj({3, 5, 4, 2, 5}, 5) oddaje 1, a nie 4. Dlaczego?",
+    "options": [
+     "Bo 4 to za duży numer",
+     "Bo return i kończy metodę już przy pierwszej piątce (szuflada 1)",
+     "Bo pętla idzie od końca"
+    ],
+    "answer": 1,
+    "why": "return od razu kończy metodę. Do drugiej piątki w szufladzie 4 pętla nigdy nie dochodzi."
+   }
+  ],
+  "lesson": "szukaj oddaje numer pierwszego trafienia (return i w pętli) albo -1 (return -1 po pętli)."
+ },
+ {
+  "id": 3,
+  "title": "Błąd: return 0 zamiast -1",
+  "ref": "Dlaczego -1",
+  "goal": "Ta metoda szukaj, gdy nic nie znajdzie, oddaje 0. Uruchom: szukam 3 daje pozycja 0 i szukam 7 też daje pozycja 0. Z ekranu nie odróżnisz „jest w szufladzie 0” od „nie ma”. Popraw tak, żeby brak dawał -1.",
+  "starter": "public static int szukaj(int t[], int x) {\n    for (int i = 0; i < t.length; i++) {\n        if (t[i] == x) {\n            return i;\n        }\n    }\n    return 0;\n}\n\npublic static void main(String[] args) {\n    int liczby[] = {3, 8, 1};\n    System.out.println(\"szukam 3: pozycja \" + szukaj(liczby, 3));\n    System.out.println(\"szukam 7: pozycja \" + szukaj(liczby, 7));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam 3: pozycja 0\nszukam 7: pozycja -1",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      5,
+      6
+     ],
+     9
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      9,
+      6
+     ],
+     9
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [],
+     1
+    ],
+    "ret": -1
+   }
+  ],
+  "hints": [
+   "Patrz na ostatnią linijkę metody. Wykonuje się tylko wtedy, gdy pętla nic nie znalazła.",
+   "Ostatnia podpowiedź: zamień return 0; na return -1;"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Szukasz jednej liczby za pętlą.",
+  "quiz": [
+   {
+    "q": "Czemu „nie znaleziono” to -1, a nie 0?",
+    "options": [
+     "Bo -1 jest mniejsze",
+     "Bo 0 to prawdziwy numer pierwszej szuflady, a -1 nie jest numerem żadnej szuflady",
+     "Bo tak każe kompilator"
+    ],
+    "answer": 1,
+    "why": "Gdy metoda odda 0, nie wiesz, czy to „jest w szufladzie 0”, czy „nie ma”. -1 nigdy nie jest numerem szuflady, więc nie myli się z wynikiem."
+   },
+   {
+    "q": "Tablica ma 5 elementów. Jakie numery może oddać szukaj, gdy coś znajdzie?",
+    "options": [
+     "od 1 do 5",
+     "od 0 do 4",
+     "od 0 do 5"
+    ],
+    "answer": 1,
+    "why": "Numery szuflad to 0..n-1, czyli 0..4. Każdy z nich może być wynikiem, więc żaden nie może znaczyć „nie ma”."
+   }
+  ],
+  "lesson": "Wynik szukania to numer 0..n-1 albo -1. 0 to pierwsza szuflada, więc nie może znaczyć „nie ma”."
+ },
+ {
+  "id": 4,
+  "title": "Błąd: return -1 w else",
+  "ref": "Typowe błędy",
+  "goal": "Tu return -1 stoi w else, w środku pętli. Uruchom: szukam 3 działa (3 leży w szufladzie 0), ale szukam 4 daje -1, choć 4 leży w szufladzie 2. Animacja pokaże, że szukanie kończy się już po pierwszej szufladzie, a reszta zostaje niesprawdzona. Popraw: -1 ma paść dopiero wtedy, gdy pętla sprawdzi wszystko.",
+  "starter": "public static int szukaj(int t[], int x) {\n    for (int i = 0; i < t.length; i++) {\n        if (t[i] == x) {\n            return i;\n        } else {\n            return -1;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    int oceny[] = {3, 5, 4, 2, 5};\n    System.out.println(\"szukam 3: pozycja \" + szukaj(oceny, 3));\n    System.out.println(\"szukam 4: pozycja \" + szukaj(oceny, 4));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam 3: pozycja 0\nszukam 4: pozycja 2",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      1,
+      2,
+      3
+     ],
+     3
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      5,
+      5
+     ],
+     5
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      1,
+      2
+     ],
+     9
+    ],
+    "ret": -1
+   }
+  ],
+  "hints": [
+   "Patrz na animację: po szufladzie 0 metoda od razu oddaje -1. Która linijka to robi?",
+   "„Nie ma” wiesz dopiero wtedy, gdy sprawdzisz WSZYSTKIE szuflady, czyli po pętli.",
+   "Ostatnia podpowiedź: usuń cały else { return -1; }. return -1 za pętlą już jest."
+  ],
+  "roles": {
+   "i": "numer sprawdzanej szuflady"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego. Usuwasz kilka linijek.",
+  "quiz": [
+   {
+    "q": "Ile szuflad sprawdza wersja z else, zanim odda wynik?",
+    "options": [
+     "zawsze jedną",
+     "wszystkie",
+     "aż do trafienia"
+    ],
+    "answer": 0,
+    "why": "W szufladzie 0 albo if, albo else robi return. Tak czy inaczej metoda kończy się przy pierwszej szufladzie."
+   }
+  ],
+  "lesson": "return -1 stoi PO pętli. W środku pętli nie wiesz jeszcze, że nie ma - może być w dalszej szufladzie."
+ },
+ {
+  "id": 5,
+  "title": "Błąd: i <= t.length",
+  "ref": "Typowe błędy",
+  "goal": "Ta pętla ma i <= t.length. Gdy x jest w tablicy, return i kończy metodę wcześniej i nic złego się nie dzieje. Gdy x nie ma, pętla dochodzi do i = t.length i otwiera szufladę, której nie ma. Uruchom, zobacz wyjątek i popraw warunek pętli.",
+  "starter": "public static int szukaj(int t[], int x) {\n    for (int i = 0; i <= t.length; i++) {\n        if (t[i] == x) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    int oceny[] = {3, 5, 4, 2, 5};\n    System.out.println(\"szukam 2: pozycja \" + szukaj(oceny, 2));\n    System.out.println(\"szukam 6: pozycja \" + szukaj(oceny, 6));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam 2: pozycja 3\nszukam 6: pozycja -1",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      4
+     ],
+     1
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      1,
+      2
+     ],
+     2
+    ],
+    "ret": 1
+   }
+  ],
+  "hints": [
+   "Wyjątek pada przy t[5]. Ile szuflad ma ta tablica i jaki numer ma ostatnia?",
+   "Ostatnia podpowiedź: w for zamień i <= t.length na i < t.length."
+  ],
+  "roles": {
+   "i": "numer sprawdzanej szuflady"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego - to ten sam błąd co w rozdziale 1, tylko ukryty: wychodzi dopiero wtedy, gdy szukanej liczby nie ma.",
+  "quiz": [
+   {
+    "q": "Tablica ma 5 szuflad. Jaki numer ma ostatnia?",
+    "options": [
+     "5",
+     "4",
+     "6"
+    ],
+    "answer": 1,
+    "why": "Numery idą od 0, więc ostatni to 5 - 1 = 4. Szuflady nr 5 nie ma."
+   }
+  ],
+  "lesson": "Szukanie, które nic nie znajduje, przechodzi CAŁĄ pętlę - dlatego to ono pokazuje błąd i <= length."
+ },
+ {
+  "id": 6,
+  "title": "Szukanie na liście",
+  "ref": "Ćwiczenie 2 (plik `R8_cw2.java`)",
+  "goal": "To samo szukanie, ale na liście ArrayList<String> z imionami. Napisz szukaj(ArrayList<String> lista, String x): oddaje numer pierwszego imienia równego x albo -1. Teksty porównuj przez equals, a długość listy bierz z size(). W main lista imiona ma Ania, Basia, Kasia, Ola - szukaj Kasia i Zosia.",
+  "starter": "public static int szukaj(ArrayList<String> lista, String x) {\n    // tak jak przy tablicy, ale: lista.get(i) zamiast t[i], lista.size() zamiast t.length\n    // teksty porownujesz przez equals\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Ania\");\n    imiona.add(\"Basia\");\n    imiona.add(\"Kasia\");\n    imiona.add(\"Ola\");\n    System.out.println(\"szukam Kasia: pozycja \" + szukaj(imiona, \"Kasia\"));\n    // wypisz tak samo dla Zosia\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam Kasia: pozycja 2\nszukam Zosia: pozycja -1",
+    "calls": [
+     "szukaj"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ania",
+      "Basia",
+      "Kasia",
+      "Ola"
+     ],
+     "Ola"
+    ],
+    "ret": 3
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Ewa",
+      "Ola"
+     ],
+     "Ola"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [],
+     "Ania"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "ania",
+      "ANIA"
+     ],
+     "Ania"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ewa",
+      "Iza"
+     ],
+     "Iza"
+    ],
+    "ret": 1
+   }
+  ],
+  "hints": [
+   "Przepisz metodę z tablicy: t[i] zamień na lista.get(i), a t.length na lista.size().",
+   "Zamiast == użyj equals: wyjmij tekst przez get(i) i zapytaj go, czy jest równy x.",
+   "Ostatnia podpowiedź: if (lista.get(i).equals(x)) { return i; } w pętli do lista.size(), a po pętli return -1;"
+  ],
+  "roles": {
+   "i": "numer sprawdzanego pudełka"
+  },
+  "tools": [
+   {
+    "code": "lista.get(i).equals(x)",
+    "kind": "czy w pudełku i leży ten tekst?",
+    "desc": "get(i) wyjmuje tekst z pudełka nr i, a equals sprawdza, czy ma te same litery co x. Razem dają true albo false.",
+    "ex": "ArrayList<String> kolory = new ArrayList<>();\nkolory.add(\"czerwony\");\nkolory.add(\"zielony\");\nSystem.out.println(kolory.get(1).equals(\"zielony\"));  // true"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu tu equals, a nie ==?",
+    "options": [
+     "Bo == jest wolniejsze",
+     "Bo == pyta, czy to ta sama kartka, a nie czy te same litery - dla wczytanych tekstów daje false",
+     "Bo equals działa też na liczbach"
+    ],
+    "answer": 1,
+    "why": "Gra sprawdza metodę na tekstach podanych z zewnątrz. To osobne kartki, więc == nigdzie by nie trafiło."
+   }
+  ],
+  "lesson": "Szukanie na liście to to samo co na tablicy: get(i) zamiast t[i], size() zamiast length, equals zamiast ==."
+ },
+ {
+  "id": 7,
+  "title": "Błąd: == na tekstach",
+  "ref": "Typowe błędy",
+  "goal": "Ten program wczytuje imię z klawiatury i szuka go w liście, ale porównuje przez ==. Gra wpisze za Ciebie Kasia. Uruchom i patrz: Kasia z listy i wpisana Kasia to dwie różne kartki, więc == nigdzie nie trafia i wychodzi -1. Popraw porównanie.",
+  "starter": "public static int szukaj(ArrayList<String> lista, String x) {\n    for (int i = 0; i < lista.size(); i++) {\n        if (lista.get(i) == x) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Ania\");\n    imiona.add(\"Basia\");\n    imiona.add(\"Kasia\");\n    imiona.add(\"Ola\");\n    Scanner skan = new Scanner(System.in);\n    String szukam = skan.nextLine();\n    System.out.println(\"szukam \" + szukam + \": pozycja \" + szukaj(imiona, szukam));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "Kasia\n",
+    "out": "szukam Kasia: pozycja 2",
+    "calls": [
+     "szukaj"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Ania\n",
+    "out": "szukam Ania: pozycja 0",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Zosia\n",
+    "out": "szukam Zosia: pozycja -1",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Ewa"
+     ],
+     "Ewa"
+    ],
+    "ret": 1
+   }
+  ],
+  "hints": [
+   "Na animacji Kasia z listy i wpisana Kasia to dwie różne kartki. == pyta o kartkę, a nie o litery.",
+   "Ostatnia podpowiedź: zamień lista.get(i) == x na lista.get(i).equals(x)."
+  ],
+  "roles": {
+   "i": "numer sprawdzanego pudełka"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego: equals znasz z rozdziału 7.",
+  "quiz": [
+   {
+    "q": "Co wypisze kod startowy dla wpisanego Kasia?",
+    "options": [
+     "szukam Kasia: pozycja 2",
+     "szukam Kasia: pozycja -1",
+     "błąd kompilacji"
+    ],
+    "answer": 1,
+    "why": "Wpisana Kasia to nowa kartka, inna niż Kasia w liście. == porównuje kartki, więc nigdzie nie trafia i metoda oddaje -1."
+   }
+  ],
+  "lesson": "Szukając tekstu, porównuj przez equals. == na tekstach z klawiatury prawie zawsze mówi false."
+ },
+ {
+  "id": 8,
+  "title": "Imię i ocena",
+  "ref": "Ćwiczenie 3 (plik `R8_cw3.java`)",
+  "goal": "Dwie listy równoległe: imiona i oceny (ten sam numer = ta sama osoba). Wklej metodę szukaj z poprzedniego poziomu. W main wczytaj imię przez nextLine(), zapisz wynik szukania w zmiennej nr i: gdy nr to -1, wypisz nie znaleziono, a w przeciwnym razie IMIE ma ocene OCENA - ocenę bierzesz z DRUGIEJ listy pod tym samym numerem. Gra wpisze kilka imion.",
+  "starter": "public static int szukaj(ArrayList<String> lista, String x) {\n    // przepisz metode z poprzedniego poziomu\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Ania\");\n    imiona.add(\"Basia\");\n    imiona.add(\"Kasia\");\n    imiona.add(\"Ola\");\n    ArrayList<String> oceny = new ArrayList<>();\n    oceny.add(\"3\");\n    oceny.add(\"5\");\n    oceny.add(\"4\");\n    oceny.add(\"2\");\n\n    Scanner skan = new Scanner(System.in);\n    String szukam = skan.nextLine();\n    // 1. zapisz wynik szukaj(imiona, szukam) w zmiennej nr\n    // 2. gdy nr == -1: wypisz \"nie znaleziono\"\n    // 3. w przeciwnym razie: imie i ocena spod tego samego numeru nr\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "Kasia\n",
+    "out": "Kasia ma ocene 4",
+    "calls": [
+     "szukaj"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Zosia\n",
+    "out": "nie znaleziono",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Ania\n",
+    "out": "Ania ma ocene 3",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Ola\n",
+    "out": "Ola ma ocene 2",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ewa",
+      "Iza"
+     ],
+     "Iza"
+    ],
+    "ret": 1
+   }
+  ],
+  "hints": [
+   "Najpierw int nr = szukaj(imiona, szukam);. Potem if sprawdza, czy nr to -1.",
+   "W else bierzesz imiona.get(nr) i oceny.get(nr) - ten sam numer z obu list.",
+   "Ostatnia podpowiedź: System.out.println(imiona.get(nr) + \" ma ocene \" + oceny.get(nr));"
+  ],
+  "roles": {
+   "nr": "numer znalezionej osoby - ten sam dla obu list",
+   "i": "numer sprawdzanego pudełka"
+  },
+  "tools": [
+   {
+    "code": "if (nr == -1) ... else ...",
+    "kind": "sprawdź wynik szukania",
+    "desc": "Wynik -1 znaczy „nie ma”. Sprawdzasz go PRZED get - get(-1) wywróciłby program, bo pudełka nr -1 nie ma.",
+    "ex": "int miejsce = -1;        // np. wynik jakiegos szukania\nif (miejsce == -1) {\n    System.out.println(\"brak\");\n} else {\n    System.out.println(\"jest na miejscu \" + miejsce);\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu sprawdzasz nr == -1 przed oceny.get(nr)?",
+    "options": [
+     "Bo get(-1) wywraca program: nie ma pudełka nr -1",
+     "Bo -1 to ostatnie pudełko",
+     "Nie trzeba tego sprawdzać"
+    ],
+    "answer": 0,
+    "why": "Numery pudełek to 0..size()-1. get(-1) rzuca IndexOutOfBoundsException."
+   },
+   {
+    "q": "Wpisano Ania. Jaki numer odda szukaj i co wypisze program?",
+    "options": [
+     "0, Ania ma ocene 3",
+     "1, Ania ma ocene 5",
+     "-1, nie znaleziono"
+    ],
+    "answer": 0,
+    "why": "Ania leży w pudełku 0. 0 to prawdziwy numer - dlatego sprawdzasz nr == -1, a nie nr > 0."
+   }
+  ],
+  "lesson": "Szukasz w jednej liście, a numer z wyniku bierzesz do obu. W projekcie tak samo: tytuł daje numer, numer daje treść notatki."
+ },
+ {
+  "id": 9,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "goal": "Z pamięci, bez podglądania: napisz metodę szukaj(int t[], int x) i main z tablicą oceny = {3, 5, 4, 2, 5}, który wypisze trzy linie jak w ćwiczeniu 1 (szukam 2, 5 i 6). Podpowiedzi są tu tylko słowami. Potem odpowiedz na pytania - to te same, które zada prowadzący.",
+  "starter": "// napisz metode szukaj(int t[], int x) i main\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam 2: pozycja 3\nszukam 5: pozycja 1\nszukam 6: pozycja -1",
+    "calls": [
+     "szukaj"
+    ]
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      6,
+      6,
+      6
+     ],
+     6
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      2,
+      4,
+      8,
+      16
+     ],
+     16
+    ],
+    "ret": 3
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [],
+     5
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      9,
+      8,
+      7
+     ],
+     0
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukaj",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      1,
+      -1,
+      0
+     ],
+     -1
+    ],
+    "ret": 1
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "for\\s*\\(\\s*int\\s+\\w+\\s*=\\s*0\\s*;",
+    "label": "Pętla for zaczyna od 0",
+    "msg": "Pętla ma zaczynać od 0 - pierwsza szuflada ma numer 0."
+   },
+   {
+    "re": "<=\\s*\\w+\\s*\\.\\s*length(?!\\s*-)",
+    "want": false,
+    "label": "Warunek pętli bez <= (nie wychodzi poza tablicę)",
+    "msg": "Warunek z <= t.length wchodzi do szuflady t.length, której nie ma. Użyj <."
+   }
+  ],
+  "hints": [
+   "Metoda: pętla po wszystkich szufladach od 0. W środku pytasz, czy szuflada jest równa x.",
+   "Trafienie od razu oddaje numer. Za pętlą stoi wynik dla „nie ma”.",
+   "Ostatnia podpowiedź (bez kodu, to sprawdzian): w main trzy razy wypisz tekst i wynik metody, tak jak w ćwiczeniu 1."
+  ],
+  "tools": [],
+  "tools_note": "Wszystko już znasz: pętla for, if z ==, return w pętli i return -1 za nią.",
+  "quiz": [
+   {
+    "q": "Czemu szukaj oddaje -1, a nie 0, gdy nie znajdzie?",
+    "options": [
+     "Bo -1 leży poza numerami 0..n-1, a 0 to prawidłowa pozycja (pierwsza szuflada)",
+     "Bo -1 oznacza ostatnią szufladę",
+     "Bo metoda int nie może oddać 0"
+    ],
+    "answer": 0,
+    "why": "Tak to mówisz prowadzącemu: numery to 0..n-1, każdy może być wynikiem. -1 nie jest numerem, więc znaczy „nie ma”."
+   },
+   {
+    "q": "Gdzie stoi return -1?",
+    "options": [
+     "W else wewnątrz pętli",
+     "Po pętli, za jej klamrą }",
+     "Przed pętlą"
+    ],
+    "answer": 1,
+    "why": "W else kończyłby szukanie po pierwszej szufladzie. Po pętli wiesz już, że sprawdziłeś wszystko."
+   },
+   {
+    "q": "Szukasz imienia w ArrayList<String>. Jak porównujesz?",
+    "options": [
+     "lista.get(i) == x",
+     "lista.get(i).equals(x)",
+     "lista[i].equals(x)"
+    ],
+    "answer": 1,
+    "why": "Teksty porównujesz przez equals. == pyta o kartkę, a [ ] nie działa na liście."
+   }
+  ],
+  "lesson": "Szukanie liniowe: for od 0 do < length, return i przy pierwszym trafieniu, return -1 po pętli, equals dla tekstów."
+ }
+]

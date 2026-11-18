@@ -1,0 +1,785 @@
+[
+ {
+  "id": 1,
+  "title": "Dwie listy, jeden wiersz",
+  "ref": "Ćwiczenie 1",
+  "goal": "Zrób w main dwie listy ArrayList<String>: imiona i oceny. Dodaj trzy osoby: Ola 5, Piotr 4, Kasia 3 (ocena jako tekst, np. \"5\"). Każda osoba to dwa add: jeden do imiona, drugi do oceny. Napisz metodę wypisz(imiona, oceny), która wypisuje każdy wiersz jako [i] imie: ocena, i wywołaj ją w main. Patrz na tabelę nad kodem: jeden numer = jeden wiersz = jedna osoba.",
+  "starter": "public static void wypisz(ArrayList<String> imiona, ArrayList<String> oceny) {\n    // dla każdego numeru i wypisz: [i] imię: ocena\n\n}\n\npublic static void main(String[] args) {\n    // 1. dwie puste listy ArrayList<String>: imiona i oceny\n    // 2. trzy osoby: Ola 5, Piotr 4, Kasia 3 (ocena jako tekst \"5\")\n    //    każda osoba = add do imiona i add do oceny\n    // 3. wywołaj wypisz(imiona, oceny)\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "[0] Ola: 5\n[1] Piotr: 4\n[2] Kasia: 3",
+    "calls": [
+     "wypisz"
+    ]
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Tomek",
+      "Ewa"
+     ],
+     [
+      "2",
+      "5"
+     ]
+    ],
+    "out": "[0] Tomek: 2\n[1] Ewa: 5"
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Iza"
+     ],
+     [
+      "3"
+     ]
+    ],
+    "out": "[0] Iza: 3"
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [],
+     []
+    ],
+    "out": ""
+   }
+  ],
+  "hints": [
+   "Dodawaj parami: najpierw imię Oli do listy imiona, zaraz potem jej ocenę do listy oceny. Tak samo dla Piotra i Kasi. Wtedy Ola i jej ocena dostają ten sam numer 0.",
+   "W wypisz pętla idzie po i od 0, dopóki i < imiona.size(). W każdym obrocie bierzesz get(i) z OBU list - ten sam numer i.",
+   "Ostatnia podpowiedź: System.out.println(\"[\" + i + \"] \" + imiona.get(i) + \": \" + oceny.get(i));"
+  ],
+  "roles": {
+   "i": "numer wiersza - ten sam dla obu list"
+  },
+  "tools": [
+   {
+    "code": "ArrayList<String>",
+    "kind": "lista tekstów",
+    "desc": "Lista, która rośnie, gdy dodajesz elementy. W < > piszesz, co w niej leży: String to tekst. Tworzysz ją przez new ArrayList<>().",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdańsk\");\nSystem.out.println(miasta.size()); // 1"
+   },
+   {
+    "code": ".add(x)",
+    "kind": "dodaj na koniec",
+    "desc": "Dokłada element na koniec listy. Pierwszy dostaje numer 0, drugi numer 1 i tak dalej.",
+    "ex": "ArrayList<String> kolory = new ArrayList<>();\nkolory.add(\"czerwony\"); // numer 0\nkolory.add(\"zielony\");   // numer 1"
+   },
+   {
+    "code": ".get(i)",
+    "kind": "weź element nr i",
+    "desc": "Oddaje element o numerze i. Lista się nie zmienia.",
+    "ex": "// kolory: czerwony, zielony\nSystem.out.println(kolory.get(1)); // zielony"
+   },
+   {
+    "code": ".size()",
+    "kind": "ile elementów",
+    "desc": "Liczba elementów listy. To metoda, więc z nawiasami. Numery idą od 0 do size() - 1.",
+    "ex": "for (int i = 0; i < kolory.size(); i++) {\n    System.out.println(kolory.get(i));\n}"
+   },
+   {
+    "code": "a.get(i) + b.get(i)",
+    "kind": "jeden wiersz z dwóch list",
+    "desc": "Dwie listy to dwie kolumny jednej tabeli. Ten sam numer i w obu listach to ten sam wiersz, czyli ta sama rzecz.",
+    "ex": "// produkty: chleb, mleko   ceny: 4, 3\nSystem.out.println(produkty.get(0) + \" kosztuje \" + ceny.get(0)); // chleb kosztuje 4"
+   },
+   {
+    "code": "metoda(ArrayList<String> lista)",
+    "kind": "lista jako parametr",
+    "desc": "Metoda może dostać listę. Jak z tablicą: metoda widzi tę samą listę co main, nie kopię.",
+    "ex": "public static void pokaz(ArrayList<String> lista) {\n    System.out.println(lista.size() + \" elementow\");\n}"
+   }
+  ],
+  "lesson": "Dwie listy trzymają jedną rzecz, gdy pod tym samym numerem stoją dane tej samej osoby. Dlatego dodajesz zawsze do obu list naraz."
+ },
+ {
+  "id": 2,
+  "title": "Zamiana w obu listach",
+  "ref": "Ćwiczenie 2",
+  "goal": "Napisz metodę zamien(imiona, oceny, a, b), która zamienia miejscami osobę a i osobę b w OBU listach. W każdej liście to trzy linijki z tmp. W main: wypisz PRZED:, potem tabelę, zamień osoby 0 i 2, wypisz PO: i tabelę jeszcze raz. Na animacji najpierw ruszy się imiona i wiersze na chwilę się rozjadą (na pomarańczowo), a po zamianie w oceny wrócą do par - kolor imienia znowu stoi przy kolorze oceny.",
+  "starter": "public static void wypisz(ArrayList<String> imiona, ArrayList<String> oceny) {\n    for (int i = 0; i < imiona.size(); i++) {\n        System.out.println(\"[\" + i + \"] \" + imiona.get(i) + \": \" + oceny.get(i));\n    }\n}\n\npublic static void zamien(ArrayList<String> imiona, ArrayList<String> oceny, int a, int b) {\n    // zamień a i b w imiona (tmp), potem tak samo w oceny\n\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    ArrayList<String> oceny = new ArrayList<>();\n    imiona.add(\"Ola\");\n    oceny.add(\"5\");\n    imiona.add(\"Piotr\");\n    oceny.add(\"4\");\n    imiona.add(\"Kasia\");\n    oceny.add(\"3\");\n    System.out.println(\"PRZED:\");\n    wypisz(imiona, oceny);\n    // zamień osoby 0 i 2, potem wypisz PO:\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "PRZED:\n[0] Ola: 5\n[1] Piotr: 4\n[2] Kasia: 3\nPO:\n[0] Kasia: 3\n[1] Piotr: 4\n[2] Ola: 5",
+    "calls": [
+     "zamien",
+     "wypisz"
+    ]
+   },
+   {
+    "call": "zamien",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int",
+     "int"
+    ],
+    "args": [
+     [
+      "Tomek",
+      "Ewa"
+     ],
+     [
+      "2",
+      "5"
+     ],
+     1,
+     0
+    ],
+    "lists_end": [
+     [
+      "Ewa",
+      "Tomek"
+     ],
+     [
+      "5",
+      "2"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "zamien",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int",
+     "int"
+    ],
+    "args": [
+     [
+      "A",
+      "B",
+      "C",
+      "D"
+     ],
+     [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     1,
+     3
+    ],
+    "lists_end": [
+     [
+      "A",
+      "D",
+      "C",
+      "B"
+     ],
+     [
+      "1",
+      "4",
+      "3",
+      "2"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "zamien",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int",
+     "int"
+    ],
+    "args": [
+     [
+      "Iza",
+      "Max"
+     ],
+     [
+      "3",
+      "5"
+     ],
+     1,
+     1
+    ],
+    "lists_end": [
+     [
+      "Iza",
+      "Max"
+     ],
+     [
+      "3",
+      "5"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   }
+  ],
+  "hints": [
+   "Zamiana w jednej liście: odłóż element a do zmiennej tmp, na miejsce a wstaw element b, na miejsce b wstaw tmp.",
+   "Zrób to dwa razy: raz w imiona, raz w oceny. Te same numery a i b. Druga zmienna może się nazywać np. tmpOcena.",
+   "Ostatnia podpowiedź: String tmp = imiona.get(a); imiona.set(a, imiona.get(b)); imiona.set(b, tmp); i to samo dla oceny."
+  ],
+  "tools": [
+   {
+    "code": ".set(i, x)",
+    "kind": "wstaw w miejsce nr i",
+    "desc": "Kładzie x pod numer i. To, co tam leżało, znika z listy (set oddaje starą wartość). Długość listy się nie zmienia.",
+    "ex": "// kolory: czerwony, zielony\nkolory.set(0, \"niebieski\");\n// kolory: niebieski, zielony"
+   },
+   {
+    "code": "String tmp = lista.get(a)",
+    "kind": "kubek na element",
+    "desc": "Jak przy tablicy: zanim nadpiszesz element, odłóż go do zmiennej. Tu zmienna jest typu String, bo lista trzyma tekst.",
+    "ex": "String tmp = kolory.get(0);\nkolory.set(0, kolory.get(1));\nkolory.set(1, tmp);"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Ile razy w zamien robisz zamianę z tmp?",
+    "options": [
+     "Raz - w liście imiona, oceny pójdą same",
+     "Dwa razy - raz w imiona, raz w oceny, tymi samymi numerami",
+     "Trzy razy"
+    ],
+    "answer": 1,
+    "why": "Listy nic o sobie nie wiedzą. Każdą trzeba zamienić osobno, tymi samymi numerami."
+   }
+  ],
+  "lesson": "Każda operacja rusza OBIE listy tymi samymi numerami. Wtedy wiersze zostają w parach."
+ },
+ {
+  "id": 3,
+  "title": "Celowy błąd: tylko imiona",
+  "ref": "Ćwiczenie 3: celowy błąd",
+  "pairs_broken": true,
+  "goal": "Inne dane: Tomek 2, Ewa 5, Jan 4. Zamień osoby 0 i 2, ale TYLKO w liście imiona. Najpierw odpowiedz na pytanie pod kodem (co Twoim zdaniem wypisze program), dopiero potem uruchom. Patrz na tabelę: które pary zrobią się czerwone?",
+  "starter": "public static void wypisz(ArrayList<String> imiona, ArrayList<String> oceny) {\n    for (int i = 0; i < imiona.size(); i++) {\n        System.out.println(\"[\" + i + \"] \" + imiona.get(i) + \": \" + oceny.get(i));\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    ArrayList<String> oceny = new ArrayList<>();\n    imiona.add(\"Tomek\");\n    oceny.add(\"2\");\n    imiona.add(\"Ewa\");\n    oceny.add(\"5\");\n    imiona.add(\"Jan\");\n    oceny.add(\"4\");\n    System.out.println(\"PRZED:\");\n    wypisz(imiona, oceny);\n    // zamień osoby 0 i 2 TYLKO w imiona (trzy linijki z tmp)\n\n    System.out.println(\"PO (zamienione tylko imiona):\");\n    wypisz(imiona, oceny);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "PRZED:\n[0] Tomek: 2\n[1] Ewa: 5\n[2] Jan: 4\nPO (zamienione tylko imiona):\n[0] Jan: 2\n[1] Ewa: 5\n[2] Tomek: 4",
+    "calls": [
+     "wypisz"
+    ]
+   }
+  ],
+  "hints": [
+   "Lista oceny w ogóle się tu nie rusza. Zamieniasz tylko w imiona.",
+   "Ostatnia podpowiedź: String tmp = imiona.get(0); imiona.set(0, imiona.get(2)); imiona.set(2, tmp);"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. To ta sama zamiana z tmp, tylko celowo w jednej liście.",
+  "quiz": [
+   {
+    "q": "Zanim uruchomisz: co pokaże wiersz [0] po zamianie?",
+    "options": [
+     "[0] Jan: 4",
+     "[0] Jan: 2",
+     "[0] Tomek: 2"
+    ],
+    "answer": 1,
+    "why": "Imię Jana przyjechało na numer 0, ale ocena pod numerem 0 została ta sama: 2, czyli ocena Tomka."
+   },
+   {
+    "q": "Czy Java zgłosi tu błąd?",
+    "options": [
+     "Tak, wyjątek przy wypisywaniu",
+     "Nie - obie listy są poprawne, tylko pary są złe"
+    ],
+    "answer": 1,
+    "why": "Każda lista z osobna jest w porządku. Błąd widać dopiero na wydruku: osoby mają cudze oceny."
+   }
+  ],
+  "lesson": "Zamiana w jednej liście nie daje wyjątku. Daje cichy błąd: dane wyglądają dobrze, a każda zamieniona osoba ma cudzą ocenę."
+ },
+ {
+  "id": 4,
+  "title": "Napraw: dodane do jednej listy",
+  "ref": "Typowe błędy",
+  "goal": "Metoda dodaj miała dopisać osobę do obu list, ale dopisuje tylko imię. Uruchom kod startowy i zobacz w tabeli, że lista oceny jest krótsza, a wypisz wywraca się na brakującej ocenie. Popraw dodaj, żeby każda osoba trafiała do obu list.",
+  "starter": "public static void wypisz(ArrayList<String> imiona, ArrayList<String> oceny) {\n    for (int i = 0; i < imiona.size(); i++) {\n        System.out.println(\"[\" + i + \"] \" + imiona.get(i) + \": \" + oceny.get(i));\n    }\n}\n\npublic static void dodaj(ArrayList<String> imiona, ArrayList<String> oceny, String imie, String ocena) {\n    imiona.add(imie);\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    ArrayList<String> oceny = new ArrayList<>();\n    imiona.add(\"Ola\");\n    oceny.add(\"5\");\n    imiona.add(\"Piotr\");\n    oceny.add(\"4\");\n    imiona.add(\"Kasia\");\n    oceny.add(\"3\");\n    dodaj(imiona, oceny, \"Ania\", \"5\");\n    wypisz(imiona, oceny);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "[0] Ola: 5\n[1] Piotr: 4\n[2] Kasia: 3\n[3] Ania: 5",
+    "calls": [
+     "dodaj",
+     "wypisz"
+    ]
+   },
+   {
+    "call": "dodaj",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "String",
+     "String"
+    ],
+    "args": [
+     [],
+     [],
+     "Iza",
+     "3"
+    ],
+    "lists_end": [
+     [
+      "Iza"
+     ],
+     [
+      "3"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "dodaj",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "String",
+     "String"
+    ],
+    "args": [
+     [
+      "Max"
+     ],
+     [
+      "5"
+     ],
+     "Lena",
+     "2"
+    ],
+    "lists_end": [
+     [
+      "Max",
+      "Lena"
+     ],
+     [
+      "5",
+      "2"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   }
+  ],
+  "hints": [
+   "Popatrz na tabelę po uruchomieniu: pod Anią w wierszu oceny jest puste miejsce. get(3) na liście, która ma 3 elementy, wywraca program.",
+   "Ostatnia podpowiedź: w dodaj brakuje drugiej linijki: oceny.add(ocena);"
+  ],
+  "tools": [
+   {
+    "code": "IndexOutOfBoundsException",
+    "kind": "wyjątek: nie ma takiego numeru",
+    "desc": "Lista wyrzuca go, gdy prosisz o numer, którego nie ma, np. get(3), gdy lista ma 3 elementy (numery 0, 1, 2). To siostra ArrayIndexOutOfBoundsException z tablic.",
+    "ex": "ArrayList<String> kolory = new ArrayList<>();\nkolory.add(\"czerwony\");\nkolory.get(1); // wyjątek: Index 1 out of bounds for length 1"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "imiona ma 4 elementy, oceny ma 3. Co zrobi oceny.get(3)?",
+    "options": [
+     "Odda pusty tekst",
+     "Wyrzuci IndexOutOfBoundsException",
+     "Odda ocenę z numeru 2"
+    ],
+    "answer": 1,
+    "why": "Lista oceny ma numery 0, 1, 2. Numeru 3 nie ma, więc Java wyrzuca wyjątek."
+   }
+  ],
+  "lesson": "Dodanie do jednej listy skraca drugą. Pierwsze get(i) za jej końcem wywraca program."
+ },
+ {
+  "id": 5,
+  "title": "Napraw: przesunięty numer",
+  "ref": "Typowe błędy",
+  "goal": "Ta metoda wypisz bierze imię z numeru i, a ocenę z numeru i + 1. Uruchom ją i patrz, które pola tabeli się świecą: imię z jednego wiersza, ocena z następnego. Kod startowy wywraca się na oceny.get(3) - przy ostatniej osobie nie ma już oceny pod numerem i + 1. Popraw, żeby oba get brały ten sam numer.",
+  "starter": "public static void wypisz(ArrayList<String> imiona, ArrayList<String> oceny) {\n    for (int i = 0; i < imiona.size(); i++) {\n        System.out.println(\"[\" + i + \"] \" + imiona.get(i) + \": \" + oceny.get(i + 1));\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    ArrayList<String> oceny = new ArrayList<>();\n    imiona.add(\"Ola\");\n    oceny.add(\"5\");\n    imiona.add(\"Piotr\");\n    oceny.add(\"4\");\n    imiona.add(\"Kasia\");\n    oceny.add(\"3\");\n    wypisz(imiona, oceny);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "[0] Ola: 5\n[1] Piotr: 4\n[2] Kasia: 3",
+    "calls": [
+     "wypisz"
+    ]
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Tomek",
+      "Ewa",
+      "Jan"
+     ],
+     [
+      "2",
+      "5",
+      "4"
+     ]
+    ],
+    "out": "[0] Tomek: 2\n[1] Ewa: 5\n[2] Jan: 4"
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Iza"
+     ],
+     [
+      "3"
+     ]
+    ],
+    "out": "[0] Iza: 3"
+   }
+  ],
+  "hints": [
+   "Na animacji świeci się imię z wiersza 0 i ocena z wiersza 1. Wiersz to jeden numer dla obu list.",
+   "Ostatnia podpowiedź: zamień oceny.get(i + 1) na oceny.get(i)."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Szukasz złego numeru w get.",
+  "lesson": "Imię i ocena z jednego wiersza zawsze mają ten sam numer. i + 1 w jednej liście przesuwa całą kolumnę o wiersz."
+ },
+ {
+  "id": 6,
+  "title": "Napraw: for-each i numer",
+  "ref": "Typowe błędy",
+  "goal": "Tu pętla for-each idzie po imionach, a ocenę bierze z numeru i, który się nie zmienia. Uruchom i zobacz: imiona idą dalej, a ocena ciągle z wiersza 0. Przepisz wypisz na zwykłą pętlę po i, tak jak w poziomie 1.",
+  "starter": "public static void wypisz(ArrayList<String> imiona, ArrayList<String> oceny) {\n    int i = 0;\n    for (String imie : imiona) {\n        System.out.println(\"[\" + i + \"] \" + imie + \": \" + oceny.get(i));\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    ArrayList<String> oceny = new ArrayList<>();\n    imiona.add(\"Ola\");\n    oceny.add(\"5\");\n    imiona.add(\"Piotr\");\n    oceny.add(\"4\");\n    imiona.add(\"Kasia\");\n    oceny.add(\"3\");\n    wypisz(imiona, oceny);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "[0] Ola: 5\n[1] Piotr: 4\n[2] Kasia: 3",
+    "calls": [
+     "wypisz"
+    ]
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Tomek",
+      "Ewa"
+     ],
+     [
+      "2",
+      "5"
+     ]
+    ],
+    "out": "[0] Tomek: 2\n[1] Ewa: 5"
+   }
+  ],
+  "hints": [
+   "for-each podaje kolejne imię, ale nie mówi, który to numer. Zmienna i stoi na 0, więc ocena jest ciągle z wiersza 0.",
+   "Ostatnia podpowiedź: for (int i = 0; i < imiona.size(); i++) i w środku imiona.get(i) oraz oceny.get(i)."
+  ],
+  "tools": [
+   {
+    "code": "for (String x : lista)",
+    "kind": "pętla for-each",
+    "desc": "Bierze po kolei każdy element listy, ale nie daje numeru. Przy dwóch listach potrzebujesz numeru, więc tu lepsza jest zwykła pętla po i.",
+    "ex": "for (String kolor : kolory) {\n    System.out.println(kolor);\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Dlaczego przy dwóch listach lepsza jest pętla po i niż for-each?",
+    "options": [
+     "Bo for-each jest wolniejsza",
+     "Bo potrzebujesz numeru i dla obu list, a for-each go nie daje",
+     "Bo for-each nie działa z ArrayList"
+    ],
+    "answer": 1,
+    "why": "Ten sam numer i wskazuje wiersz w obu listach. for-each daje tylko element jednej listy."
+   }
+  ],
+  "lesson": "Przy listach równoległych chodzisz pętlą po numerze i i bierzesz get(i) z każdej listy."
+ },
+ {
+  "id": 7,
+  "title": "Usuń wiersz z obu list",
+  "ref": "Typowe błędy",
+  "goal": "Metoda usun(imiona, oceny, nr) ma usunąć osobę nr z obu list. Kod startowy usuwa tylko imię. Uruchom: Kasia przesuwa się w lewo, a jej ocena nie - para się rozjeżdża. Popraw usun.",
+  "starter": "public static void wypisz(ArrayList<String> imiona, ArrayList<String> oceny) {\n    for (int i = 0; i < imiona.size(); i++) {\n        System.out.println(\"[\" + i + \"] \" + imiona.get(i) + \": \" + oceny.get(i));\n    }\n}\n\npublic static void usun(ArrayList<String> imiona, ArrayList<String> oceny, int nr) {\n    imiona.remove(nr);\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    ArrayList<String> oceny = new ArrayList<>();\n    imiona.add(\"Ola\");\n    oceny.add(\"5\");\n    imiona.add(\"Piotr\");\n    oceny.add(\"4\");\n    imiona.add(\"Kasia\");\n    oceny.add(\"3\");\n    usun(imiona, oceny, 1);\n    wypisz(imiona, oceny);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "[0] Ola: 5\n[1] Kasia: 3",
+    "calls": [
+     "usun",
+     "wypisz"
+    ]
+   },
+   {
+    "call": "usun",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int"
+    ],
+    "args": [
+     [
+      "A",
+      "B",
+      "C"
+     ],
+     [
+      "1",
+      "2",
+      "3"
+     ],
+     0
+    ],
+    "lists_end": [
+     [
+      "B",
+      "C"
+     ],
+     [
+      "2",
+      "3"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "usun",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Piotr",
+      "Kasia"
+     ],
+     [
+      "5",
+      "4",
+      "5"
+     ],
+     2
+    ],
+    "lists_end": [
+     [
+      "Ola",
+      "Piotr"
+     ],
+     [
+      "5",
+      "4"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "usun",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Piotr",
+      "Ola"
+     ],
+     [
+      "5",
+      "4",
+      "3"
+     ],
+     2
+    ],
+    "lists_end": [
+     [
+      "Ola",
+      "Piotr"
+     ],
+     [
+      "5",
+      "4"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "usun",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int"
+    ],
+    "args": [
+     [
+      "Iza"
+     ],
+     [
+      "3"
+     ],
+     0
+    ],
+    "lists_end": [
+     [],
+     []
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   }
+  ],
+  "hints": [
+   "remove(nr) wyjmuje element i przesuwa wszystkie dalsze o jeden w lewo. Jeśli zrobisz to tylko w imiona, imiona przesuną się, a oceny zostaną.",
+   "Ostatnia podpowiedź: dopisz oceny.remove(nr); - ten sam numer."
+  ],
+  "tools": [
+   {
+    "code": ".remove(i)",
+    "kind": "wyjmij element nr i",
+    "desc": "Usuwa element o numerze i. Wszystkie dalsze przesuwają się o jeden w lewo, a size() maleje o 1.",
+    "ex": "// kolory: czerwony, zielony, niebieski\nkolory.remove(0);\n// kolory: zielony, niebieski"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Po imiona.remove(1) (bez oceny.remove) czyją ocenę ma Kasia?",
+    "options": [
+     "Swoją (3)",
+     "Piotra (4)",
+     "Oli (5)"
+    ],
+    "answer": 1,
+    "why": "Kasia przesunęła się na numer 1, a pod numerem 1 w oceny dalej stoi 4, ocena Piotra."
+   }
+  ],
+  "lesson": "Usuwasz z obu list tym samym numerem. remove w jednej liście przesuwa jej resztę, a pary się rozjeżdżają."
+ },
+ {
+  "id": 8,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "pairs_broken": true,
+  "goal": "Najpierw bez komputera: narysuj tabelę nr, imię, ocena dla Iza 3, Max 5, Lena 2 i zamień w niej tylko imiona 0 i 2. Potem z pamięci napisz program: metoda wypisz, listy z tymi danymi, PRZED:, zamiana TYLKO imion 0 i 2, PO (zamienione tylko imiona):. Sprawdź, czy kartka zgadza się z wydrukiem, i odpowiedz na pytania.",
+  "starter": "",
+  "tests": [
+   {
+    "main": true,
+    "out": "PRZED:\n[0] Iza: 3\n[1] Max: 5\n[2] Lena: 2\nPO (zamienione tylko imiona):\n[0] Lena: 3\n[1] Max: 5\n[2] Iza: 2",
+    "calls": [
+     "wypisz"
+    ]
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Piotr"
+     ],
+     [
+      "5",
+      "4"
+     ]
+    ],
+    "out": "[0] Ola: 5\n[1] Piotr: 4"
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [],
+     []
+    ],
+    "out": ""
+   }
+  ],
+  "hints": [
+   "Na sprawdzianie nie ma podpowiedzi. Jeśli utkniesz, wróć do poziomów 1 i 3, a potem spróbuj tu znowu od pustego kodu."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Wszystko znasz z poziomów 1-3 - piszesz z pamięci.",
+  "quiz": [
+   {
+    "q": "Kto po zamianie ma cudzą ocenę i czyją?",
+    "options": [
+     "Lena ma ocenę Izy (3), a Iza ma ocenę Leny (2)",
+     "Max ma ocenę Leny",
+     "Nikt - oceny pojechały razem z imionami"
+    ],
+    "answer": 0,
+    "why": "Imiona 0 i 2 zamieniły się miejscami, a oceny zostały. Max stoi na numerze 1, więc go to nie dotyczy."
+   },
+   {
+    "q": "Jak to naprawić?",
+    "options": [
+     "Posortować oceny",
+     "Zrobić tę samą zamianę także w liście oceny, tymi samymi numerami 0 i 2",
+     "Zamienić w oceny numery 1 i 2"
+    ],
+    "answer": 1,
+    "why": "Każda operacja rusza obie listy tymi samymi numerami."
+   }
+  ],
+  "lesson": "Rozdział 6 zaliczony: dwie listy = dwie kolumny jednej tabeli. W projekcie tytuły i treści notatek trzymasz właśnie tak."
+ }
+]

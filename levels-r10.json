@@ -1,0 +1,639 @@
+[
+ {
+  "id": 1,
+  "title": "Menu i jeden wybór",
+  "ref": "Pętla `do-while` i `switch`",
+  "goal": "Napisz metodę menu(), która wypisuje cztery opcje i na końcu „Wybierz: ” bez przejścia do nowej linii. W main wywołaj menu(), przeczytaj numer przez skan.nextInt() i wypisz „wybrales ” i ten numer. Gra wpisze w konsoli 2. W animacji patrz na bufor: 2 idzie do zmiennej, a Enter zostaje.",
+  "starter": "public static void menu() {\n    System.out.println(\"=== MENU ===\");\n    // dopisz linie [1], [2], [3] i [0], a na koncu \"Wybierz: \" BEZ przejscia do nowej linii\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    // 1. wypisz menu (wywolaj menu())\n    // 2. przeczytaj numer przez skan.nextInt() do zmiennej int wybor\n    // 3. wypisz \"wybrales \" + wybor\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "2\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 2",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "7\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 7",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "menu() tylko wypisuje, nic nie czyta",
+    "re": "static\\s+\\w+\\s+menu\\s*\\([^)]*\\)\\s*\\{[^}]*\\bnext\\w*\\s*\\(",
+    "want": false,
+    "msg": "W menu() stoi czytanie z klawiatury (next...). menu() ma tylko wypisać opcje - numer czyta main."
+   }
+  ],
+  "hints": [
+   "menu() ma tylko println dla każdej opcji, a ostatnia linijka to print (bez ln), żeby wpisana liczba stanęła obok „Wybierz: ”.",
+   "W main najpierw wywołaj menu(), potem przeczytaj liczbę do int wybor, a na końcu ją wypisz.",
+   "Ostatnia podpowiedź: int wybor = skan.nextInt(); i potem System.out.println(\"wybrales \" + wybor);"
+  ],
+  "tools": [
+   {
+    "code": "System.out.print",
+    "kind": "wypisz bez Enter",
+    "desc": "print wypisuje tekst i NIE przechodzi do nowej linii. Następny tekst stanie zaraz obok. println wypisuje i przechodzi do nowej linii.",
+    "ex": "System.out.print(\"Wiek: \");\nSystem.out.println(12);\n// na ekranie jedna linia: Wiek: 12"
+   },
+   {
+    "code": "skan.nextInt()",
+    "kind": "czyta liczbę z klawiatury",
+    "desc": "Czeka, aż ktoś wpisze liczbę i wciśnie Enter, i oddaje tę liczbę jako int. Bierze TYLKO cyfry - Enter zostaje w buforze Scannera.",
+    "ex": "Scanner sc = new Scanner(System.in);\nint lata = sc.nextInt();   // wpisano 15 i Enter\nSystem.out.println(lata + 1);  // 16"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Wpisujesz 2 i Enter. Co zabiera nextInt()?",
+    "options": [
+     "2 i Enter",
+     "tylko 2 - Enter zostaje w buforze",
+     "tylko Enter"
+    ],
+    "answer": 1,
+    "why": "nextInt() bierze same cyfry. Enter zostaje w buforze i czeka na następne czytanie."
+   },
+   {
+    "q": "Czemu ostatnia linijka menu() to print, a nie println?",
+    "options": [
+     "Bo print jest szybszy",
+     "Żeby wpisana liczba stanęła w tej samej linii co „Wybierz: ”",
+     "Bez powodu, to bez różnicy"
+    ],
+    "answer": 1,
+    "why": "println przechodzi do nowej linii. print zostaje w tej samej, więc kursor czeka zaraz za „Wybierz: ”."
+   }
+  ],
+  "lesson": "menu() tylko wypisuje. Numer czyta skan.nextInt() w main. nextInt() bierze same cyfry, Enter zostaje w buforze."
+ },
+ {
+  "id": 2,
+  "title": "Pętla do-while wraca do menu",
+  "ref": "Pętla `do-while` i `switch`",
+  "goal": "Zamknij wypisanie menu, czytanie numeru i „wybrales ...” w pętli do-while, która kręci się, dopóki wybor nie jest zerem. Gra wpisze 1, 2, 0. Zobacz w animacji, jak warunek na dole odsyła program z powrotem do menu.",
+  "starter": "public static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Opcja pierwsza\");\n    System.out.println(\"[2] Opcja druga\");\n    System.out.println(\"[3] Opcja trzecia\");\n    System.out.println(\"[0] Wyjscie\");\n    System.out.print(\"Wybierz: \");\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    // zamknij trzy linijki ponizej w petle do { ... } while (...);\n    // tak, zeby menu wracalo, dopoki ktos nie wpisze 0\n    menu();\n    wybor = skan.nextInt();\n    System.out.println(\"wybrales \" + wybor);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\n2\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 1\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 2\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 0",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 0",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "3\n3\n5\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 3\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 3\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 5\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 0",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Pętla do-while",
+    "re": "\\bdo\\s*\\{[\\s\\S]*\\}\\s*while\\s*\\(",
+    "msg": "Na tym poziomie użyj pętli do { ... } while (...); - ona zawsze wypisze menu przynajmniej raz."
+   }
+  ],
+  "hints": [
+   "do { ... } stoi przed menu(), a } while (...); zaraz po wypisaniu wyniku.",
+   "Pętla ma wracać, dopóki wybor NIE jest zerem. „Nie jest równe” w Javie to !=.",
+   "Ostatnia podpowiedź: } while (wybor != 0);  (ze średnikiem na końcu)"
+  ],
+  "tools": [
+   {
+    "code": "do { ... } while (warunek);",
+    "kind": "pętla: najpierw robi, potem pyta",
+    "desc": "Ciało pętli wykona się zawsze przynajmniej raz, bo warunek jest sprawdzany NA KOŃCU. Gdy warunek daje true, pętla wraca na górę. Na końcu stoi średnik.",
+    "ex": "int n = 3;\ndo {\n    System.out.println(n);\n    n--;\n} while (n > 0);\n// 3, 2, 1"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Gra wpisuje od razu 0. Ile razy wypisze się menu?",
+    "options": [
+     "Ani razu",
+     "Raz - do-while najpierw robi, potem sprawdza",
+     "W nieskończoność"
+    ],
+    "answer": 1,
+    "why": "W do-while warunek stoi na dole, więc ciało wykona się przynajmniej raz. Potem 0 != 0 to false i pętla się kończy."
+   }
+  ],
+  "lesson": "do-while najpierw wykonuje ciało, potem pyta o warunek. Dlatego menu zawsze wypisze się przynajmniej raz."
+ },
+ {
+  "id": 3,
+  "title": "switch wybiera opcję",
+  "ref": "Ćwiczenie 1. Menu z trzema opcjami (`R10_cw1.java`)",
+  "goal": "Ćwiczenie 1: zamiast „wybrales ” + wybor zrób switch (wybor). case 1, 2, 3 wypisują „wybrales 1”, „wybrales 2”, „wybrales 3”, case 0 wypisuje „Koniec programu.”, a default „Nie ma takiej opcji.”. Każdy case kończy się break. Gra wpisze 1, 2, 3, 7, 0.",
+  "starter": "public static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Opcja pierwsza\");\n    System.out.println(\"[2] Opcja druga\");\n    System.out.println(\"[3] Opcja trzecia\");\n    System.out.println(\"[0] Wyjscie\");\n    System.out.print(\"Wybierz: \");\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        // tu switch (wybor): case 1, 2, 3 wypisuja \"wybrales 1/2/3\",\n        // case 0 wypisuje \"Koniec programu.\", a default \"Nie ma takiej opcji.\"\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\n2\n3\n7\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 1\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 2\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 3\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Nie ma takiej opcji.\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "3\n-1\n2\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 3\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Nie ma takiej opcji.\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 2\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Wybór robi switch",
+    "re": "\\bswitch\\s*\\(",
+    "msg": "Na tym poziomie wybór robi switch (wybor) { case ... }, nie if."
+   },
+   {
+    "label": "Jest default",
+    "re": "\\bdefault\\s*(?::|->)",
+    "msg": "Brakuje default: - co program ma zrobić z numerem, którego nie ma w menu?"
+   }
+  ],
+  "hints": [
+   "switch (wybor) { ... } stoi w pętli, zaraz pod czytaniem numeru.",
+   "Każdy case to: case liczba: potem println, potem break;. Na końcu default: z „Nie ma takiej opcji.”.",
+   "Ostatnia podpowiedź: case 1:\n    System.out.println(\"wybrales 1\");\n    break;"
+  ],
+  "tools": [
+   {
+    "code": "switch (x) { case 1: ... break; }",
+    "kind": "skok do pasującego case",
+    "desc": "switch patrzy na wartość x i skacze do case z tą samą liczbą. Od tego miejsca wykonuje kod w dół, aż trafi na break.",
+    "ex": "int dzien = 2;\nswitch (dzien) {\n    case 1:\n        System.out.println(\"pon\");\n        break;\n    case 2:\n        System.out.println(\"wt\");\n        break;\n}\n// wt"
+   },
+   {
+    "code": "default:",
+    "kind": "gdy żaden case nie pasuje",
+    "desc": "Kod pod default wykona się, gdy wartość nie pasuje do żadnego case. Stoi zwykle na końcu switch, więc nie potrzebuje break.",
+    "ex": "int ocena = 9;\nswitch (ocena) {\n    case 5:\n        System.out.println(\"super\");\n        break;\n    default:\n        System.out.println(\"nie znam takiej oceny\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Gra wpisała 7. Gdzie skoczy switch?",
+    "options": [
+     "Do case 1",
+     "Do default",
+     "Nigdzie - program się wywróci"
+    ],
+    "answer": 1,
+    "why": "Żaden case nie ma 7, więc wykona się kod pod default."
+   },
+   {
+    "q": "Co robi break na końcu case?",
+    "options": [
+     "Kończy całą pętlę do-while",
+     "Wychodzi ze switch - następne case się nie wykonają",
+     "Kończy program"
+    ],
+    "answer": 1,
+    "why": "break w switch wychodzi tylko ze switch. Pętla jedzie dalej i wraca do menu."
+   }
+  ],
+  "lesson": "switch skacze do case z tą samą liczbą i jedzie w dół do break. default łapie wszystko inne."
+ },
+ {
+  "id": 4,
+  "title": "Błąd: brak break",
+  "ref": "Typowe błędy",
+  "goal": "W tym menu dwa case nie mają break. Gra wpisze 2, a potem 0. Uruchom i patrz na switch w animacji: program wpada z jednego case w następny. Dopisz brakujące break.",
+  "starter": "public static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Opcja pierwsza\");\n    System.out.println(\"[2] Opcja druga\");\n    System.out.println(\"[3] Opcja trzecia\");\n    System.out.println(\"[0] Wyjscie\");\n    System.out.print(\"Wybierz: \");\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"wybrales 1\");\n                break;\n            case 2:\n                System.out.println(\"wybrales 2\");\n            case 3:\n                System.out.println(\"wybrales 3\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "2\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 2\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\n2\n3\n7\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 1\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 2\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 3\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Nie ma takiej opcji.\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "3\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 3\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Każdy case kończy się break",
+    "re": "(?:^|[;{}:])\\s*(?!(?:break|return|continue|throw|case|default)\\b|System\\s*\\.\\s*exit\\b)[^;{}:\\s][^;{}:]*;\\s*(?:case\\b|default\\b)",
+    "want": false,
+    "msg": "Któryś case nie kończy się break; przed następnym case albo default - program wpadnie w kolejny case."
+   }
+  ],
+  "hints": [
+   "Uruchom kod startowy. Przy którym case animacja pokazuje „wpada dalej”?",
+   "Wybrałeś 2, a na ekranie jest też „wybrales 3”. Po 0 jest też „Nie ma takiej opcji.”. Których case brakuje break?",
+   "Ostatnia podpowiedź: dopisz break; pod System.out.println(\"wybrales 2\"); i pod System.out.println(\"Koniec programu.\");"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego - szukasz brakującego break.",
+  "quiz": [
+   {
+    "q": "case 2 nie ma break. Gra wpisuje 2. Co się wypisze?",
+    "options": [
+     "Tylko wybrales 2",
+     "wybrales 2, a potem wybrales 3",
+     "Nic"
+    ],
+    "answer": 1,
+    "why": "Bez break switch jedzie w dół i wykonuje też kod następnego case, aż trafi na break."
+   }
+  ],
+  "lesson": "Każdy case kończy się break. Bez niego program wpada w następny case."
+ },
+ {
+  "id": 5,
+  "title": "Imię BEZ lekarstwa",
+  "ref": "Ćwiczenie 2a. Imię BEZ lekarstwa (`R10_cw2a.java`)",
+  "goal": "Ćwiczenie 2a: dopisz case 1 - wypisz „Podaj imie: ” (print), przeczytaj imię przez skan.nextLine() i wypisz „Witaj, [imie]”. Nie dodawaj nic po nextInt(). Gra wpisze 1, Ala, 0. Program ma się wywrócić - patrz w animacji, kto zjada Enter i gdzie trafia Ala.",
+  "starter": "public static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Podaj imie\");\n    System.out.println(\"[0] Wyjscie\");\n    System.out.print(\"Wybierz: \");\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        // tu NIC nie dopisuj - na tym poziomie oglądasz błąd\n\n        switch (wybor) {\n            case 1:\n                // wypisz (print, bez Enter) \"Podaj imie: \",\n                // przeczytaj imie przez skan.nextLine() i wypisz \"Witaj, [\" + imie + \"]\"\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nAla\n0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Podaj imie: Witaj, []\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz:",
+    "calls": [
+     "menu"
+    ],
+    "exc": "java.util.InputMismatchException",
+    "exc_msg": "Na tym poziomie masz ZOBACZYĆ błąd: bez lekarstwa po nextInt() imię wychodzi puste, a potem Ala trafia do nextInt() i program pada z InputMismatchException. Jeśli dopisałeś skan.nextLine() zaraz po nextInt(), usuń je (to lekarstwo przyjdzie w następnym poziomie)."
+   },
+   {
+    "main": true,
+    "in": "1\n7\n0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Podaj imie: Witaj, []\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Nie ma takiej opcji.\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "hints": [
+   "W case 1 są trzy linijki: print z pytaniem, String imie = skan.nextLine(); i println z powitaniem.",
+   "Powitanie składasz z kawałków: \"Witaj, [\" + imie + \"]\".",
+   "Ostatnia podpowiedź: String imie = skan.nextLine();  - i nic nie dopisuj pod nextInt()."
+  ],
+  "tools": [],
+  "tools_note": "Wszystko znasz: print, nextLine() z rozdziału 7, switch. Nowe jest to, co zobaczysz w buforze.",
+  "quiz": [
+   {
+    "q": "Wpisano 1 i Enter. nextInt() wziął 1. Co zostało w buforze?",
+    "options": [
+     "Nic",
+     "Enter",
+     "Ala"
+    ],
+    "answer": 1,
+    "why": "nextInt() bierze same cyfry, więc Enter po 1 dalej leży w buforze."
+   },
+   {
+    "q": "Co oddało nextLine() w case 1?",
+    "options": [
+     "Ala",
+     "Pusty napis \"\" - zjadło zostawiony Enter",
+     "Liczbę 1"
+    ],
+    "answer": 1,
+    "why": "nextLine() czyta do końca linii. Koniec linii to ten zostawiony Enter, więc oddaje \"\" i nie czeka na Ciebie."
+   },
+   {
+    "q": "Skąd InputMismatchException?",
+    "options": [
+     "Ala trafiła do nextInt(), a to nie liczba",
+     "Bo imię było puste",
+     "Bo brakuje break"
+    ],
+    "answer": 0,
+    "why": "Ala czekała na swoją kolej, ale następne czytanie to nextInt() w menu. Tekstu nie da się zamienić na liczbę."
+   }
+  ],
+  "lesson": "nextLine() zaraz po nextInt() zwraca pusty napis, bo zjada Enter zostawiony po liczbie. A tekst, który miał być imieniem, trafia potem do nextInt()."
+ },
+ {
+  "id": 6,
+  "title": "Imię Z lekarstwem",
+  "ref": "Ćwiczenie 2b. Imię Z lekarstwem (`R10_cw2b.java`)",
+  "goal": "Ćwiczenie 2b: ten sam program, ale dopisz lekarstwo zaraz po nextInt(). Gra wpisze 1, Ala, 0. Teraz w animacji Enter znika z bufora od razu, a nextLine() czeka na Ala.",
+  "starter": "public static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Podaj imie\");\n    System.out.println(\"[0] Wyjscie\");\n    System.out.print(\"Wybierz: \");\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        // tu brakuje lekarstwa\n\n        switch (wybor) {\n            case 1:\n                System.out.print(\"Podaj imie: \");\n                String imie = skan.nextLine();\n                System.out.println(\"Witaj, [\" + imie + \"]\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nAla\n0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Podaj imie: Witaj, [Ala]\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\nJan Kowalski\n0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Podaj imie: Witaj, [Jan Kowalski]\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\nOla\n5\n1\nBo\n0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Podaj imie: Witaj, [Ola]\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Nie ma takiej opcji.\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Podaj imie: Witaj, [Bo]\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Po nextInt() stoi skan.nextLine(); (lekarstwo)",
+    "re": "\\.\\s*nextInt\\s*\\(\\s*\\)\\s*;\\s*\\w+\\s*\\.\\s*nextLine\\s*\\(\\s*\\)\\s*;",
+    "msg": "Zaraz po linijce z nextInt() ma stać osobna linijka skan.nextLine(); - ona zjada Enter, który został po liczbie."
+   }
+  ],
+  "hints": [
+   "Lekarstwo to jedna linijka, która zabiera z bufora Enter po liczbie.",
+   "Stoi zaraz pod wybor = skan.nextInt(); - jeszcze przed switch.",
+   "Ostatnia podpowiedź: skan.nextLine(); // zjada enter po liczbie"
+  ],
+  "tools": [
+   {
+    "code": "skan.nextLine(); // lekarstwo",
+    "kind": "zjada Enter po liczbie",
+    "desc": "Puste skan.nextLine(); zaraz po nextInt() zabiera z bufora Enter, który został po liczbie. Wynik wyrzucamy - chodzi tylko o to, żeby bufor był pusty.",
+    "ex": "int wiek = sc.nextInt();\nsc.nextLine();             // zjada Enter po liczbie\nString miasto = sc.nextLine(); // teraz naprawdę czeka na tekst"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Imię to „Jan Kowalski”. Czemu czytamy je przez nextLine(), a nie next()?",
+    "options": [
+     "next() czyta tylko do spacji, więc wziąłby samo Jan",
+     "next() nie istnieje",
+     "To bez różnicy"
+    ],
+    "answer": 0,
+    "why": "nextLine() bierze całą linię razem ze spacjami. next() kończy na pierwszej spacji."
+   }
+  ],
+  "lesson": "Zaraz po nextInt() jedno puste skan.nextLine(); zjada Enter. Potem nextLine() naprawdę czeka na tekst."
+ },
+ {
+  "id": 7,
+  "title": "Błąd: menu() wybiera",
+  "ref": "Typowe błędy",
+  "goal": "Ten program „przeskakuje” wybory: wpisujesz 1, a on mówi „wybrales 2”. Gra wpisze 1, 2, 0. Zobacz w animacji, kto czyta Twoje 1. Popraw menu(), żeby tylko wypisywało.",
+  "starter": "public static void menu(Scanner skan) {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Opcja pierwsza\");\n    System.out.println(\"[2] Opcja druga\");\n    System.out.println(\"[3] Opcja trzecia\");\n    System.out.println(\"[0] Wyjscie\");\n    System.out.print(\"Wybierz: \");\n    skan.nextInt();\n    skan.nextLine();\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    do {\n        menu(skan);\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"wybrales 1\");\n                break;\n            case 2:\n                System.out.println(\"wybrales 2\");\n                break;\n            case 3:\n                System.out.println(\"wybrales 3\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\n2\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 1\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 2\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "3\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 3\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "menu() tylko wypisuje, nic nie czyta",
+    "re": "static\\s+\\w+\\s+menu\\s*\\([^)]*\\)\\s*\\{[^}]*\\bnext\\w*\\s*\\(",
+    "want": false,
+    "msg": "W menu() stoi czytanie z klawiatury (next...). menu() ma tylko wypisać opcje - numer czyta main."
+   }
+  ],
+  "hints": [
+   "W animacji patrz, w której ramce (main czy menu) stoi nextInt(), który bierze 1.",
+   "Liczba przeczytana w menu() nie trafia do żadnej zmiennej - przepada. Czyta ją tylko main.",
+   "Ostatnia podpowiedź: usuń z menu() linijki skan.nextInt(); i skan.nextLine();. Możesz też wrócić do menu() bez parametru."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego - menu() ma tylko wypisywać.",
+  "quiz": [
+   {
+    "q": "Co robi menu() w dobrym programie?",
+    "options": [
+     "Wypisuje opcje i czyta numer",
+     "Tylko wypisuje opcje",
+     "Wybiera opcję za użytkownika"
+    ],
+    "answer": 1,
+    "why": "menu() tylko wypisuje. Numer czyta main przez skan.nextInt()."
+   }
+  ],
+  "lesson": "menu() tylko wypisuje. Gdy czyta też menu(), każdy wybór jest czytany dwa razy i połowa przepada."
+ },
+ {
+  "id": 8,
+  "title": "Błąd: = w warunku pętli",
+  "ref": "Typowe błędy",
+  "goal": "Ten kod się nie kompiluje. Gra wpisze 3, a potem 0. Przeczytaj błąd i popraw warunek pętli, żeby menu wracało, dopóki wybór nie jest zerem.",
+  "starter": "public static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Opcja pierwsza\");\n    System.out.println(\"[2] Opcja druga\");\n    System.out.println(\"[3] Opcja trzecia\");\n    System.out.println(\"[0] Wyjscie\");\n    System.out.print(\"Wybierz: \");\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"wybrales 1\");\n                break;\n            case 2:\n                System.out.println(\"wybrales 2\");\n                break;\n            case 3:\n                System.out.println(\"wybrales 3\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor = 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "3\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 3\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\n0\n",
+    "out": "=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: wybrales 1\n=== MENU ===\n[1] Opcja pierwsza\n[2] Opcja druga\n[3] Opcja trzecia\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Pętla kończy się na wybor != 0",
+    "re": "\\}\\s*while\\s*\\(\\s*wybor\\s*!=\\s*0\\s*\\)\\s*;",
+    "msg": "Pętla ma się kończyć linijką } while (wybor != 0); (zmienna z wyborem nazywa się wybor)."
+   }
+  ],
+  "hints": [
+   "Kliknij Uruchom i przeczytaj, w której linii jest błąd.",
+   "= wpisuje liczbę do zmiennej. Do porównania są == i !=.",
+   "Ostatnia podpowiedź: } while (wybor != 0);"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego - = to wpisanie, != to porównanie.",
+  "quiz": [
+   {
+    "q": "Co się stanie, gdy po do { ... } zabraknie linijki while (...);?",
+    "options": [
+     "Pętla zrobi się raz",
+     "Błąd kompilacji: while expected",
+     "Pętla bez końca"
+    ],
+    "answer": 1,
+    "why": "do bez while to nie jest pełna pętla. Kompilator czeka na while (warunek); po klamrze."
+   },
+   {
+    "q": "Warunek while (wybor == 0); - gra wpisuje 3. Co się stanie?",
+    "options": [
+     "Menu wróci",
+     "Pętla skończy się po pierwszym razie, bo 3 == 0 to false",
+     "Błąd kompilacji"
+    ],
+    "answer": 1,
+    "why": "Pętla wraca tylko przy true. 3 == 0 daje false, więc program kończy się od razu."
+   }
+  ],
+  "lesson": "W warunku pętli porównujesz: while (wybor != 0);. Samo = to wpisanie i się nie skompiluje."
+ },
+ {
+  "id": 9,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "goal": "Z pamięci napisz całe menu: metoda menu() z opcjami [1] Podaj imie i [0] Wyjscie (na końcu „Wybierz: ”), a w main do-while z menu(), nextInt(), lekarstwem i switch: case 1 pyta o imię i wita „Witaj, [imie]”, case 0 kończy („Koniec programu.”), default „Nie ma takiej opcji.”. Podpowiedzi są tu tylko słowami.",
+  "starter": "// Sprawdzian: z pamieci napisz menu() i main z petla do-while, nextInt(), lekarstwem i switch.\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nAla\n0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Podaj imie: Witaj, [Ala]\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "4\n1\nAla Nowak\n0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Nie ma takiej opcji.\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Podaj imie: Witaj, [Ala Nowak]\n=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "0\n",
+    "out": "=== MENU ===\n[1] Podaj imie\n[0] Wyjscie\nWybierz: Koniec programu.",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "menu() tylko wypisuje, nic nie czyta",
+    "re": "static\\s+\\w+\\s+menu\\s*\\([^)]*\\)\\s*\\{[^}]*\\bnext\\w*\\s*\\(",
+    "want": false,
+    "msg": "W menu() stoi czytanie z klawiatury (next...). menu() ma tylko wypisać opcje - numer czyta main."
+   },
+   {
+    "label": "Po nextInt() stoi skan.nextLine(); (lekarstwo)",
+    "re": "\\.\\s*nextInt\\s*\\(\\s*\\)\\s*;\\s*\\w+\\s*\\.\\s*nextLine\\s*\\(\\s*\\)\\s*;",
+    "msg": "Zaraz po linijce z nextInt() ma stać osobna linijka skan.nextLine(); - ona zjada Enter, który został po liczbie."
+   },
+   {
+    "label": "Każdy case kończy się break",
+    "re": "(?:^|[;{}:])\\s*(?!(?:break|return|continue|throw|case|default)\\b|System\\s*\\.\\s*exit\\b)[^;{}:\\s][^;{}:]*;\\s*(?:case\\b|default\\b)",
+    "want": false,
+    "msg": "Któryś case nie kończy się break; przed następnym case albo default - program wpadnie w kolejny case."
+   },
+   {
+    "label": "Jest default",
+    "re": "\\bdefault\\s*(?::|->)",
+    "msg": "Brakuje default: - co program ma zrobić z numerem, którego nie ma w menu?"
+   },
+   {
+    "label": "Pętla kończy się na wybor != 0",
+    "re": "\\}\\s*while\\s*\\(\\s*wybor\\s*!=\\s*0\\s*\\)\\s*;",
+    "msg": "Pętla ma się kończyć linijką } while (wybor != 0); (zmienna z wyborem nazywa się wybor)."
+   }
+  ],
+  "hints": [
+   "Zacznij od menu(): trzy println i jedno print.",
+   "W main: Scanner, int wybor, do { menu(); czytanie; lekarstwo; switch } while (...);.",
+   "Ostatnia podpowiedź (bez kodu, to sprawdzian): case 1 ma print z pytaniem, nextLine() do zmiennej i println z powitaniem, a na końcu break."
+  ],
+  "tools": [],
+  "tools_note": "Wszystko już znasz: do-while, nextInt(), lekarstwo, switch, break, default.",
+  "quiz": [
+   {
+    "q": "Powiedz na głos: dlaczego nextLine() zaraz po nextInt() zwraca pusty napis?",
+    "options": [
+     "Bo nextInt() zostawia Enter w buforze, a nextLine() czyta do końca linii, czyli do tego Entera",
+     "Bo Scanner się psuje po liczbie",
+     "Bo trzeba zamknąć Scanner"
+    ],
+    "answer": 0,
+    "why": "nextInt() bierze same cyfry. nextLine() czyta do Entera - a Enter już tam czeka, więc oddaje \"\"."
+   },
+   {
+    "q": "Gdzie stoi lekarstwo skan.nextLine();?",
+    "options": [
+     "W menu()",
+     "Zaraz po wybor = skan.nextInt();",
+     "Na samym końcu programu"
+    ],
+    "answer": 1,
+    "why": "Musi zjeść Enter od razu po liczbie, zanim cokolwiek przeczyta tekst."
+   }
+  ],
+  "lesson": "Szkielet menu: do { menu(); wybor = skan.nextInt(); skan.nextLine(); switch (wybor) { ... } } while (wybor != 0);"
+ }
+]

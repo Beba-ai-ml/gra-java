@@ -1,0 +1,651 @@
+[
+ {
+  "id": 1,
+  "title": "Dwie kartki z napisem Ala",
+  "ref": "Ćwiczenie 1 (plik `R7_cw1.java`)",
+  "goal": "Program wczytuje dwa słowa przez nextLine() i porównuje je dwa razy: przez == i przez equals. Gra wpisze w konsoli za Ciebie dwa razy to samo słowo: Ala, potem Ala. Wypisz wyniki obu porównań i zobacz w animacji, czemu == mówi false, choć słowa są takie same.",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    System.out.println(\"Podaj pierwsze slowo:\");\n    String a = skan.nextLine();\n    // 1. wypisz \"Podaj drugie slowo:\" i wczytaj drugie slowo do zmiennej b\n\n    // 2. wypisz \"==: \" i wynik porownania a == b\n    // 3. wypisz \"equals: \" i wynik a.equals(b)\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "Ala\nAla\n",
+    "out": "Podaj pierwsze slowo:\nPodaj drugie slowo:\n==: false\nequals: true",
+    "uses": [
+     "==",
+     "equals"
+    ]
+   },
+   {
+    "main": true,
+    "in": "kot\npies\n",
+    "out": "Podaj pierwsze slowo:\nPodaj drugie slowo:\n==: false\nequals: false",
+    "uses": [
+     "==",
+     "equals"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Ola\nola\n",
+    "out": "Podaj pierwsze slowo:\nPodaj drugie slowo:\n==: false\nequals: false",
+    "uses": [
+     "==",
+     "equals"
+    ]
+   }
+  ],
+  "hints": [
+   "Drugie słowo wczytujesz tak samo jak pierwsze: najpierw wypisz pytanie, potem wczytaj linijkę do nowej zmiennej b.",
+   "Porównanie a == b weź w nawias, zanim doklejasz je do tekstu. Bez nawiasu Java najpierw sklei tekst z a, a dopiero potem porówna to z b.",
+   "Ostatnia podpowiedź: System.out.println(\"==: \" + (a == b)); i pod spodem System.out.println(\"equals: \" + a.equals(b));"
+  ],
+  "tools": [
+   {
+    "code": "Scanner + nextLine()",
+    "kind": "wczytaj linijkę z klawiatury",
+    "desc": "Scanner czyta to, co ktoś wpisuje w konsoli. nextLine() czeka na całą linijkę i oddaje ją jako tekst (String). Tutaj gra wpisuje słowa za Ciebie. W IntelliJ potrzebujesz jeszcze import java.util.Scanner; nad klasą - tu gra dopisuje go sama.",
+    "ex": "Scanner skan = new Scanner(System.in);\nSystem.out.println(\"Jak masz na imie?\");\nString imie = skan.nextLine();   // wpisujesz: Kuba\nSystem.out.println(\"Hej \" + imie); // na ekranie: Hej Kuba"
+   },
+   {
+    "code": "a == b (na tekstach)",
+    "kind": "czy to ta sama kartka?",
+    "desc": "Dla tekstów == NIE porównuje liter. Pyta, czy a i b to ta sama kartka w pamięci. Dwa teksty wczytane z klawiatury to dwie różne kartki, nawet z tym samym napisem.",
+    "ex": "String x = \"kot\";\nString y = x;           // y wskazuje TĘ SAMĄ kartkę co x\nSystem.out.println(x == y);   // true"
+   },
+   {
+    "code": "a.equals(b)",
+    "kind": "czy napis jest taki sam?",
+    "desc": "equals porównuje litery: czy oba teksty mają te same litery w tej samej kolejności. Wielkość liter ma znaczenie. Oddaje true albo false. To jest porównanie, którego zwykle potrzebujesz.",
+    "ex": "String haslo = \"tajne\";\nSystem.out.println(haslo.equals(\"tajne\"));  // true\nSystem.out.println(haslo.equals(\"Tajne\"));  // false"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "String a = \"ala\"; String b = \"ala\"; (oba napisy wpisane w kodzie). Co wypisze System.out.println(a == b);?",
+    "options": [
+     "true",
+     "false",
+     "błąd kompilacji"
+    ],
+    "answer": 0,
+    "why": "Dla napisów wpisanych w kodzie Java trzyma jeden egzemplarz, więc a i b wskazują tę samą kartkę. Ale nie polegaj na tym - po nextLine() to już dwie kartki."
+   },
+   {
+    "q": "Czego używasz, żeby sprawdzić, czy dwa teksty mają te same litery?",
+    "options": [
+     "==",
+     "equals",
+     "obojętne, działają tak samo"
+    ],
+    "answer": 1,
+    "why": "equals porównuje napis. == porównuje kartki i po nextLine() prawie zawsze daje false."
+   }
+  ],
+  "lesson": "== pyta, czy to ta sama kartka. equals pyta, czy napis jest taki sam. Do tekstów zawsze equals."
+ },
+ {
+  "id": 2,
+  "title": "Kto pierwszy w kolejce?",
+  "ref": "Ćwiczenie 2 (plik `R7_cw2.java`)",
+  "goal": "Najpierw odpowiedz na pytania pod spodem: przewidź znak wyniku compareTo. Potem napisz metodę void pokaz(String a, String b), która wypisuje jedną linijkę: a + \" i \" + b + \": \" + wynik a.compareTo(b). W main wywołaj pokaz dla par: Adam i Zosia, Zosia i Adam, Ola i ola, Ola i Olaf, Ola i Ola.",
+  "starter": "public static void pokaz(String a, String b) {\n    // wypisz: a i b: wynik compareTo\n\n}\n\npublic static void main(String[] args) {\n    pokaz(\"Adam\", \"Zosia\");\n    // dopisz pozostale cztery pary\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Adam i Zosia: -25\nZosia i Adam: 25\nOla i ola: -32\nOla i Olaf: -1\nOla i Ola: 0",
+    "calls": [
+     "pokaz"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   },
+   {
+    "call": "pokaz",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Zupa",
+     "bank"
+    ],
+    "out": "Zupa i bank: -8"
+   },
+   {
+    "call": "pokaz",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kot",
+     "kotek"
+    ],
+    "out": "kot i kotek: -2"
+   },
+   {
+    "call": "pokaz",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ewa",
+     "Adam"
+    ],
+    "out": "Ewa i Adam: 4"
+   }
+  ],
+  "hints": [
+   "W metodzie jest jedna linijka wypisywania. Doklejasz po kolei: a, potem słówko i, potem b, potem dwukropek, a na końcu wynik porównania.",
+   "Wynik porównania to liczba. Możesz ją dokleić do tekstu jak każdą inną liczbę.",
+   "Ostatnia podpowiedź: System.out.println(a + \" i \" + b + \": \" + a.compareTo(b));"
+  ],
+  "roles": {
+   "a": "pierwszy tekst",
+   "b": "drugi tekst"
+  },
+  "tools": [
+   {
+    "code": "a.compareTo(b)",
+    "kind": "kto jest wcześniej?",
+    "desc": "Java idzie po literach od lewej. Pierwsza różna litera rozstrzyga, a wynik to różnica kodów tych liter. Ujemny: a jest przed b. Zero: identyczne. Dodatni: a jest po b. Gdy jeden tekst jest początkiem drugiego, wynik to różnica długości.",
+    "ex": "System.out.println(\"bank\".compareTo(\"zupa\"));  // -24, bo 'b' = 98, 'z' = 122\nSystem.out.println(\"kot\".compareTo(\"kot\"));    // 0"
+   },
+   {
+    "code": "kody liter",
+    "kind": "A = 65, a = 97",
+    "desc": "Każda litera ma swój kod (numer). Wielkie litery A-Z mają mniejsze kody niż małe: A = 65 ... Z = 90, a = 97 ... z = 122. Dlatego słowo zaczynające się od wielkiej litery A-Z jest przed słowem z małej. Polskie litery (ą, ę, Ł, Ś...) mają kody większe niż 122, więc idą nawet za małym z.",
+    "ex": "System.out.println((int) 'Z');  // 90\nSystem.out.println((int) 'b');  // 98"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Przewidź: \"Adam\".compareTo(\"Zosia\") jest...",
+    "options": [
+     "ujemne",
+     "zero",
+     "dodatnie"
+    ],
+    "answer": 0,
+    "why": "'A' = 65, 'Z' = 90. 65 - 90 = -25, ujemne: Adam jest przed Zosią."
+   },
+   {
+    "q": "Przewidź: \"Ola\".compareTo(\"ola\") jest...",
+    "options": [
+     "ujemne",
+     "zero",
+     "dodatnie"
+    ],
+    "answer": 0,
+    "why": "'O' = 79, 'o' = 111. 79 - 111 = -32. Wielka litera ma mniejszy kod, więc Ola jest przed ola."
+   },
+   {
+    "q": "Przewidź: \"Ola\".compareTo(\"Olaf\") jest...",
+    "options": [
+     "ujemne",
+     "zero",
+     "dodatnie"
+    ],
+    "answer": 0,
+    "why": "Cały Ola jest taki sam jak początek Olaf. Krótszy tekst jest wcześniej: 3 - 4 = -1."
+   }
+  ],
+  "lesson": "compareTo idzie po literach od lewej, rozstrzyga pierwsza różnica. Wynik to różnica kodów - liczy się znak: ujemny, zero, dodatni."
+ },
+ {
+  "id": 3,
+  "title": "Błąd: == na tekstach",
+  "ref": "Typowe błędy",
+  "goal": "Ten program wita Olę, ale nigdy jej nie rozpoznaje. Gra wpisze w konsoli Ola, a program i tak mówi „Nie znam cie.”. Zobacz w animacji, co naprawdę porównuje ==, i popraw metodę czyOla, żeby porównywała napis.",
+  "starter": "public static boolean czyOla(String imie) {\n    return imie == \"Ola\";\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    System.out.println(\"Jak masz na imie?\");\n    String imie = skan.nextLine();\n    if (czyOla(imie)) {\n        System.out.println(\"Czesc, Ola!\");\n    } else {\n        System.out.println(\"Nie znam cie.\");\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "Ola\n",
+    "out": "Jak masz na imie?\nCzesc, Ola!",
+    "calls": [
+     "czyOla"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Kuba\n",
+    "out": "Jak masz na imie?\nNie znam cie.",
+    "calls": [
+     "czyOla"
+    ]
+   },
+   {
+    "call": "czyOla",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "Ola"
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "czyOla",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "ola"
+    ],
+    "ret": "false"
+   },
+   {
+    "call": "czyOla",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "Olaf"
+    ],
+    "ret": "false"
+   }
+  ],
+  "hints": [
+   "Uruchom kod startowy i popatrz na kartki w animacji. Napis jest ten sam, ale kartki są dwie.",
+   "== pyta o kartkę. Ty chcesz zapytać o napis - do tego jest equals.",
+   "Ostatnia podpowiedź: return imie.equals(\"Ola\");"
+  ],
+  "tools": [
+   {
+    "code": "boolean (typ wyniku)",
+    "kind": "metoda oddaje tak/nie",
+    "desc": "Metoda boolean oddaje true albo false. Takie wywołanie możesz od razu wstawić do if.",
+    "ex": "public static boolean czyDuza(int x) {\n    return x > 100;\n}\n// if (czyDuza(500)) { ... }  wchodzi, bo true"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Imię wczytane przez nextLine() to Ola. Co da imie == \"Ola\"?",
+    "options": [
+     "true, bo litery są te same",
+     "zwykle false, bo to dwie różne kartki",
+     "błąd kompilacji"
+    ],
+    "answer": 1,
+    "why": "Tekst z klawiatury to nowa kartka. == porównuje kartki, nie litery, więc daje false."
+   }
+  ],
+  "lesson": "Po nextLine() == prawie zawsze daje false. Pisz imie.equals(\"Ola\")."
+ },
+ {
+  "id": 4,
+  "title": "Błąd: czekasz na 1",
+  "ref": "Typowe błędy",
+  "goal": "Metoda czyPo(a, b) ma oddać true, gdy a jest PO b w kolejności. Ktoś napisał compareTo(...) == 1. Dla \"abd\" i \"abc\" działa, ale dla \"bank\" i \"Zupa\" już nie. Zobacz w animacji, jaką liczbę naprawdę oddaje compareTo, i popraw warunek.",
+  "starter": "public static boolean czyPo(String a, String b) {\n    return a.compareTo(b) == 1;\n}\n\npublic static void main(String[] args) {\n    System.out.println(czyPo(\"abd\", \"abc\"));\n    System.out.println(czyPo(\"bank\", \"Zupa\"));\n    System.out.println(czyPo(\"Ala\", \"ala\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "true\ntrue\nfalse",
+    "calls": [
+     "czyPo"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   },
+   {
+    "call": "czyPo",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "zupa",
+     "bank"
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "czyPo",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kotek",
+     "kot"
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "czyPo",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kot",
+     "kot"
+    ],
+    "ret": "false"
+   },
+   {
+    "call": "czyPo",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     "abd"
+    ],
+    "ret": "false"
+   }
+  ],
+  "hints": [
+   "Uruchom kod startowy. W animacji widać: \"bank\" i \"Zupa\" dają 8, nie 1. Dalej jest PO, ale == 1 tego nie łapie.",
+   "Nie sprawdzaj konkretnej liczby. Sprawdź tylko znak: czy wynik jest większy od zera.",
+   "Ostatnia podpowiedź: return a.compareTo(b) > 0;"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Ważna myśl: compareTo oddaje różnicę kodów (np. 8 albo -24), a nie tylko -1, 0, 1. Sprawdzaj znak: < 0, == 0, > 0.",
+  "quiz": [
+   {
+    "q": "Ile oddaje \"bank\".compareTo(\"Zupa\")?",
+    "options": [
+     "1",
+     "8",
+     "-8"
+    ],
+    "answer": 1,
+    "why": "'b' = 98, 'Z' = 90. 98 - 90 = 8. Dodatnie, więc bank jest PO Zupa."
+   }
+  ],
+  "lesson": "Nie czekaj na -1 albo 1. Sprawdzaj znak wyniku: > 0 znaczy „po”."
+ },
+ {
+  "id": 5,
+  "title": "Błąd: odwrócony znak",
+  "ref": "Typowe błędy",
+  "goal": "Metoda pierwsze(a, b) ma ODDAĆ ten tekst, który jest wcześniej w kolejności. Ktoś pomylił znak i metoda oddaje ten późniejszy. Popraw ją. Uwaga na \"bank\" i \"Zupa\": wcześniej jest Zupa, bo wielkie litery mają mniejsze kody.",
+  "starter": "public static String pierwsze(String a, String b) {\n    if (a.compareTo(b) > 0) {\n        return a;\n    }\n    return b;\n}\n\npublic static void main(String[] args) {\n    System.out.println(pierwsze(\"Ola\", \"Adam\"));\n    System.out.println(pierwsze(\"bank\", \"Zupa\"));\n    System.out.println(pierwsze(\"kot\", \"kotek\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Adam\nZupa\nkot",
+    "calls": [
+     "pierwsze"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   },
+   {
+    "call": "pierwsze",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Adam",
+     "Ewa"
+    ],
+    "ret": "Adam"
+   },
+   {
+    "call": "pierwsze",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ala",
+     "Ala"
+    ],
+    "ret": "Ala"
+   },
+   {
+    "call": "pierwsze",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ola",
+     "Ola"
+    ],
+    "ret": "Ola"
+   }
+  ],
+  "hints": [
+   "Większy od zera wynik znaczy: a jest PO b. Wtedy metoda oddaje a - czyli ten późniejszy. Ma być na odwrót.",
+   "Zostaw samo porównanie, zmień tylko znak w warunku, tak żeby a było oddawane, gdy jest PRZED b.",
+   "Ostatnia podpowiedź: if (a.compareTo(b) < 0) { return a; }"
+  ],
+  "tools": [
+   {
+    "code": "String (typ wyniku)",
+    "kind": "metoda oddaje tekst",
+    "desc": "Metoda może oddawać tekst. W nagłówku zamiast int piszesz String, a return oddaje napis.",
+    "ex": "public static String powitanie(String imie) {\n    return \"Hej \" + imie;\n}\n// powitanie(\"Kuba\") oddaje \"Hej Kuba\""
+   }
+  ],
+  "quiz": [
+   {
+    "q": "a.compareTo(b) > 0. Co to znaczy?",
+    "options": [
+     "a jest PRZED b",
+     "a jest PO b",
+     "a i b są takie same"
+    ],
+    "answer": 1,
+    "why": "Dodatni wynik znaczy, że a jest później w kolejności, czyli PO b."
+   }
+  ],
+  "lesson": "a.compareTo(b) < 0 znaczy „a przed b”, > 0 znaczy „a po b”. Łatwo odwrócić - sprawdź na przykładzie."
+ },
+ {
+  "id": 6,
+  "title": "Przed, po czy takie same?",
+  "ref": "compareTo: co znaczy wynik",
+  "goal": "Napisz metodę void opisz(String a, String b), która wypisuje jedno z trzech: „a jest przed b”, „a jest po b” albo „a i b to ten sam tekst” (z prawdziwymi słowami zamiast a i b). Użyj znaku wyniku compareTo. W main wywołaj opisz(\"Ola\", \"ola\"), opisz(\"zupa\", \"bank\") i opisz(\"kot\", \"kot\").",
+  "starter": "public static void opisz(String a, String b) {\n    // przed, po czy ten sam tekst?\n\n}\n\npublic static void main(String[] args) {\n    opisz(\"Ola\", \"ola\");\n    opisz(\"zupa\", \"bank\");\n    opisz(\"kot\", \"kot\");\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ola jest przed ola\nzupa jest po bank\nkot i kot to ten sam tekst",
+    "calls": [
+     "opisz"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   },
+   {
+    "call": "opisz",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Zupa",
+     "bank"
+    ],
+    "out": "Zupa jest przed bank"
+   },
+   {
+    "call": "opisz",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ewa",
+     "Adam"
+    ],
+    "out": "Ewa jest po Adam"
+   },
+   {
+    "call": "opisz",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kotek",
+     "kot"
+    ],
+    "out": "kotek jest po kot"
+   },
+   {
+    "call": "opisz",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ala",
+     "Ala"
+    ],
+    "out": "Ala i Ala to ten sam tekst"
+   }
+  ],
+  "hints": [
+   "Potrzebujesz trzech dróg: if, else if, else. Każda wypisuje jedną linijkę.",
+   "Pierwsza droga: wynik ujemny (a przed b). Druga: wynik dodatni (a po b). Zostaje zero - ten sam tekst.",
+   "Ostatnia podpowiedź: if (a.compareTo(b) < 0) { System.out.println(a + \" jest przed \" + b); } else if (a.compareTo(b) > 0) { ... } else { ... }"
+  ],
+  "tools": [
+   {
+    "code": "if (a.compareTo(b) < 0)",
+    "kind": "używaj znaku wyniku",
+    "desc": "Wynik compareTo porównujesz z zerem: < 0 przed, == 0 takie same, > 0 po. Nie porównuj z -1 albo 1.",
+    "ex": "int w = \"abc\".compareTo(\"abd\");\nif (w < 0) {\n    System.out.println(\"abc pierwsze\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co da \"Ola\".equals(\"ola\")?",
+    "options": [
+     "true",
+     "false"
+    ],
+    "answer": 1,
+    "why": "Wielkość liter ma znaczenie. 'O' i 'o' to różne litery z różnymi kodami (79 i 111), więc dla equals i dla compareTo to różne teksty."
+   }
+  ],
+  "lesson": "Wynik compareTo porównuj z zerem: < 0 przed, == 0 ten sam tekst, > 0 po. Wielkie i małe litery to różne litery."
+ },
+ {
+  "id": 7,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "goal": "Sam: napisz metodę boolean czyPrzed(String a, String b), która oddaje true, gdy a jest przed b w kolejności. W main wypisz czyPrzed(\"Zupa\", \"bank\") i czyPrzed(\"bank\", \"Zupa\"). Podpowiedzi są tu tylko słowami. Potem odpowiedz na pytania - to te same, które zada prowadzący.",
+  "starter": "// napisz metode czyPrzed(String a, String b) i main\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "true\nfalse",
+    "calls": [
+     "czyPrzed"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   },
+   {
+    "call": "czyPrzed",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "bank",
+     "zupa"
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "czyPrzed",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ala",
+     "ala"
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "czyPrzed",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kot",
+     "kotek"
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "czyPrzed",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kot",
+     "kot"
+    ],
+    "ret": "false"
+   },
+   {
+    "call": "czyPrzed",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "zupa",
+     "bank"
+    ],
+    "ret": "false"
+   }
+  ],
+  "hints": [
+   "Metoda boolean ma jedną linijkę z return. Oddajesz wynik porównania.",
+   "Przed znaczy: wynik compareTo jest ujemny. Porównaj go z zerem.",
+   "Ostatnia podpowiedź (bez kodu, to sprawdzian): w return porównaj wynik a.compareTo(b) z zerem tak, żeby ujemny dawał true."
+  ],
+  "tools": [],
+  "tools_note": "Wszystko już znasz: compareTo, znak wyniku, metoda boolean.",
+  "quiz": [
+   {
+    "q": "Czemu \"Zupa\" jest przed \"bank\"?",
+    "options": [
+     "Bo Z jest w alfabecie przed b",
+     "Bo Java porównuje pierwsze różne litery po kodach: 'Z' = 90, a 'b' = 98, i 90 < 98",
+     "Bo Zupa jest dłuższa"
+    ],
+    "answer": 1,
+    "why": "Java idzie po literach od lewej i rozstrzyga pierwsza różnica. Wielkie litery mają mniejsze kody niż małe, więc Z (90) wygrywa z b (98)."
+   },
+   {
+    "q": "Która linijka dobrze sprawdza, czy imię a jest przed imieniem b?",
+    "options": [
+     "if (a.compareTo(b) == -1)",
+     "if (a.compareTo(b) < 0)",
+     "if (a < b)",
+     "if (a == b)"
+    ],
+    "answer": 1,
+    "why": "Sprawdzasz znak wyniku. == -1 nie złapie np. -8. Tekstów nie porównasz przez < ani ==."
+   }
+  ],
+  "lesson": "Do tekstów: equals (czy ten sam napis) i compareTo (kto pierwszy, sprawdzaj znak). Nigdy == i nigdy == -1."
+ }
+]

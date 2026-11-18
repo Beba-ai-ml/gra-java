@@ -1,0 +1,1592 @@
+[
+ {
+  "id": 1,
+  "title": "Dwie listy, jedna notatka",
+  "ref": "1. Czemu dwie listy, a nie jedna?",
+  "goal": "To cały Twój projekt. Prowadzący pyta: czemu dwie listy, a nie jedna? Zanim odpowiesz, napraw błąd, który ktoś wkleił do sortujBabelkowo: zamienia tylko tytuły. Gra wpisze za Ciebie: trzy notatki (Zeta z1, Alfa a1, Beta b1), potem 4 (sortuj), 2 (wyświetl), 0. Patrz na dwie półki pod kodem: kolor pudełka to jedna notatka. Gdy po sortowaniu pod jednym numerem stoją dwa różne kolory, notatka się rozjechała.",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    int szyfr = 3;\n    int wybor;\n\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                sortujBabelkowo(tytuly, tresci);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n\npublic static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i).equals(szukam)) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n            }\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nZeta\nz1\n1\nAlfa\na1\n1\nBeta\nb1\n4\n2\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPosortowano notatki po tytule.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Alfa | Tresc: a1\n[1] Tytul: Beta | Tresc: b1\n[2] Tytul: Zeta | Tresc: z1\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "sortujBabelkowo",
+     "wyswietl"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Ala",
+      "Ola"
+     ],
+     [
+      "k",
+      "a",
+      "o"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ala",
+      "Kot",
+      "Ola"
+     ],
+     [
+      "a",
+      "k",
+      "o"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Ola",
+      "Ala"
+     ],
+     [
+      "o1",
+      "o2",
+      "a"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ala",
+      "Ola",
+      "Ola"
+     ],
+     [
+      "a",
+      "o1",
+      "o2"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ala"
+     ],
+     [
+      "a"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ala"
+     ],
+     [
+      "a"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   }
+  ],
+  "hints": [
+   "Popatrz na if w sortujBabelkowo. Zamiana tytułów ma trzy linijki: tmp, set, set. Co z treściami pod tymi samymi numerami j - 1 i j?",
+   "Treści muszą pojechać razem z tytułami: te same numery, ta sama chwila, w tym samym if. Do tego drugi schowek, np. tmp2.",
+   "Ostatnia podpowiedź - pod zamianą tytułów dopisz:\nString tmp2 = tresci.get(j - 1);\ntresci.set(j - 1, tresci.get(j));\ntresci.set(j, tmp2);"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "dwie listy w main",
+    "re": "ArrayList<String>\\s+tresci\\s*=\\s*new"
+   },
+   {
+    "label": "zamiana tytułów",
+    "re": "tytuly\\.set\\(\\s*j\\s*-\\s*1"
+   },
+   {
+    "label": "zamiana treści (zaraz pod nią)",
+    "re": "tresci\\.set\\(\\s*j\\s*-\\s*1"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Prowadzący: „Czemu dwie listy, a nie jedna?”. Która odpowiedź jest najlepsza?",
+    "options": [
+     "Bo dwie listy są szybsze niż jedna.",
+     "Projekt wymaga osobno tytułu i treści. Ten sam numer w obu listach to jedna notatka, a przy sortowaniu zamieniam obie listy razem.",
+     "Bo ArrayList mieści tylko jeden tekst na pozycję, więc potrzeba drugiej listy na zapas."
+    ],
+    "answer": 1,
+    "why": "Odpowiedź z karty: wymaganie projektu + ten sam numer = jedna notatka + zamiana w obu listach. Potem pokazujesz deklaracje w main i dwie zamiany w sortujBabelkowo."
+   },
+   {
+    "q": "Co się stanie, jeśli w sortowaniu zamienisz tylko tytuly?",
+    "options": [
+     "Nic, treści same się dopasują.",
+     "Treści zostaną na starych miejscach i każda notatka dostanie cudzą treść.",
+     "Program się wywróci z błędem."
+    ],
+    "answer": 1,
+    "why": "Program działa dalej, ale pary się rozjeżdżają: np. Alfa dostaje treść z1. Dokładnie to pokazały kolory pudełek przed naprawą."
+   }
+  ],
+  "lesson": "Jeden numer w obu listach = jedna notatka. Każdy ruch (add, zamiana) robisz na OBU listach naraz."
+ },
+ {
+  "id": 2,
+  "title": "Gdzie jest szyfr?",
+  "ref": "2. Pokaż, gdzie treść jest szyfrowana, a gdzie odszyfrowana. Czy w liście jest jawny tekst?",
+  "goal": "Prowadzący pyta: gdzie treść jest szyfrowana, a gdzie odszyfrowana? Czy w liście leży jawny tekst? W tym kodzie leży: case 1 dokłada treść bez szyfru, a wyswietl ją „odszyfrowuje”, więc na ekranie wychodzi bełkot. Napraw case 1, żeby do listy tresci trafiała wersja zaszyfrowana. Gra wpisze: 1, Haslo WiFi, kot123, 2, 0. Patrz na półkę tresci: ma tam leżeć nrw123, nie kot123.",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    int szyfr = 3;\n    int wybor;\n\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(tresc);\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                sortujBabelkowo(tytuly, tresci);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n\npublic static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i).equals(szukam)) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n\n                String tmp2 = tresci.get(j - 1);\n                tresci.set(j - 1, tresci.get(j));\n                tresci.set(j, tmp2);\n            }\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n2\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Haslo WiFi | Tresc: kot123\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\nPIN\nAla 7\n1\nZoo\nxyz\n2\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: PIN | Tresc: Ala 7\n[1] Tytul: Zoo | Tresc: xyz\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "szyfruj",
+     "deszyfruj"
+    ]
+   },
+   {
+    "call": "wyswietl",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int"
+    ],
+    "args": [
+     [
+      "Kot"
+     ],
+     [
+      "Dod"
+     ],
+     3
+    ],
+    "out": "[0] Tytul: Kot | Tresc: Ala"
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "case 1 woła szyfruj",
+    "re": "szyfruj\\(\\s*tresc\\b",
+    "msg": "Zaszyfruj wpisaną treść przed dodaniem: szyfruj(tresc, szyfr)."
+   }
+  ],
+  "hints": [
+   "Szukaj w case 1 linijki, która dokłada coś do tresci. Co tam dokładasz: tekst wpisany z klawiatury czy jego zaszyfrowaną wersję?",
+   "Nie zmieniaj wyswietl - ona ma odszyfrowywać. Zmień to, CO wkładasz do listy: najpierw szyfruj, potem add.",
+   "Ostatnia podpowiedź: tresci.add(szyfruj(tresc, szyfr));"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "szyfrowanie tuż przed add (case 1)",
+    "re": "tresci\\.add\\(\\s*szyfruj\\("
+   },
+   {
+    "label": "odszyfrowanie przy wypisywaniu (wyswietl)",
+    "re": "deszyfruj\\(\\s*tresci\\.get\\(\\s*i\\s*\\)"
+   },
+   {
+    "label": "odszyfrowanie w case 3",
+    "re": "deszyfruj\\(\\s*tresci\\.get\\(\\s*poz\\s*\\)"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Gdzie w Twoim programie treść jest jawna?",
+    "options": [
+     "W liście tresci, przez cały czas.",
+     "Nigdzie w liście. Jawna jest tylko chwilowo: w zmiennej tresc w case 1, zanim ją zaszyfrujesz, i przy wypisywaniu.",
+     "W liście tytuly."
+    ],
+    "answer": 1,
+    "why": "Lista tresci trzyma zawsze wersję zaszyfrowaną. deszyfruj działa w locie, tylko do ekranu."
+   },
+   {
+    "q": "Kiedy program odszyfrowuje treść?",
+    "options": [
+     "Od razu po add, i zapisuje jawną wersję z powrotem.",
+     "Dopiero przy wypisywaniu, tylko do ekranu.",
+     "Przy wyjściu z programu (opcja 0)."
+    ],
+    "answer": 1,
+    "why": "deszyfruj stoi w println w wyswietl (opcja 2) i w case 3. Wynik idzie na ekran, a lista dalej trzyma szyfr."
+   }
+  ],
+  "lesson": "Szyfrujesz tuż przed add, odszyfrowujesz w locie tylko do ekranu. W liście nigdy nie ma jawnej treści."
+ },
+ {
+  "id": 3,
+  "title": "Po co + 26?",
+  "ref": "3. Czemu `+ 26` w deszyfrowaniu? Co by się stało bez tego?",
+  "view": "szyfr",
+  "goal": "Prowadzący pyta: czemu w deszyfruj jest + 26? Ktoś je usunął. Uruchom i zobacz na pasku alfabetu, co się dzieje z literą b przy cofnięciu o 3: wynik spada poniżej a, a % 26 nie zawija go z powrotem, bo w Javie reszta z liczby ujemnej jest ujemna. Przywróć + 26 w obu blokach, żeby main wypisał Ala, xyz, XYZ i xyz XYZ 123.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(deszyfruj(\"Dod\", 3));\n    System.out.println(deszyfruj(\"abc\", 3));\n    System.out.println(deszyfruj(\"ABC\", 3));\n    System.out.println(deszyfruj(szyfruj(\"xyz XYZ 123\", 3), 3));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ala\nxyz\nXYZ\nxyz XYZ 123",
+    "calls": [
+     "deszyfruj"
+    ]
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "abc",
+     3
+    ],
+    "ret": "xyz"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "ABC",
+     3
+    ],
+    "ret": "XYZ"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "a",
+     25
+    ],
+    "ret": "b"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Dod pd nrwd 123!",
+     3
+    ],
+    "ret": "Ala ma kota 123!"
+   }
+  ],
+  "hints": [
+   "Policz na kartce: b to miejsce 1. 1 - 3 = -2. Ile w Javie daje -2 % 26? (Uruchom i patrz na pasek.)",
+   "Dodanie 26 przed % przesuwa liczbę na plus, a nie zmienia litery: -2 + 26 = 24, czyli y.",
+   "Ostatnia podpowiedź - w obu blokach: tmp = (tmp - szyfr + 26) % 26;"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "małe litery: - szyfr + 26, potem % 26",
+    "re": "-\\s*szyfr\\s*\\+\\s*26\\s*\\)\\s*%\\s*26",
+    "after": "String\\s+deszyfruj\\("
+   },
+   {
+    "label": "powrót do litery: (char) ('a' + tmp)",
+    "re": "\\(char\\)\\s*\\(\\s*'a'",
+    "after": "String\\s+deszyfruj\\("
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Ile w Javie daje -2 % 26?",
+    "options": [
+     "24",
+     "-2",
+     "2"
+    ],
+    "answer": 1,
+    "why": "W Javie % przy ujemnej liczbie daje wynik ujemny. Dlatego najpierw dodajesz 26: (-2 + 26) % 26 = 24."
+   },
+   {
+    "q": "Co by się stało bez + 26 dla b przesuniętego wstecz o 3?",
+    "options": [
+     "Wyszłoby y, jak trzeba.",
+     "Wyszedłby znak spoza liter (np. _ ), bo wynik spadł poniżej a.",
+     "Program by się zatrzymał z błędem."
+    ],
+    "answer": 1,
+    "why": "1 - 3 = -2, -2 % 26 = -2, a 'a' + (-2) to znak przed a w tabeli ASCII. Bez + 26 nie ma zawinięcia na koniec alfabetu."
+   }
+  ],
+  "lesson": "W Javie % na liczbie ujemnej daje wynik ujemny. + 26 przed % przesuwa wynik na plus, a % zawija go do alfabetu."
+ },
+ {
+  "id": 4,
+  "title": "equals, nie ==",
+  "ref": "4. Czemu `equals`, a nie `==`?",
+  "goal": "Prowadzący pyta: czemu equals, a nie ==? W tym kodzie szukajLiniowo porównuje tytuły przez ==. Gra doda notatkę Haslo WiFi i dwa razy jej poszuka: raz tego samego tytułu, raz tytułu Brak. Z == program nie znajdzie nawet notatki, która jest - zobacz w animacji, że to dwie różne kartki z tym samym napisem. Napraw porównanie.",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    int szyfr = 3;\n    int wybor;\n\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                sortujBabelkowo(tytuly, tresci);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n\npublic static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i) == szukam) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n\n                String tmp2 = tresci.get(j - 1);\n                tresci.set(j - 1, tresci.get(j));\n                tresci.set(j, tmp2);\n            }\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n3\nHaslo WiFi\n3\nBrak\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[0] Tytul: Haslo WiFi | Tresc: kot123\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Brak\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "szukajLiniowo"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Ola",
+      "Iza"
+     ],
+     "Ola"
+    ],
+    "ret": 1
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Ola"
+     ],
+     "ola"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Ola"
+     ],
+     "Ola"
+    ],
+    "ret": 0
+   }
+  ],
+  "hints": [
+   "Popatrz na if w szukajLiniowo. == na tekstach pyta, czy to ta sama kartka w pamięci. Tytuł wczytany przez nextLine() to zawsze nowa kartka.",
+   "Potrzebujesz porównania, które sprawdza litery po kolei - to z rozdziału 7.",
+   "Ostatnia podpowiedź: if (tytuly.get(i).equals(szukam)) {"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "porównanie tytułów przez equals",
+    "re": "\\.equals\\(\\s*szukam\\s*\\)"
+   },
+   {
+    "label": "wczytany tytuł (nowa kartka)",
+    "re": "String\\s+szukam\\s*=\\s*skan\\.nextLine"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co sprawdza == na dwóch tekstach?",
+    "options": [
+     "Czy mają te same litery.",
+     "Czy to TEN SAM obiekt (ta sama kartka) w pamięci.",
+     "Czy mają tę samą długość."
+    ],
+    "answer": 1,
+    "why": "== pyta o adres, nie o zawartość. Dwa takie same napisy wczytane osobno to dwie kartki, więc == da false."
+   },
+   {
+    "q": "Czemu do szukania tytułu używasz equals?",
+    "options": [
+     "Bo equals porównuje zawartość, znak po znaku.",
+     "Bo equals jest szybsze.",
+     "Bo == nie działa na ArrayList."
+    ],
+    "answer": 0,
+    "why": "Przy szukaniu chodzi o ten sam napis, a nie o tę samą kartkę. To porównuje equals."
+   }
+  ],
+  "lesson": "== pyta, czy to ta sama kartka. equals pyta, czy napis jest taki sam. Przy szukaniu tytułu zawsze equals."
+ },
+ {
+  "id": 5,
+  "title": "Ile porównań robi bąbelek?",
+  "ref": "5. Jaka jest złożoność bąbelka i czemu właśnie taka?",
+  "goal": "Prowadzący pyta: jaka jest złożoność bąbelka i czemu? Policz to sam. Dopisz w sortujBabelkowo licznik porownania: na start 0, +1 przy każdym porównaniu tytułów (tuż przed if z compareTo), a po pętlach wypisz Porownan: i licznik. Dla 4 notatek wyjdzie 6. Gra sprawdzi też 1, 5 i 6 notatek. Patrz w „Pokaż w kodzie”: licznik przy linii z compareTo mówi to samo.",
+  "starter": "public static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    // 1. tu zrób licznik porownania, na start 0\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            // 2. każde porównanie dwóch tytułów = licznik w górę o 1\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n\n                String tmp2 = tresci.get(j - 1);\n                tresci.set(j - 1, tresci.get(j));\n                tresci.set(j, tmp2);\n            }\n        }\n    }\n    // 3. po pętlach wypisz: Porownan: <licznik>\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    tytuly.add(\"Zeta\");\n    tresci.add(\"z1\");\n    tytuly.add(\"Delta\");\n    tresci.add(\"d1\");\n    tytuly.add(\"Alfa\");\n    tresci.add(\"a1\");\n    tytuly.add(\"Beta\");\n    tresci.add(\"b1\");\n    sortujBabelkowo(tytuly, tresci);\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + tresci.get(i));\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Porownan: 6\n[0] Tytul: Alfa | Tresc: a1\n[1] Tytul: Beta | Tresc: b1\n[2] Tytul: Delta | Tresc: d1\n[3] Tytul: Zeta | Tresc: z1",
+    "calls": [
+     "sortujBabelkowo"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "e",
+      "d",
+      "c",
+      "b",
+      "a"
+     ],
+     [
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+     ]
+    ],
+    "out": "Porownan: 10"
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f"
+     ],
+     [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+     ]
+    ],
+    "out": "Porownan: 15"
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ala"
+     ],
+     [
+      "a"
+     ]
+    ],
+    "out": "Porownan: 0"
+   }
+  ],
+  "hints": [
+   "Licznik to zwykły int. Zrób go przed pętlami, bo ma przeżyć wszystkie przejścia.",
+   "Porównanie dzieje się w każdym obrocie wewnętrznej pętli, także wtedy, gdy zamiany nie ma. Dlatego licznik zwiększasz przed if, a nie w środku.",
+   "Ostatnia podpowiedź: int porownania = 0; przed pętlami, porownania++; w wewnętrznej pętli nad if, a po pętlach System.out.println(\"Porownan: \" + porownania);"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "dwie pętle jedna w drugiej",
+    "re": "for\\s*\\(\\s*int\\s+i\\s*="
+   },
+   {
+    "label": "wewnętrzna pętla do n - i",
+    "re": "j\\s*<\\s*n\\s*-\\s*i"
+   },
+   {
+    "label": "porównanie tytułów (compareTo)",
+    "re": "\\.compareTo\\("
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Ile porównań zrobi ten bąbelek dla 10 notatek?",
+    "options": [
+     "10",
+     "45",
+     "100"
+    ],
+    "answer": 1,
+    "why": "9 + 8 + ... + 1 = 45, czyli około połowy z 10 razy 10. Dla 4 notatek było 3 + 2 + 1 = 6."
+   },
+   {
+    "q": "Jaka jest złożoność bąbelka i czemu?",
+    "options": [
+     "O(N), bo jest jedna lista.",
+     "O(N²), bo są dwie pętle jedna w drugiej; skrócenie wewnętrznej o i nie zmienia rzędu.",
+     "O(1), bo zamiana to trzy linijki."
+    ],
+    "answer": 1,
+    "why": "Około N razy N porównań. Wewnętrzna pętla jest coraz krótsza, ale to tylko połowa z N², a w zapisie O stała się nie liczy."
+   }
+  ],
+  "lesson": "Bąbelek robi około N·N/2 porównań: dwie pętle jedna w drugiej, czyli O(N²)."
+ },
+ {
+  "id": 6,
+  "title": "Co zwraca szukanie, gdy nie ma?",
+  "ref": "6. Co zwraca wyszukiwanie, gdy nie znajdzie, i czemu akurat to?",
+  "goal": "Prowadzący pyta: co zwraca szukajLiniowo, gdy nie znajdzie? Tutaj zwraca 0 - i to jest błąd. Gra doda notatkę Haslo WiFi i poszuka tytułu Brak: program pokazuje notatkę numer 0, choć Braku nie ma. Zobacz, że main nie umie odróżnić „nie ma” od „jest na pozycji 0”. Napraw return na końcu metody.",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    int szyfr = 3;\n    int wybor;\n\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                sortujBabelkowo(tytuly, tresci);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n\npublic static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i).equals(szukam)) {\n            return i;\n        }\n    }\n    return 0;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n\n                String tmp2 = tresci.get(j - 1);\n                tresci.set(j - 1, tresci.get(j));\n                tresci.set(j, tmp2);\n            }\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n3\nHaslo WiFi\n3\nBrak\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[0] Tytul: Haslo WiFi | Tresc: kot123\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Brak\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "szukajLiniowo"
+    ]
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Ola"
+     ],
+     "Iza"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Ola"
+     ],
+     "Ala"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [],
+     "Ala"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Iza",
+      "Ola"
+     ],
+     "Ola"
+    ],
+    "ret": 2
+   }
+  ],
+  "hints": [
+   "Numery na liście idą od 0 w górę. Jaka liczba NIE może być numerem żadnej notatki?",
+   "main już porównuje wynik z jedną taką liczbą (zobacz if w case 3). Metoda ma oddać właśnie ją dopiero wtedy, gdy pętla przejdzie całą listę bez trafienia.",
+   "Ostatnia podpowiedź: ostatnia linijka metody to return -1;"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "return i - znalazłem",
+    "re": "return\\s+i\\s*;"
+   },
+   {
+    "label": "return -1 na końcu szukajLiniowo",
+    "re": "return\\s+-\\s*1\\s*;"
+   },
+   {
+    "label": "if (poz == -1) w main",
+    "re": "poz\\s*==\\s*-\\s*1"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu „nie ma” to akurat -1?",
+    "options": [
+     "Bo -1 to najmniejsza liczba w Javie.",
+     "Bo numery pozycji są od 0 w górę, więc -1 nie może być prawdziwym numerem.",
+     "Bo tak każe ArrayList."
+    ],
+    "answer": 1,
+    "why": "Dzięki temu main odróżnia „nie ma” od „jest na pozycji 0”."
+   },
+   {
+    "q": "Co by było, gdyby szukajLiniowo zwracało 0, gdy nie znajdzie?",
+    "options": [
+     "Nic złego.",
+     "main pokazałby notatkę numer 0 jako znalezioną, choć jej nie szukano.",
+     "Program by się nie skompilował."
+    ],
+    "answer": 1,
+    "why": "0 to prawdziwy numer pierwszej notatki. Tak właśnie zachowywał się kod startowy."
+   }
+  ],
+  "lesson": "Brak wyniku to -1, bo numery są od 0 w górę. main sprawdza if (poz == -1)."
+ },
+ {
+  "id": 7,
+  "title": "Kopia adresu listy",
+  "ref": "7. Czemu lista zmieniona w metodzie jest zmieniona też w `main`?",
+  "goal": "Prowadzący pyta: czemu lista zmieniona w metodzie jest zmieniona też w main? Tutaj metoda wyczysc NIE działa: robi tytuly = new ArrayList<>(), więc podmienia tylko swoją kopię adresu, a main dalej ma 2 notatki. Patrz w ramce metody: nazwa tytuly odkleja się od półki z main i dostaje nową, pustą półkę. Napraw wyczysc tak, żeby opróżniała listy z main (main ma wypisać Notatek po: 0 i 0). Linijkę z szyfrem zostaw - pokazuje, że int dostaje kopię wartości.",
+  "starter": "public static void wyczysc(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    tytuly = new ArrayList<>();\n    tresci = new ArrayList<>();\n}\n\npublic static void zmienSzyfr(int szyfr) {\n    szyfr = 10;\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    tytuly.add(\"Haslo WiFi\");\n    tresci.add(\"nrw123\");\n    tytuly.add(\"PIN\");\n    tresci.add(\"1234\");\n    System.out.println(\"Notatek przed: \" + tytuly.size());\n    wyczysc(tytuly, tresci);\n    System.out.println(\"Notatek po: \" + tytuly.size() + \" i \" + tresci.size());\n\n    int szyfr = 3;\n    zmienSzyfr(szyfr);\n    System.out.println(\"szyfr w main: \" + szyfr);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Notatek przed: 2\nNotatek po: 0 i 0\nszyfr w main: 3",
+    "calls": [
+     "wyczysc",
+     "zmienSzyfr"
+    ]
+   },
+   {
+    "call": "wyczysc",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "A",
+      "B",
+      "C"
+     ],
+     [
+      "a",
+      "b",
+      "c"
+     ]
+    ],
+    "lists_end": [
+     [],
+     []
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "wyczysc",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [],
+     []
+    ],
+    "lists_end": [
+     [],
+     []
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   }
+  ],
+  "hints": [
+   "new ArrayList<>() w metodzie robi NOWĄ listę i przykleja do niej nazwę z metody. Lista z main zostaje nietknięta.",
+   "Musisz zmienić tę samą listę, którą widzi main: wywołać na niej metodę, a nie przypisywać nowej.",
+   "Ostatnia podpowiedź: tytuly.clear(); i tresci.clear(); zamiast dwóch linijek z new."
+  ],
+  "tools": [
+   {
+    "code": "lista.clear()",
+    "kind": "opróżnij listę",
+    "desc": "Wyrzuca z listy wszystkie elementy. To ta sama lista, tylko pusta: size() daje 0.",
+    "ex": "ArrayList<String> zakupy = new ArrayList<>();\nzakupy.add(\"mleko\");\nzakupy.clear();\nSystem.out.println(zakupy.size()); // 0"
+   }
+  ],
+  "pokaz": [
+   {
+    "label": "wywołanie wyczysc(tytuly, tresci) w main",
+    "re": "^\\s*wyczysc\\("
+   },
+   {
+    "label": "nagłówek z parametrami ArrayList",
+    "re": "static\\s+void\\s+wyczysc\\("
+   },
+   {
+    "label": "int dostaje kopię: szyfr = 10 w metodzie",
+    "re": "szyfr\\s*=\\s*10"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu add, set albo clear w metodzie zmieniają listę z main?",
+    "options": [
+     "Bo metoda dostaje kopię całej listy.",
+     "Bo metoda dostaje kopię ADRESU tej samej listy, więc działa na tym samym obiekcie.",
+     "Bo listy są zawsze statyczne."
+    ],
+    "answer": 1,
+    "why": "Java przekazuje kopię adresu. Obie nazwy (w main i w metodzie) wskazują tę samą półkę."
+   },
+   {
+    "q": "Czemu lista = new ArrayList<>() w metodzie NIE zmienia listy w main?",
+    "options": [
+     "Bo podmienia tylko kopię adresu w metodzie, a main ma swój adres.",
+     "Bo new nie działa w metodach static.",
+     "Bo trzeba jeszcze napisać return."
+    ],
+    "answer": 0,
+    "why": "Nazwa w metodzie wskazuje teraz nową półkę. Stara półka z main stoi, jak stała."
+   },
+   {
+    "q": "A int szyfr przekazany do zmienSzyfr i zmieniony tam na 10 - co wypisze main?",
+    "options": [
+     "10",
+     "3"
+    ],
+    "answer": 1,
+    "why": "int dostaje kopię wartości. Metoda zmienia swoją kopię, main ma dalej 3."
+   }
+  ],
+  "lesson": "Metoda dostaje kopię adresu listy: zmiany na liście widzi main. Nowa lista (new) w metodzie podmienia tylko kopię adresu."
+ },
+ {
+  "id": 8,
+  "title": "Enter po liczbie",
+  "ref": "8. Co robi `skan.nextLine()` zaraz po `nextInt()`?",
+  "goal": "Prowadzący pyta: co robi skan.nextLine() zaraz po nextInt()? Ktoś usunął tę linijkę. Gra wpisze: 1, Haslo WiFi, kot123, 2, 0. Bez lekarstwa tytuł wychodzi pusty, a liczbę program bierze z treści i się wywraca. Patrz w konsolę i na zmienne: pierwsze nextLine() oddaje pusty tekst (zostawiony Enter). Wstaw lekarstwo z powrotem.",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    int szyfr = 3;\n    int wybor;\n\n    do {\n        menu();\n        wybor = skan.nextInt();\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                sortujBabelkowo(tytuly, tresci);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n\npublic static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i).equals(szukam)) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n\n                String tmp2 = tresci.get(j - 1);\n                tresci.set(j - 1, tresci.get(j));\n                tresci.set(j, tmp2);\n            }\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n2\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Haslo WiFi | Tresc: kot123\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "szyfruj",
+     "wyswietl"
+    ]
+   },
+   {
+    "main": true,
+    "in": "9\n1\nPIN\n1234\n3\nPIN\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nNie ma takiej opcji.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[0] Tytul: PIN | Tresc: 1234\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "szukajLiniowo"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Lekarstwo: skan.nextLine(); zaraz po nextInt()",
+    "re": "nextInt\\(\\)\\s*;\\s*skan\\.nextLine\\(\\)\\s*;",
+    "msg": "Zaraz pod wybor = skan.nextInt(); ma stać skan.nextLine(); - to ono zjada Enter po liczbie."
+   }
+  ],
+  "hints": [
+   "nextInt() bierze samą liczbę. Enter, który wcisnąłeś po niej, zostaje w buforze i czeka.",
+   "Następne nextLine() widzi ten Enter od razu i oddaje pusty tekst, nie czekając na Ciebie. Trzeba ten Enter zjeść raz, zaraz po liczbie.",
+   "Ostatnia podpowiedź - pod wybor = skan.nextInt(); dopisz: skan.nextLine(); // zjada enter po liczbie"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "wybor = skan.nextInt();",
+    "re": "wybor\\s*=\\s*skan\\.nextInt"
+   },
+   {
+    "label": "lekarstwo: skan.nextLine(); zaraz pod nim",
+    "re": "^\\s*skan\\.nextLine\\(\\)\\s*;"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co zjada skan.nextLine() zaraz po nextInt()?",
+    "options": [
+     "Liczbę.",
+     "Zostawiony w buforze Enter po liczbie.",
+     "Całe menu."
+    ],
+    "answer": 1,
+    "why": "nextInt() bierze cyfry, a Enter zostaje. Bez lekarstwa następne nextLine() oddałoby pusty napis."
+   },
+   {
+    "q": "Co się stanie bez lekarstwa, gdy wpiszesz 1 i Enter, a potem tytuł?",
+    "options": [
+     "Program zapyta o tytuł normalnie.",
+     "Tytuł będzie pusty, bo nextLine() od razu zje zostawiony Enter.",
+     "Program się nie skompiluje."
+    ],
+    "answer": 1,
+    "why": "Tak było w kodzie startowym: tytuł pusty, a tekst przesunął się o jedno pytanie."
+   }
+  ],
+  "lesson": "nextInt() zostawia Enter. skan.nextLine(); zaraz po nim zjada ten Enter, więc następne nextLine() czeka na Ciebie."
+ },
+ {
+  "id": 9,
+  "title": "Jedna klasa, same static",
+  "ref": "9. Dlaczego cały kod jest w jednej klasie `Main` i nie tworzysz obiektów?",
+  "goal": "Prowadzący pyta: czemu jedna klasa Main i żadnych obiektów? Ktoś zgubił słowo w nagłówku szyfruj i kod się nie kompiluje. Przeczytaj błąd i napraw nagłówek. Nie rób obiektu (new Main()) - projekt jest proceduralny: dane w dwóch listach, logika w metodach static. Gra wpisze: 9, potem 1 Haslo WiFi kot123, 2, 0.",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    int szyfr = 3;\n    int wybor;\n\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                sortujBabelkowo(tytuly, tresci);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n\npublic static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i).equals(szukam)) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n\n                String tmp2 = tresci.get(j - 1);\n                tresci.set(j - 1, tresci.get(j));\n                tresci.set(j, tmp2);\n            }\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "9\n1\nHaslo WiFi\nkot123\n2\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nNie ma takiej opcji.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Haslo WiFi | Tresc: kot123\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Bez tworzenia obiektów (żadnego new Main)",
+    "re": "new\\s+Main\\b",
+    "want": false,
+    "msg": "Projekt jest proceduralny: bez obiektów. Zamiast new Main() dopisz static w nagłówku metody."
+   },
+   {
+    "label": "Wszystkie metody projektu są public static",
+    "re": "^(?![\\s\\S]*public\\s+static\\s+String\\s+szyfruj\\b)|^(?![\\s\\S]*public\\s+static\\s+String\\s+deszyfruj\\b)|^(?![\\s\\S]*public\\s+static\\s+void\\s+wyswietl\\b)|^(?![\\s\\S]*public\\s+static\\s+int\\s+szukajLiniowo\\b)|^(?![\\s\\S]*public\\s+static\\s+void\\s+sortujBabelkowo\\b)|^(?![\\s\\S]*public\\s+static\\s+void\\s+menu\\b)",
+    "want": false,
+    "msg": "Każda metoda projektu (menu, szyfruj, deszyfruj, wyswietl, szukajLiniowo, sortujBabelkowo) ma mieć w nagłówku public static."
+   }
+  ],
+  "hints": [
+   "Przeczytaj polską podpowiedź pod błędem: main jest static, więc woła tylko metody static.",
+   "Porównaj nagłówek szyfruj z nagłówkiem deszyfruj. Czego brakuje?",
+   "Ostatnia podpowiedź: public static String szyfruj(String text, int szyfr) {"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "słowo static w nagłówku szyfruj",
+    "re": "public\\s+static\\s+String\\s+szyfruj"
+   },
+   {
+    "label": "main woła szyfruj(...) wprost, bez obiektu",
+    "re": "tresci\\.add\\(\\s*szyfruj\\("
+   },
+   {
+    "label": "dane w dwóch listach zamiast obiektu",
+    "re": "ArrayList<String>\\s+tytuly\\s*=\\s*new"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu cały kod jest w jednej klasie Main, bez własnych klas i obiektów?",
+    "options": [
+     "Bo Java nie pozwala na więcej klas.",
+     "Wymaganie projektu: programowanie proceduralne. Dane w dwóch listach, logika w metodach static.",
+     "Bo obiekty są wolniejsze."
+    ],
+    "answer": 1,
+    "why": "Tak każe PDF projektu. Pokazujesz public class Main jako jedyną klasę i static w nagłówkach."
+   },
+   {
+    "q": "Co daje słowo static w nagłówku metody?",
+    "options": [
+     "Metodę wołasz bez tworzenia obiektu, więc main woła szyfruj(...) wprost.",
+     "Metoda nie może mieć parametrów.",
+     "Metoda działa szybciej."
+    ],
+    "answer": 0,
+    "why": "main jest static, więc może bezpośrednio wołać tylko metody static."
+   }
+  ],
+  "lesson": "Jedna klasa Main, metody static, dane w dwóch listach: tak wygląda programowanie proceduralne z wymagań projektu."
+ },
+ {
+  "id": 10,
+  "title": "Bez gotowego sortowania",
+  "ref": "10. Dlaczego nie użyłeś `Collections.sort` ani `Arrays.sort`?",
+  "goal": "Prowadzący pyta: czemu nie Collections.sort? Tutaj ktoś go użył w case 4. Gra doda Zeta (ostatnia), Alfa (pierwsza), Beta (druga), posortuje i wyświetli. Collections.sort zakazane w projekcie, a do tego sortuje tylko tytuły - treści się rozjeżdżają. Zamień je na swoją metodę sortujBabelkowo (już jest w kodzie).",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    int szyfr = 3;\n    int wybor;\n\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                Collections.sort(tytuly);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n\npublic static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i).equals(szukam)) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n\n                String tmp2 = tresci.get(j - 1);\n                tresci.set(j - 1, tresci.get(j));\n                tresci.set(j, tmp2);\n            }\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nZeta\nostatnia\n1\nAlfa\npierwsza\n1\nBeta\ndruga\n4\n2\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPosortowano notatki po tytule.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Alfa | Tresc: pierwsza\n[1] Tytul: Beta | Tresc: druga\n[2] Tytul: Zeta | Tresc: ostatnia\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "sortujBabelkowo"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Grep na zakazane metody: pusty",
+    "re": "Collections\\.sort|Arrays\\.sort|\\.contains\\(|\\.replace",
+    "want": false,
+    "msg": "W kodzie jest zakazana metoda (Collections.sort, Arrays.sort, contains albo replace). Projekt wymaga własnego algorytmu."
+   }
+  ],
+  "hints": [
+   "Collections.sort(tytuly) nie wie nic o liście tresci. Twoja metoda wie - zamienia obie listy naraz.",
+   "Metoda sortujBabelkowo jest już na dole pliku. Wystarczy ją wywołać w case 4 z obiema listami.",
+   "Ostatnia podpowiedź: w case 4 zamiast Collections.sort(tytuly); napisz sortujBabelkowo(tytuly, tresci);"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "case 4 woła Twoje sortowanie",
+    "re": "^\\s*sortujBabelkowo\\(\\s*tytuly"
+   },
+   {
+    "label": "porównanie gotowym compareTo (dozwolone)",
+    "re": "\\.compareTo\\("
+   },
+   {
+    "label": "zamiana w pętli (własny algorytm)",
+    "re": "String\\s+tmp\\s*="
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu nie Collections.sort ani Arrays.sort?",
+    "options": [
+     "Bo są wolne.",
+     "Projekt zakazuje gotowych sortowań i wymaga własnego algorytmu.",
+     "Bo nie działają na ArrayList<String>."
+    ],
+    "answer": 1,
+    "why": "Tak mówi PDF. Do porównania dwóch tytułów wolno użyć compareTo, ale samo sortowanie piszesz pętlami."
+   },
+   {
+    "q": "Które z tych NIE jest zakazane w projekcie?",
+    "options": [
+     "String.contains",
+     "compareTo",
+     "Arrays.sort"
+    ],
+    "answer": 1,
+    "why": "compareTo tylko porównuje dwa teksty - nie sortuje ani nie szuka za Ciebie. PDF na nie pozwala."
+   }
+  ],
+  "lesson": "Sortowanie piszesz sam (bąbelek z zamianą w obu listach). Wolno porównać tytuły gotowym compareTo."
+ },
+ {
+  "id": 11,
+  "title": "Wielkie i małe osobno",
+  "ref": "12. Czemu wielkie i małe litery szyfrujesz osobno?",
+  "view": "szyfr",
+  "goal": "Prowadzący pyta: co znaczy znak - 'A', po co (char) i czemu wielkie i małe litery szyfrujesz osobno? Tu w bloku małych liter ktoś wpisał 'A' zamiast 'a'. Uruchom: na pasku alfabetu zobaczysz, że a ma numer 97, a A ma 65 - odległość od 'A' wychodzi za duża, a wynik ląduje w wielkich literach. Napraw blok małych liter, żeby wyszło Dod pd nrwd i abc ABC 123.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfruj(\"Ala ma kota\", 3));\n    System.out.println(szyfruj(\"xyz XYZ 123\", 3));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Dod pd nrwd\nabc ABC 123",
+    "calls": [
+     "szyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zz!",
+     1
+    ],
+    "ret": "Aa!"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "kot 123",
+     3
+    ],
+    "ret": "nrw 123"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "ABC",
+     0
+    ],
+    "ret": "ABC"
+   }
+  ],
+  "hints": [
+   "W bloku małych liter (warunek 'a'..'z') odległość liczysz od 'A'. a to 97, A to 65 - jaka wyjdzie odległość dla a?",
+   "Każda grupa liczy od własnego początku: małe od 'a', wielkie od 'A'. I wraca do tego samego początku.",
+   "Ostatnia podpowiedź - w bloku małych: int tmp = znaki[i] - 'a'; ... znaki[i] = (char) ('a' + tmp);"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "zakres małych liter 'a'..'z'",
+    "re": "znaki\\[i\\]\\s*>=\\s*'a'"
+   },
+   {
+    "label": "zakres wielkich liter 'A'..'Z'",
+    "re": "znaki\\[i\\]\\s*>=\\s*'A'"
+   },
+   {
+    "label": "znak - 'A': miejsce w alfabecie",
+    "re": "-\\s*'A'"
+   },
+   {
+    "label": "(char) wraca do litery",
+    "re": "\\(char\\)\\s*\\(\\s*'A'"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Ile wynosi 'C' - 'A'?",
+    "options": [
+     "2",
+     "3",
+     "67"
+    ],
+    "answer": 0,
+    "why": "C to 67, A to 65. 67 - 65 = 2, czyli C to miejsce 2 w alfabecie (od 0)."
+   },
+   {
+    "q": "Po co (char) przed ('A' + tmp)?",
+    "options": [
+     "Żeby Java zrobiła z liczby znak.",
+     "Żeby dodawanie było szybsze.",
+     "Żeby wynik był wielką literą."
+    ],
+    "answer": 0,
+    "why": "'A' + tmp to liczba int. (char) mówi Javie: ta liczba ma być znakiem."
+   },
+   {
+    "q": "Czemu wielkie i małe litery liczysz osobno?",
+    "options": [
+     "Bo mają różne numery: wielkie od 65, małe od 97.",
+     "Bo małych liter jest więcej.",
+     "Bo % 26 działa tylko na wielkich."
+    ],
+    "answer": 0,
+    "why": "Każdą grupę zawijasz w jej własnym alfabecie. Cyfry i spacje zostają, bo nie wchodzą w żaden if."
+   }
+  ],
+  "lesson": "znak - 'A' to miejsce w alfabecie, (char) robi z liczby znak. Małe i wielkie liczysz od własnego początku: 'a' albo 'A'."
+ },
+ {
+  "id": 12,
+  "title": "Napis się nie zmienia",
+  "ref": "13. Po co `toCharArray()` i `new String(...)`?",
+  "view": "szyfr",
+  "goal": "Prowadzący pyta: po co toCharArray() i new String(...)? Ta wersja szyfruj próbuje zmienić literę wprost w napisie: text.charAt(i) = ... i kompilator jej nie przyjmuje, bo String jest niezmienny. Przerób metodę: zrób z tekstu tablicę znaków, zmieniaj szuflady znaki[i], a na końcu złóż je z powrotem w napis.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    for (int i = 0; i < text.length(); i++) {\n        if (text.charAt(i) >= 'a' && text.charAt(i) <= 'z') {\n            int tmp = text.charAt(i) - 'a';\n            tmp = (tmp + szyfr) % 26;\n            text.charAt(i) = (char) ('a' + tmp);\n        } else if (text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') {\n            int tmp = text.charAt(i) - 'A';\n            tmp = (tmp + szyfr) % 26;\n            text.charAt(i) = (char) ('A' + tmp);\n        }\n    }\n    return text;\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfruj(\"Ala ma kota\", 3));\n    System.out.println(szyfruj(\"xyz XYZ 123\", 3));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Dod pd nrwd\nabc ABC 123",
+    "calls": [
+     "szyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zz!",
+     1
+    ],
+    "ret": "Aa!"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "",
+     3
+    ],
+    "ret": ""
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Napis zamieniony na tablicę: toCharArray()",
+    "re": "\\.toCharArray\\(\\)",
+    "msg": "Na tym poziomie ćwiczysz toCharArray(): zrób z napisu tablicę znaków i zmieniaj jej szuflady."
+   },
+   {
+    "label": "Tablica złożona z powrotem: new String(...)",
+    "re": "new\\s+String\\(",
+    "msg": "Na końcu złóż tablicę w napis przez new String(...)."
+   }
+  ],
+  "hints": [
+   "charAt(i) tylko CZYTA literę. Nie da się do niej nic wpisać, bo String jest niezmienny.",
+   "Na początku metody zamień napis na tablicę znaków - jak w rozdziale 4. Potem czytaj i zmieniaj szuflady tej tablicy, a długość bierz z tablicy, nie z napisu.",
+   "Ostatnia podpowiedź: char[] znaki = text.toCharArray(); na początku, w pętli znaki[i] zamiast text.charAt(i) i znaki.length zamiast text.length(), a na końcu return new String(znaki);"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "toCharArray() na początku",
+    "re": "\\.toCharArray\\(\\)"
+   },
+   {
+    "label": "zmiana szuflady znaki[i]",
+    "re": "znaki\\[i\\]\\s*=\\s*\\(char\\)"
+   },
+   {
+    "label": "return new String(...) na końcu",
+    "re": "return\\s+new\\s+String\\("
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu nie da się napisać text.charAt(i) = 'x'?",
+    "options": [
+     "Bo String jest niezmienny - charAt tylko czyta literę.",
+     "Bo trzeba użyć apostrofów.",
+     "Bo i musi być stałą."
+    ],
+    "answer": 0,
+    "why": "Żeby zmieniać litery, potrzebujesz tablicy char[] - jej szuflady wolno zmieniać."
+   },
+   {
+    "q": "Co zwróci return znaki.toString(); zamiast return new String(znaki);?",
+    "options": [
+     "Ten sam tekst.",
+     "Coś w stylu [C@1b6d3586 - opis tablicy, a nie litery.",
+     "Pusty tekst."
+    ],
+    "answer": 1,
+    "why": "toString() na tablicy daje jej „adres”. Litery skleja w napis dopiero new String(znaki)."
+   }
+  ],
+  "lesson": "String jest niezmienny. toCharArray() daje tablicę liter do zmieniania, new String(...) skleja ją z powrotem w napis."
+ },
+ {
+  "id": 13,
+  "title": "Zupa przed bank",
+  "ref": "14. Czemu sortujesz po tytułach, a nie po treściach? Czemu „Zupa” jest przed „bank”?",
+  "goal": "Prowadzący pyta: czemu po sortowaniu Zupa stoi przed bank? Uruchom: kolejność wyjdzie Alfa, Zupa, auto, bank. Potem dopisz w main dwa dowody: wynik \"Zupa\".compareTo(\"bank\") i numery liter 'Z' oraz 'b' (przez (int)). Panel porównania pokaże litery Z i b obok siebie z ich numerami.",
+  "starter": "public static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n\n                String tmp2 = tresci.get(j - 1);\n                tresci.set(j - 1, tresci.get(j));\n                tresci.set(j, tmp2);\n            }\n        }\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    tytuly.add(\"bank\");\n    tresci.add(\"PIN 1234\");\n    tytuly.add(\"Zupa\");\n    tresci.add(\"pomidorowa\");\n    tytuly.add(\"auto\");\n    tresci.add(\"przeglad maj\");\n    tytuly.add(\"Alfa\");\n    tresci.add(\"haslo\");\n    sortujBabelkowo(tytuly, tresci);\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + tresci.get(i));\n    }\n    // 1. wypisz: Zupa vs bank: <wynik \"Zupa\".compareTo(\"bank\")>\n    // 2. wypisz: Z = <numer litery 'Z'>, b = <numer litery 'b'>\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "[0] Tytul: Alfa | Tresc: haslo\n[1] Tytul: Zupa | Tresc: pomidorowa\n[2] Tytul: auto | Tresc: przeglad maj\n[3] Tytul: bank | Tresc: PIN 1234\nZupa vs bank: -8\nZ = 90, b = 98",
+    "calls": [
+     "sortujBabelkowo"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Dowód 1: \"Zupa\".compareTo(\"bank\") w kodzie",
+    "re": "\"\"\\s*\\.compareTo\\(\\s*\"\"\\s*\\)",
+    "msg": "Wynik ma policzyć Java: wypisz \"Zupa\".compareTo(\"bank\"), a nie gotową liczbę."
+   },
+   {
+    "label": "Dowód 2: (int) 'Z' i (int) 'b' w kodzie",
+    "re": "\\(\\s*int\\s*\\)\\s*'Z'[\\s\\S]*\\(\\s*int\\s*\\)\\s*'b'",
+    "msg": "Numery liter ma podać Java: (int) 'Z' i (int) 'b', a nie wpisane liczby."
+   }
+  ],
+  "hints": [
+   "compareTo porównuje pierwsze różne litery: Z i b. Odejmuje ich numery.",
+   "Numer litery dostajesz, gdy każesz Javie potraktować znak jak liczbę całkowitą - to rzutowanie z rozdziału 3, tylko w drugą stronę niż przy (char).",
+   "Ostatnia podpowiedź: System.out.println(\"Zupa vs bank: \" + \"Zupa\".compareTo(\"bank\")); oraz System.out.println(\"Z = \" + (int) 'Z' + \", b = \" + (int) 'b');"
+  ],
+  "tools_note": "Nic nowego - każdy klocek znasz z wcześniejszych rozdziałów. Tu ćwiczysz, jak go pokazać i wytłumaczyć prowadzącemu.",
+  "pokaz": [
+   {
+    "label": "compareTo w sortujBabelkowo",
+    "re": "tytuly\\.get\\(\\s*j\\s*-\\s*1\\s*\\)\\.compareTo"
+   },
+   {
+    "label": "Twój dowód: \"Zupa\".compareTo(\"bank\")",
+    "re": "\"Zupa\"\\.compareTo"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu „Zupa” jest przed „bank”?",
+    "options": [
+     "Bo Z jest przed b w alfabecie.",
+     "Bo wielkie litery mają mniejsze numery niż małe (Z = 90, b = 98).",
+     "Bo Zupa jest dłuższa."
+    ],
+    "answer": 1,
+    "why": "compareTo porównuje numery znaków. Wszystkie wielkie litery (65-90) są przed małymi (97-122)."
+   },
+   {
+    "q": "Czemu sortujesz po tytułach, a nie po treściach?",
+    "options": [
+     "Bo treści są zaszyfrowane, a sortowanie po szyfrze nie ma sensu - i tak każe projekt.",
+     "Bo treści nie da się porównać.",
+     "Bo tytuły są krótsze."
+    ],
+    "answer": 0,
+    "why": "Wymaganie projektu: alfabetycznie po tytułach. Treść jedzie razem ze swoim tytułem."
+   }
+  ],
+  "lesson": "compareTo porównuje numery liter. Wielkie mają mniejsze numery niż małe, więc „Zupa” wypada przed „bank”."
+ },
+ {
+  "id": 14,
+  "title": "Sprawdzian: obrona na próbę",
+  "ref": "Quiz na 10 minut",
+  "goal": "Próba generalna. W projekcie siedzą trzy błędy z typowych pytań prowadzącego. Gra wpisze całą sesję: dwie notatki (Zeta xyz, Alfa abc), sortowanie, wyświetlenie, szukanie Zeta i Brak, wyjście. Znajdź i napraw wszystkie trzy (patrz na półki, panel porównania i pasek „Pokaż w kodzie”). Potem quiz na 10 minut - odpowiadaj bez zaglądania.",
+  "starter": "public static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    int szyfr = 3;\n    int wybor;\n\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine(); // zjada enter po liczbie\n\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                sortujBabelkowo(tytuly, tresci);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n\npublic static void menu() {\n    System.out.println(\"=== MENU ===\");\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i) == szukam) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n            }\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nZeta\nxyz\n1\nAlfa\nabc\n4\n2\n3\nZeta\n3\nBrak\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPosortowano notatki po tytule.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Alfa | Tresc: abc\n[1] Tytul: Zeta | Tresc: xyz\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[1] Tytul: Zeta | Tresc: xyz\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Brak\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "szyfruj",
+     "deszyfruj",
+     "wyswietl",
+     "szukajLiniowo",
+     "sortujBabelkowo"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "main": true,
+    "in": "2\n1\nbank\nkot\n1\nZupa\nAla\n4\n2\n0\n",
+    "out": "=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nBrak notatek.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPosortowano notatki po tytule.\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Zupa | Tresc: Ala\n[1] Tytul: bank | Tresc: kot\n=== MENU ===\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "sortujBabelkowo",
+     "wyswietl"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Ala",
+      "Ola"
+     ],
+     [
+      "k",
+      "a",
+      "o"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ala",
+      "Kot",
+      "Ola"
+     ],
+     [
+      "a",
+      "k",
+      "o"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Ola"
+     ],
+     "Ola"
+    ],
+    "ret": 1
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Ola"
+     ],
+     "Iza"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Abc",
+     3
+    ],
+    "ret": "Xyz"
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Grep na zakazane metody: pusty",
+    "re": "Collections\\.sort|Arrays\\.sort|\\.contains\\(|\\.replace",
+    "want": false,
+    "msg": "W kodzie jest zakazana metoda (Collections.sort, Arrays.sort, contains albo replace)."
+   },
+   {
+    "label": "Lekarstwo skan.nextLine(); zaraz po nextInt()",
+    "re": "nextInt\\(\\)\\s*;\\s*skan\\.nextLine\\(\\)\\s*;",
+    "msg": "Zaraz pod wybor = skan.nextInt(); ma stać skan.nextLine();."
+   },
+   {
+    "label": "Brak zostawionej linii RAW tresci",
+    "re": "println\\(\\s*\"\"\\s*\\+\\s*tresci\\s*\\)",
+    "want": false,
+    "msg": "Usuń linijkę debugującą RAW tresci z rozdziału 11."
+   }
+  ],
+  "hints": [
+   "Trzy pytania z obrony: czemu equals, a nie ==? Czemu zamieniasz obie listy? Czemu + 26 w deszyfruj?",
+   "Sprawdź po kolei: if w szukajLiniowo, if w sortujBabelkowo (ile list się zamienia?) i wzór tmp w deszyfruj.",
+   "Ostatnia podpowiedź: .equals(szukam) w szukajLiniowo; trzy linijki zamiany tresci z tmp2 pod zamianą tytułów; (tmp - szyfr + 26) % 26 w obu blokach deszyfruj."
+  ],
+  "tools_note": "Nic nowego - to cały projekt. Każdą naprawę umiesz wytłumaczyć jednym zdaniem.",
+  "pokaz": [
+   {
+    "label": "dwie listy w main",
+    "re": "ArrayList<String>\\s+tresci\\s*=\\s*new"
+   },
+   {
+    "label": "szyfr tuż przed add",
+    "re": "tresci\\.add\\(\\s*szyfruj\\("
+   },
+   {
+    "label": "+ 26 w deszyfruj",
+    "re": "-\\s*szyfr\\s*\\+\\s*26"
+   },
+   {
+    "label": "equals w szukajLiniowo",
+    "re": "\\.equals\\(\\s*szukam\\s*\\)"
+   },
+   {
+    "label": "return -1",
+    "re": "return\\s+-\\s*1\\s*;"
+   },
+   {
+    "label": "zamiana treści w sortowaniu",
+    "re": "tresci\\.set\\(\\s*j\\s*-\\s*1"
+   },
+   {
+    "label": "lekarstwo po nextInt()",
+    "re": "^\\s*skan\\.nextLine\\(\\)\\s*;"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "1. Co zwraca szukajLiniowo, gdy nie ma notatki?",
+    "options": [
+     "0",
+     "-1",
+     "null"
+    ],
+    "answer": 1,
+    "why": "-1, bo żaden prawdziwy numer nie jest ujemny."
+   },
+   {
+    "q": "2. Czemu while (wybor != 0); ma średnik?",
+    "options": [
+     "To błąd, który Java wybacza.",
+     "Bo to koniec instrukcji do-while.",
+     "Bo pętla jest pusta."
+    ],
+    "answer": 1,
+    "why": "do { ... } while (warunek); - średnik kończy całą instrukcję do-while."
+   },
+   {
+    "q": "3. Ile wynosi 'C' - 'A'?",
+    "options": [
+     "2",
+     "3",
+     "67"
+    ],
+    "answer": 0,
+    "why": "67 - 65 = 2."
+   },
+   {
+    "q": "4. Co robi % 26 dla 27?",
+    "options": [
+     "Daje 1.",
+     "Daje 27.",
+     "Daje 26."
+    ],
+    "answer": 0,
+    "why": "27 = 26 + 1, reszta to 1."
+   },
+   {
+    "q": "5. Dlaczego \"Zupa\" jest przed \"bank\"?",
+    "options": [
+     "Wielkie litery mają mniejsze numery w ASCII.",
+     "Bo Z jest przed b w alfabecie.",
+     "Bo Zupa jest dłuższa."
+    ],
+    "answer": 0,
+    "why": "Z = 90, b = 98."
+   },
+   {
+    "q": "6. Czemu == nie nadaje się do szukania tytułu?",
+    "options": [
+     "Sprawdza obiekt, nie zawartość.",
+     "Jest za wolne.",
+     "Nie działa na String."
+    ],
+    "answer": 0,
+    "why": "== pyta o tę samą kartkę, equals o te same litery."
+   },
+   {
+    "q": "7. Co się stanie, jeśli zamienisz tylko tytuly w sortowaniu?",
+    "options": [
+     "Nic.",
+     "Treści zostaną na starych miejscach.",
+     "Program się wywróci."
+    ],
+    "answer": 1,
+    "why": "Notatki dostaną cudze treści."
+   },
+   {
+    "q": "8. Czemu ArrayList zmieniony w metodzie jest zmieniony w main?",
+    "options": [
+     "Metoda dostaje kopię listy.",
+     "Metoda dostaje kopię adresu tej samej listy, a nie kopię listy.",
+     "Bo lista jest static."
+    ],
+    "answer": 1,
+    "why": "Obie nazwy wskazują ten sam obiekt."
+   },
+   {
+    "q": "9. Co zjada skan.nextLine() po nextInt()?",
+    "options": [
+     "Zostawiony Enter.",
+     "Liczbę.",
+     "Pierwszą literę tytułu."
+    ],
+    "answer": 0,
+    "why": "nextInt() zostawia Enter w buforze."
+   },
+   {
+    "q": "10. Gdzie w kodzie treść jest jawna?",
+    "options": [
+     "W liście tresci.",
+     "Nigdzie w liście; tylko chwilowo w zmiennej tresc w case 1 przed szyfrowaniem i przy wypisywaniu.",
+     "W liście tytuly."
+    ],
+    "answer": 1,
+    "why": "Lista trzyma zawsze szyfr."
+   }
+  ],
+  "lesson": "Umiesz pokazać w kodzie i wytłumaczyć każdą część projektu. 10 z 10 w quizie bez zaglądania - jesteś gotowy na obronę."
+ }
+]

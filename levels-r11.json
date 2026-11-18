@@ -1,0 +1,2097 @@
+[
+ {
+  "id": 1,
+  "title": "Szkielet: menu i switch",
+  "ref": "Krok 1. Szkielet: menu i `switch`",
+  "view": "projekt",
+  "goal": "Zbuduj szkielet programu. Metoda public static void menu() wypisuje 5 linijek: [1] Dodaj nowa notatke, [2] Wyswietl wszystkie notatki, [3] Wyszukaj po tytule, [4] Posortuj notatki, [0] Wyjscie. W main: Scanner skan, int wybor i pętla do-while. W pętli: menu(), wybor = skan.nextInt(), zaraz potem lekarstwo skan.nextLine(); i switch (wybor). case 1, 2, 3, 4 na razie puste (tylko break). case 0 wypisuje Koniec programu., default wypisuje Nie ma takiej opcji. Pętla kręci się, dopóki wybor != 0. Uwaga: w tym projekcie menu to same 5 linijek opcji przez println - bez nagłówka === MENU === i bez Wybierz: z rozdziału 10. Patrz na ramki pod tabelą notatek: Klawiatura i Bufor Scannera pokazują, co wpisano, a ramka switch - do którego case skacze program.",
+  "starter": "public static void menu() {\n    // wypisz 5 linijek menu, od [1] Dodaj nowa notatke do [0] Wyjscie\n\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    // do {\n    //     menu();  wczytaj wybor przez nextInt(), potem lekarstwo skan.nextLine();\n    //     switch (wybor): case 1-4 puste z break, case 0 -> Koniec programu., default -> Nie ma takiej opcji.\n    // } while (wybor != 0);\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "9\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nNie ma takiej opcji.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "4\n1\n7\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nNie ma takiej opcji.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Pętla do-while: menu wraca po każdej opcji",
+    "re": "\\bdo\\s*\\{[\\s\\S]*\\}\\s*while\\s*\\(",
+    "msg": "Brakuje pętli do { ... } while (warunek); - menu ma się pokazać co najmniej raz i wracać po każdej opcji."
+   },
+   {
+    "label": "switch (wybor) z case i default",
+    "re": "switch\\s*\\(\\s*\\w+\\s*\\)[\\s\\S]*\\bdefault\\s*(?::|->)",
+    "msg": "Wybór obsługuje switch z case 1-4, case 0 i default (gdy numeru nie ma w menu)."
+   },
+   {
+    "label": "Lekarstwo skan.nextLine(); zaraz po nextInt()",
+    "re": "nextInt\\(\\)\\s*;\\s*(?:String\\s+\\w+\\s*=\\s*)?\\w+\\.nextLine\\(\\)\\s*;|case\\s+1\\s*(?::|->)\\s*\\{?\\s*\\w+\\.nextLine\\(\\)\\s*;",
+    "msg": "Zaraz po linijce z nextInt() wpisz osobną linijkę skan.nextLine(); - zjada Enter, który został po liczbie."
+   }
+  ],
+  "hints": [
+   "Najpierw menu(): pięć razy System.out.println z tekstem opcji, dokładnie jak w celu (bez polskich znaków).",
+   "W main pętla, która sprawdza warunek na końcu, i kręci się, dopóki wybór nie jest zerem. W środku po kolei: menu, odczyt liczby, lekarstwo, switch. Każdy case kończy się break.",
+   "Ostatnia podpowiedź: wybor = skan.nextInt(); a w następnej linijce skan.nextLine(); potem switch (wybor) { case 1: break; ... case 0: System.out.println(\"Koniec programu.\"); break; default: System.out.println(\"Nie ma takiej opcji.\"); }"
+  ],
+  "tools": [
+   {
+    "code": "do { ... } while (warunek);",
+    "kind": "pętla, która rusza co najmniej raz",
+    "desc": "Najpierw robi to, co w klamrach, a warunek sprawdza dopiero na końcu. Dlatego menu pokaże się zawsze co najmniej raz. Po while jest średnik.",
+    "ex": "int licznik = 0;\ndo {\n    System.out.println(\"obrot \" + licznik);\n    licznik++;\n} while (licznik < 2);   // obrot 0, obrot 1"
+   },
+   {
+    "code": "switch / case / break / default",
+    "kind": "skok do pasującej opcji",
+    "desc": "switch patrzy na liczbę i skacze do case z tą liczbą. break kończy ten case - bez niego program wpadnie w następny. default łapie każdą liczbę, której nie ma w żadnym case.",
+    "ex": "int dzien = 2;\nswitch (dzien) {\n    case 1:\n        System.out.println(\"pon\");\n        break;\n    case 2:\n        System.out.println(\"wt\");   // to sie wypisze\n        break;\n    default:\n        System.out.println(\"?\");\n}"
+   },
+   {
+    "code": "skan.nextInt(); skan.nextLine();",
+    "kind": "liczba z klawiatury + lekarstwo",
+    "desc": "nextInt() czyta samą liczbę, a Enter po niej zostaje. Następne nextLine() oddałoby pusty tekst. Dlatego zaraz po nextInt() stoi puste skan.nextLine(); - zjada ten Enter.",
+    "ex": "Scanner s = new Scanner(System.in);\nint wiek = s.nextInt();  // wpisujesz: 20\ns.nextLine();            // zjada Enter po 20\nString imie = s.nextLine(); // teraz czeka na imie"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Wpisujesz 9, potem 0. Ile razy pokaże się menu?",
+    "options": [
+     "1 raz",
+     "2 razy",
+     "3 razy"
+    ],
+    "answer": 1,
+    "why": "Menu pokazuje się na początku każdego obrotu pętli. Obrót 1: menu, wpisane 9 → default. Obrót 2: menu, wpisane 0 → Koniec programu. i pętla staje."
+   },
+   {
+    "q": "Co się stanie, gdy w case 0 zapomnisz break?",
+    "options": [
+     "Nic, break jest tylko dla porządku",
+     "Po Koniec programu. wypisze się też Nie ma takiej opcji. z default",
+     "Program się nie skompiluje"
+    ],
+    "answer": 1,
+    "why": "Bez break program wpada w następny kawałek switch - tutaj w default."
+   }
+  ],
+  "lesson": "Szkielet: do-while pokazuje menu, nextInt czyta numer, lekarstwo zjada Enter, switch skacze do case. 0 kończy pętlę."
+ },
+ {
+  "id": 2,
+  "title": "Dwie listy: dodaj i wyświetl",
+  "ref": "Krok 2. Dwie listy i dodawanie/wyświetlanie BEZ szyfru",
+  "view": "projekt",
+  "carry": 1,
+  "carry_todo": "Krok 2: dwie listy, case 1 (dodaj) i case 2 (wyswietl).",
+  "goal": "Dopisz notatki. W main dwie listy: ArrayList<String> tytuly i ArrayList<String> tresci. case 1: wypisz println(\"Podaj tytul:\"), wczytaj tytuł przez nextLine(), wypisz println(\"Podaj tresc:\"), wczytaj treść, dodaj tytuł do tytuly i treść do tresci, wypisz println(\"Dodano notatke.\") - dokładnie te napisy, gra porównuje ekran co do znaku. Nowa metoda public static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci) wypisuje każdą notatkę jako [i] Tytul: ... | Tresc: ... (pętla po numerze i), a dla pustej listy Brak notatek. case 2 tylko woła wyswietl(tytuly, tresci). W tabeli „Notatki w pamięci” zobaczysz, że notatka nr i to tytuly.get(i) i tresci.get(i).",
+  "starter": "// Najpierw zalicz poziom 1 - wtedy gra wstawi tu Twój kod z tamtego kroku\n// (albo kliknij nad kodem „Wstaw mój kod z poziomu 1”). Tu jest tylko szkielet z kroku 1.\npublic static void menu() {\n    // wypisz 5 linijek menu, od [1] Dodaj nowa notatke do [0] Wyjscie\n\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    // do {\n    //     menu();  wczytaj wybor przez nextInt(), potem lekarstwo skan.nextLine();\n    //     switch (wybor): case 1-4 puste z break, case 0 -> Koniec programu., default -> Nie ma takiej opcji.\n    // } while (wybor != 0);\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Haslo WiFi | Tresc: kot123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Haslo WiFi"
+     ],
+     "tresci": [
+      "kot123"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nBrak notatek.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\nKot\nmruczy\n1\nPies\nszczeka\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Kot | Tresc: mruczy\n[1] Tytul: Pies | Tresc: szczeka\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Kot",
+      "Pies"
+     ],
+     "tresci": [
+      "mruczy",
+      "szczeka"
+     ]
+    }
+   },
+   {
+    "call": "wyswietl",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Zakupy",
+      "Kod"
+     ],
+     [
+      "mleko",
+      "1234"
+     ]
+    ],
+    "out": "[0] Tytul: Zakupy | Tresc: mleko\n[1] Tytul: Kod | Tresc: 1234"
+   },
+   {
+    "call": "wyswietl",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [],
+     []
+    ],
+    "out": "Brak notatek."
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Listy nazywają się dokładnie tytuly i tresci",
+    "re": "ArrayList<String>\\s+tytuly\\b[\\s\\S]*ArrayList<String>\\s+tresci\\b|ArrayList<String>\\s+tresci\\b[\\s\\S]*ArrayList<String>\\s+tytuly\\b",
+    "msg": "W main zrób ArrayList<String> tytuly i ArrayList<String> tresci - dokładnie te nazwy (wymaga ich PDF)."
+   },
+   {
+    "label": "wyswietl idzie pętlą po numerze i, nie for-each",
+    "re": "for\\s*\\(\\s*String\\s+\\w+\\s*:",
+    "want": false,
+    "msg": "Nie używaj for (String t : tytuly) - potrzebujesz numeru i, żeby wypisać [i] i wziąć treść z drugiej listy."
+   }
+  ],
+  "hints": [
+   "Listy tworzysz w main, przed pętlą - dwie puste listy tekstów o nazwach tytuly i tresci. Gdyby stały w pętli, każdy obrót robiłby nowe, puste listy.",
+   "W case 1 czytasz dwie linijki przez skan.nextLine() i robisz dwa add - po jednym do każdej listy, jeden pod drugim.",
+   "W wyswietl najpierw sprawdź, czy lista tytułów jest pusta - wtedy wypisz Brak notatek. Potem pętla po numerze i od 0 do ostatniego numeru listy.",
+   "Ostatnia podpowiedź: System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + tresci.get(i));"
+  ],
+  "tools": [
+   {
+    "code": "String x = skan.nextLine();",
+    "kind": "cała linijka tekstu z klawiatury",
+    "desc": "nextLine() czeka, aż ktoś wpisze linijkę i wciśnie Enter, i oddaje ją jako tekst - razem ze spacjami (Haslo WiFi to jeden tytuł).",
+    "ex": "Scanner s = new Scanner(System.in);\nSystem.out.println(\"Miasto:\");\nString miasto = s.nextLine();  // wpisujesz: Nowy Targ\nSystem.out.println(miasto);      // Nowy Targ"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Dlaczego w wyswietl pętla idzie po numerze i, a nie for (String t : tytuly)?",
+    "options": [
+     "Bo for-each jest wolniejszy",
+     "Bo potrzebujesz numeru i: do [i] na ekranie i do tresci.get(i) z drugiej listy",
+     "Bo for-each nie działa na ArrayList"
+    ],
+    "answer": 1,
+    "why": "for-each daje tylko wartość. Treść tej samej notatki leży w drugiej liście pod tym samym numerem i - bez numeru jej nie weźmiesz."
+   },
+   {
+    "q": "Gdzie muszą stać deklaracje list tytuly i tresci?",
+    "options": [
+     "W main przed pętlą do-while",
+     "W case 1",
+     "W metodzie wyswietl"
+    ],
+    "answer": 0,
+    "why": "Listy żyją przez cały program. W case 1 powstawałyby od nowa przy każdym dodaniu, a wyswietl ich nie widziałaby."
+   }
+  ],
+  "lesson": "Notatka = ten sam numer w dwóch listach. add do obu list w tym samym case, wypisywanie pętlą po numerze."
+ },
+ {
+  "id": 3,
+  "title": "Błąd: brak lekarstwa po nextInt",
+  "ref": "Typowe błędy w składaniu",
+  "view": "projekt",
+  "goal": "Ten kod nie ma lekarstwa skan.nextLine(); po nextInt(). Uruchom go i patrz na Bufor Scannera i na tabelę notatek: tytuł dostaje pusty tekst, a treścią staje się tytuł. Potem nextInt() trafia na kot123 i program się wywraca. Napraw jedną linijką.",
+  "starter": "public static void menu() {\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + tresci.get(i));\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(tresc);\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci);\n                break;\n            case 3:\n                break;\n            case 4:\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Haslo WiFi | Tresc: kot123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Haslo WiFi"
+     ],
+     "tresci": [
+      "kot123"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nBrak notatek.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\nKot\nmruczy\n1\nPies\nszczeka\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Kot | Tresc: mruczy\n[1] Tytul: Pies | Tresc: szczeka\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Kot",
+      "Pies"
+     ],
+     "tresci": [
+      "mruczy",
+      "szczeka"
+     ]
+    }
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Lekarstwo skan.nextLine(); zaraz po nextInt()",
+    "re": "nextInt\\(\\)\\s*;\\s*(?:String\\s+\\w+\\s*=\\s*)?\\w+\\.nextLine\\(\\)\\s*;|case\\s+1\\s*(?::|->)\\s*\\{?\\s*\\w+\\.nextLine\\(\\)\\s*;",
+    "msg": "Zaraz po linijce z nextInt() wpisz osobną linijkę skan.nextLine(); - zjada Enter, który został po liczbie."
+   }
+  ],
+  "hints": [
+   "Po wpisaniu 1 i Enter, nextInt() bierze tylko 1. Enter zostaje i następne nextLine() oddaje go jako pusty tekst.",
+   "Ostatnia podpowiedź: zaraz pod wybor = skan.nextInt(); dopisz skan.nextLine();"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. To lekarstwo znasz z kroku 1 - tu widać, co się dzieje bez niego.",
+  "quiz": [
+   {
+    "q": "Bez lekarstwa wpisujesz: 1, Haslo WiFi, kot123. Co trafi do tytułu?",
+    "options": [
+     "Haslo WiFi",
+     "pusty tekst \"\"",
+     "kot123"
+    ],
+    "answer": 1,
+    "why": "Pierwsze nextLine() po nextInt() oddaje resztkę Entera po 1 - pusty tekst. Haslo WiFi ląduje dopiero w treści."
+   }
+  ],
+  "lesson": "Po każdym nextInt() lekarstwo skan.nextLine(); - inaczej pierwszy tekst jest pusty, a reszta wpisów przesuwa się o jeden."
+ },
+ {
+  "id": 4,
+  "title": "Błąd: listy się rozjeżdżają",
+  "ref": "Typowe błędy w składaniu",
+  "view": "projekt",
+  "goal": "Tu treść trafia do złej listy. Uruchom i patrz na tabelę „Notatki w pamięci”: tytuly rośnie o dwa, tresci stoi pusta, wiersze się rozjechały, a wyswietl wywraca się na tresci.get(0). Napraw tak, żeby każde dodanie ruszało OBIE listy.",
+  "starter": "public static void menu() {\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + tresci.get(i));\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine();\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tytuly.add(tresc);\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci);\n                break;\n            case 3:\n                break;\n            case 4:\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Haslo WiFi | Tresc: kot123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Haslo WiFi"
+     ],
+     "tresci": [
+      "kot123"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nBrak notatek.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\nKot\nmruczy\n1\nPies\nszczeka\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Kot | Tresc: mruczy\n[1] Tytul: Pies | Tresc: szczeka\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Kot",
+      "Pies"
+     ],
+     "tresci": [
+      "mruczy",
+      "szczeka"
+     ]
+    }
+   }
+  ],
+  "hints": [
+   "Spójrz na dwa add w case 1. Do której listy idzie tytuł, a do której treść?",
+   "Ostatnia podpowiedź: druga linijka to tresci.add(tresc);"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Para list działa tylko wtedy, gdy każda operacja rusza obie.",
+  "quiz": [
+   {
+    "q": "Po dwóch notatkach tytuly ma 4 elementy, a tresci 0. Co zrobi wyswietl?",
+    "options": [
+     "Wypisze 4 notatki bez treści",
+     "Wywróci się na tresci.get(0), bo tresci jest pusta",
+     "Wypisze Brak notatek."
+    ],
+    "answer": 1,
+    "why": "Pętla idzie po tytuly.size() = 4, a tresci nie ma pudełka nr 0 - IndexOutOfBoundsException."
+   }
+  ],
+  "lesson": "Element 0 w tytuly odpowiada elementowi 0 w tresci. Każde add idzie do obu list, jedno pod drugim."
+ },
+ {
+  "id": 5,
+  "title": "Szyfr Cezara w projekcie",
+  "ref": "Krok 3. Szyfr Cezara jako dwie metody (rozdział 4)",
+  "view": "projekt",
+  "carry": 2,
+  "carry_todo": "Krok 3: szyfruj przed add, deszyfruj przy wypisaniu.",
+  "goal": "Dołóż szyfr. Wklej swoje metody public static String szyfruj(String text, int szyfr) i public static String deszyfruj(String text, int szyfr) z rozdziału 4 (char[], % 26, wielkie i małe litery osobno). W main int szyfr = 3;. case 1: tresci.add(szyfruj(tresc, szyfr)) - tytuł zostaje jawny. wyswietl dostaje trzeci parametr int szyfr i wypisuje deszyfruj(tresci.get(i), szyfr); case 2 woła wyswietl(tytuly, tresci, szyfr). Kontrolę RAW z karty robi tu tabela notatek: środkowa kolumna pokazuje, co naprawdę leży w liście tresci - ma tam być Dod pd nrwd abc ABC 123, a prawa - co oddał Twój deszyfruj.",
+  "starter": "// Najpierw zalicz poziom 2 - wtedy gra wstawi tu Twój kod z tamtego kroku\n// (albo kliknij nad kodem „Wstaw mój kod z poziomu 2”). Tu jest tylko szkielet z kroku 1.\npublic static void menu() {\n    // wypisz 5 linijek menu, od [1] Dodaj nowa notatke do [0] Wyjscie\n\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    // do {\n    //     menu();  wczytaj wybor przez nextInt(), potem lekarstwo skan.nextLine();\n    //     switch (wybor): case 1-4 puste z break, case 0 -> Koniec programu., default -> Nie ma takiej opcji.\n    // } while (wybor != 0);\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nAla ma kota xyz XYZ 123\nAla ma kota xyz XYZ 123\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Ala ma kota xyz XYZ 123 | Tresc: Ala ma kota xyz XYZ 123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Ala ma kota xyz XYZ 123"
+     ],
+     "tresci": [
+      "Dod pd nrwd abc ABC 123"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "1\nZebra\nxyz XYZ\n1\nB\nHello World\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Zebra | Tresc: xyz XYZ\n[1] Tytul: B | Tresc: Hello World\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Zebra",
+      "B"
+     ],
+     "tresci": [
+      "abc ABC",
+      "Khoor Zruog"
+     ]
+    }
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Ala ma kota xyz XYZ 123",
+     3
+    ],
+    "ret": "Dod pd nrwd abc ABC 123"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra 9",
+     1
+    ],
+    "ret": "Afcsb 9"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "abc ABC",
+     3
+    ],
+    "ret": "xyz XYZ"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Dod pd nrwd abc ABC 123",
+     3
+    ],
+    "ret": "Ala ma kota xyz XYZ 123"
+   },
+   {
+    "call": "wyswietl",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int"
+    ],
+    "args": [
+     [
+      "Kot"
+     ],
+     [
+      "Dod"
+     ],
+     3
+    ],
+    "out": "[0] Tytul: Kot | Tresc: Ala"
+   },
+   {
+    "call": "wyswietl",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>",
+     "int"
+    ],
+    "args": [
+     [],
+     [],
+     3
+    ],
+    "out": "Brak notatek."
+   }
+  ],
+  "hints": [
+   "Szyfrujesz w case 1, zanim treść wejdzie do listy - do listy idzie już wynik szyfruj. Tytułu nie szyfrujesz.",
+   "deszyfruj to szyfruj z odwrotnym kierunkiem. Żeby przy odejmowaniu nie wyjść poniżej zera, przed resztą z dzielenia przez 26 dodaj jeszcze 26.",
+   "wyswietl ma teraz trzeci parametr - przesunięcie szyfru. Zmień jej nagłówek i wywołanie w case 2, żeby przekazać szyfr.",
+   "Ostatnia podpowiedź: w wyswietl wypisujesz \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr)"
+  ],
+  "tools": [
+   {
+    "code": "lista.add(metoda(x))",
+    "kind": "wynik metody prosto do listy",
+    "desc": "Najpierw liczy się metoda w nawiasie, dopiero jej wynik trafia do listy. Do listy idzie wersja już zmieniona.",
+    "ex": "ArrayList<Integer> kwadraty = new ArrayList<>();\nkwadraty.add(kwadrat(4));   // do listy trafia 16, nie 4"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co leży w liście tresci po dodaniu treści Ala (szyfr 3)?",
+    "options": [
+     "Ala",
+     "Dod",
+     "Xix"
+    ],
+    "answer": 1,
+    "why": "Treść jest szyfrowana PRZED add. A+3=D, l+3=o, a+3=d. Ala zobaczysz dopiero po deszyfruj przy wypisaniu."
+   },
+   {
+    "q": "Po co w deszyfruj jest + 26 przed % 26?",
+    "options": [
+     "Bez tego 'a' - 3 dałoby ujemną resztę i zły znak",
+     "Żeby szyfr był mocniejszy",
+     "Bez znaczenia, to tylko ozdoba"
+    ],
+    "answer": 0,
+    "why": "W Javie -3 % 26 = -3. Dodanie 26 robi z tego 23, czyli 'x'."
+   }
+  ],
+  "lesson": "Lista trzyma tekst zaszyfrowany, ekran pokazuje odszyfrowany. Szyfruj przed add, deszyfruj przy wypisaniu."
+ },
+ {
+  "id": 6,
+  "title": "Błąd: szyfrowanie dwa razy",
+  "ref": "Typowe błędy w składaniu",
+  "view": "projekt",
+  "goal": "Ten kod szyfruje treść dwa razy. Uruchom i porównaj w tabeli: w liście leży Grg (przesunięcie o 6), a po jednym deszyfruj wychodzi Dod zamiast Ala. Napraw tak, żeby szyfr szedł raz.",
+  "starter": "public static void menu() {\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'A' && c <= 'Z') {\n            znaki[i] = (char) ((c - 'A' + szyfr) % 26 + 'A');\n        } else if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' + szyfr) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'A' && c <= 'Z') {\n            znaki[i] = (char) ((c - 'A' - szyfr + 26) % 26 + 'A');\n        } else if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' - szyfr + 26) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    Scanner skan = new Scanner(System.in);\n    int szyfr = 3;\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine();\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                String zaszyfrowana = szyfruj(tresc, szyfr);\n                tresci.add(szyfruj(zaszyfrowana, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                break;\n            case 4:\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nAla ma kota xyz XYZ 123\nAla ma kota xyz XYZ 123\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Ala ma kota xyz XYZ 123 | Tresc: Ala ma kota xyz XYZ 123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Ala ma kota xyz XYZ 123"
+     ],
+     "tresci": [
+      "Dod pd nrwd abc ABC 123"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "1\nZebra\nxyz XYZ\n1\nB\nHello World\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Zebra | Tresc: xyz XYZ\n[1] Tytul: B | Tresc: Hello World\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Zebra",
+      "B"
+     ],
+     "tresci": [
+      "abc ABC",
+      "Khoor Zruog"
+     ]
+    }
+   }
+  ],
+  "hints": [
+   "Policz, ile razy treść przechodzi przez szyfruj, zanim wejdzie do listy.",
+   "Ostatnia podpowiedź: wystarczy jedna linijka tresci.add(szyfruj(tresc, szyfr));"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego.",
+  "quiz": [
+   {
+    "q": "Treść Ala zaszyfrowana dwa razy z szyfr = 3. Co pokaże wyswietl po jednym deszyfruj?",
+    "options": [
+     "Ala",
+     "Dod",
+     "Grg"
+    ],
+    "answer": 1,
+    "why": "Dwa razy szyfruj = przesunięcie o 6 (Grg). Jedno deszyfruj cofa tylko o 3 - zostaje Dod."
+   }
+  ],
+  "lesson": "Jedno szyfruj przy dodaniu, jedno deszyfruj przy wypisaniu. Para musi się zgadzać."
+ },
+ {
+  "id": 7,
+  "title": "Błąd: zostawiona linia RAW",
+  "ref": "Typowe błędy w składaniu",
+  "view": "projekt",
+  "goal": "Kontrola z kroku 3 zadziałała: linia RAW tresci pokazuje [Dod pd nrwd abc ABC 123], więc szyfr jest przed add. Ale tej linii nie może być w oddanym programie - ekran różni się od wymaganego. Usuń linię debugującą.",
+  "starter": "public static void menu() {\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'A' && c <= 'Z') {\n            znaki[i] = (char) ((c - 'A' + szyfr) % 26 + 'A');\n        } else if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' + szyfr) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'A' && c <= 'Z') {\n            znaki[i] = (char) ((c - 'A' - szyfr + 26) % 26 + 'A');\n        } else if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' - szyfr + 26) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    Scanner skan = new Scanner(System.in);\n    int szyfr = 3;\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine();\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"RAW tresci: \" + tresci);\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                break;\n            case 4:\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nAla ma kota xyz XYZ 123\nAla ma kota xyz XYZ 123\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Ala ma kota xyz XYZ 123 | Tresc: Ala ma kota xyz XYZ 123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Ala ma kota xyz XYZ 123"
+     ],
+     "tresci": [
+      "Dod pd nrwd abc ABC 123"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "1\nZebra\nxyz XYZ\n1\nB\nHello World\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Zebra | Tresc: xyz XYZ\n[1] Tytul: B | Tresc: Hello World\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Zebra",
+      "B"
+     ],
+     "tresci": [
+      "abc ABC",
+      "Khoor Zruog"
+     ]
+    }
+   }
+  ],
+  "hints": [
+   "Szukaj System.out.println z napisem RAW w case 1.",
+   "Ostatnia podpowiedź: skasuj całą linijkę System.out.println(\"RAW tresci: \" + tresci);"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Linia debugująca to pomoc na chwilę - po kontroli znika.",
+  "quiz": [
+   {
+    "q": "Co wypisze System.out.println(tresci); dla listy z jednym tekstem Dod?",
+    "options": [
+     "Dod",
+     "[Dod]",
+     "tresci"
+    ],
+    "answer": 1,
+    "why": "Lista wypisana w całości pokazuje elementy w nawiasach kwadratowych, po przecinku."
+   }
+  ],
+  "lesson": "Linie kontrolne (RAW) usuwasz zaraz po sprawdzeniu."
+ },
+ {
+  "id": 8,
+  "title": "Opcja [3]: wyszukiwanie",
+  "ref": "Krok 4. Opcja [3]: wyszukiwanie liniowe (rozdział 8)",
+  "view": "projekt",
+  "carry": 5,
+  "carry_todo": "Krok 4: szukajLiniowo i case 3.",
+  "goal": "Dołóż wyszukiwanie. Metoda public static int szukajLiniowo(ArrayList<String> tytuly, String szukam) to Twoja metoda szukaj z rozdziału 8: idzie po tytułach, porównuje przez equals i oddaje numer albo -1. case 3: wypisz println(\"Podaj szukany tytul:\") (dokładnie ten napis), wczytaj szukam (inna nazwa niż tytul z case 1!), poz = szukajLiniowo(tytuly, szukam). Dla -1 wypisz Nie znalazlem notatki o tytule i doklej szukam. Inaczej wypisz [poz] Tytul: ... | Tresc: ... - treść z tresci.get(poz) po deszyfruj.",
+  "starter": "// Najpierw zalicz poziom 5 - wtedy gra wstawi tu Twój kod z tamtego kroku\n// (albo kliknij nad kodem „Wstaw mój kod z poziomu 5”). Tu jest tylko szkielet z kroku 1.\npublic static void menu() {\n    // wypisz 5 linijek menu, od [1] Dodaj nowa notatke do [0] Wyjscie\n\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    // do {\n    //     menu();  wczytaj wybor przez nextInt(), potem lekarstwo skan.nextLine();\n    //     switch (wybor): case 1-4 puste z break, case 0 -> Koniec programu., default -> Nie ma takiej opcji.\n    // } while (wybor != 0);\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n3\nHaslo WiFi\n3\nBrak\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[0] Tytul: Haslo WiFi | Tresc: kot123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Brak\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "szukajLiniowo",
+     "deszyfruj"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "main": true,
+    "in": "3\nKot\n1\nKot\nmiau\n1\nPies\nhau\n3\nPies\n3\nkot\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Kot\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[1] Tytul: Pies | Tresc: hau\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule kot\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "szukajLiniowo",
+     "deszyfruj"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Ryba"
+     ],
+     "Ryba"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Ryba"
+     ],
+     "Kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies"
+     ],
+     "Lis"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Kot"
+     ],
+     "Kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [],
+     "Kot"
+    ],
+    "ret": -1
+   }
+  ],
+  "hints": [
+   "szukajLiniowo: pętla po numerach listy tytułów. Gdy tytuł pod numerem i jest taki sam jak szukany (equals), od razu oddajesz i. Gdy pętla się skończy i nic nie znalazła, oddajesz -1.",
+   "W case 3 nazwij wpisany tekst szukam. Drugie String tytul w tym samym switch da błąd variable tytul is already defined.",
+   "Treść bierzesz z DRUGIEJ listy pod tym samym numerem: tresci.get(poz), a potem deszyfruj.",
+   "Ostatnia podpowiedź: if (poz == -1) { System.out.println(\"Nie znalazlem notatki o tytule \" + szukam); } else { ... wypis jak w wyswietl, z poz zamiast i ... }"
+  ],
+  "tools": [
+   {
+    "code": "int poz = metoda(...); if (poz == -1)",
+    "kind": "sprawdź, czy znaleziono",
+    "desc": "Metoda szukająca oddaje numer albo -1, gdy nic nie znalazła. -1 nie jest żadnym numerem pudełka, więc zawsze najpierw sprawdzasz -1, a dopiero potem używasz numeru.",
+    "ex": "int gdzie = znajdzZero(liczby);\nif (gdzie == -1) {\n    System.out.println(\"brak zera\");\n} else {\n    System.out.println(\"zero pod numerem \" + gdzie);\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Szukasz Haslo WiFi, a lista tytuly ma go pod numerem 0. Skąd weźmiesz treść?",
+    "options": [
+     "tresci.get(0) i deszyfruj",
+     "tytuly.get(0)",
+     "szukajLiniowo(tresci, ...)"
+    ],
+    "answer": 0,
+    "why": "Numer z listy tytułów to ten sam numer notatki w liście treści. Treść jest zaszyfrowana, więc jeszcze deszyfruj."
+   },
+   {
+    "q": "Czemu w case 3 zmienna nazywa się szukam, a nie tytul?",
+    "options": [
+     "Bo tak ładniej",
+     "Bo wszystkie case dzielą jedne klamry switch i drugie String tytul to błąd kompilacji",
+     "Bo szukajLiniowo wymaga takiej nazwy"
+    ],
+    "answer": 1,
+    "why": "Zmienna z case 1 żyje w całym switch. Druga deklaracja tej samej nazwy = variable tytul is already defined."
+   }
+  ],
+  "lesson": "szukajLiniowo oddaje numer albo -1. Treść tej samej notatki bierzesz z tresci pod tym numerem."
+ },
+ {
+  "id": 9,
+  "title": "Błąd: == w wyszukiwaniu",
+  "ref": "Typowe błędy w składaniu",
+  "view": "projekt",
+  "goal": "Tu szukajLiniowo porównuje tytuły przez ==. Uruchom: notatka Haslo WiFi jest w tabeli, a program mówi Nie znalazlem. Tytuł z listy i wpisany szukam to dwie różne kartki z tym samym napisem. Napraw porównanie.",
+  "starter": "public static void menu() {\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'A' && c <= 'Z') {\n            znaki[i] = (char) ((c - 'A' + szyfr) % 26 + 'A');\n        } else if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' + szyfr) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'A' && c <= 'Z') {\n            znaki[i] = (char) ((c - 'A' - szyfr + 26) % 26 + 'A');\n        } else if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' - szyfr + 26) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i) == szukam) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    Scanner skan = new Scanner(System.in);\n    int szyfr = 3;\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine();\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n3\nHaslo WiFi\n3\nBrak\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[0] Tytul: Haslo WiFi | Tresc: kot123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Brak\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "szukajLiniowo",
+     "deszyfruj"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "main": true,
+    "in": "3\nKot\n1\nKot\nmiau\n1\nPies\nhau\n3\nPies\n3\nkot\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Kot\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[1] Tytul: Pies | Tresc: hau\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule kot\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "szukajLiniowo",
+     "deszyfruj"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Ryba"
+     ],
+     "Ryba"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Ryba"
+     ],
+     "Kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies"
+     ],
+     "Lis"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Kot"
+     ],
+     "Kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [],
+     "Kot"
+    ],
+    "ret": -1
+   }
+  ],
+  "hints": [
+   "== na tekstach pyta, czy to ta sama kartka w pamięci. Tytuł wczytany przez nextLine() to zawsze nowa kartka.",
+   "Ostatnia podpowiedź: if (tytuly.get(i).equals(szukam))"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. equals znasz z rozdziału 7.",
+  "quiz": [
+   {
+    "q": "Dlaczego == nie znajduje Haslo WiFi, choć napis jest identyczny?",
+    "options": [
+     "Bo == rozróżnia wielkość liter",
+     "Bo == sprawdza, czy to ta sama kartka, a wpisany tekst jest nową kartką",
+     "Bo lista jest posortowana"
+    ],
+    "answer": 1,
+    "why": "Dwa teksty wczytane osobno to dwa obiekty. equals porównuje litery, == porównuje kartki."
+   }
+  ],
+  "lesson": "W wyszukiwaniu zawsze equals, nigdy ==."
+ },
+ {
+  "id": 10,
+  "title": "Opcja [4]: sortowanie dwóch list",
+  "ref": "Krok 5. Opcja [4]: sortowanie bąbelkowe na dwóch listach (rozdział 9)",
+  "view": "projekt",
+  "carry": 8,
+  "carry_todo": "Krok 5: sortujBabelkowo i case 4.",
+  "goal": "Dołóż sortowanie. public static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) to Twoja metoda sortuj z rozdziału 9 (wersja na dwóch listach): porównuje tytuły przez compareTo i gdy lewy jest dalej w alfabecie (> 0), zamienia miejscami tytuły ORAZ treści. case 4: wywołaj metodę i wypisz Posortowano notatki po tytule. W tabeli notatek każdy wiersz ma po sortowaniu zostać cały: Alfa z a1, Beta z b1, Zeta z z1.",
+  "starter": "// Najpierw zalicz poziom 8 - wtedy gra wstawi tu Twój kod z tamtego kroku\n// (albo kliknij nad kodem „Wstaw mój kod z poziomu 8”). Tu jest tylko szkielet z kroku 1.\npublic static void menu() {\n    // wypisz 5 linijek menu, od [1] Dodaj nowa notatke do [0] Wyjscie\n\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    // do {\n    //     menu();  wczytaj wybor przez nextInt(), potem lekarstwo skan.nextLine();\n    //     switch (wybor): case 1-4 puste z break, case 0 -> Koniec programu., default -> Nie ma takiej opcji.\n    // } while (wybor != 0);\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nZeta\nz1\n1\nAlfa\na1\n1\nBeta\nb1\n4\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPosortowano notatki po tytule.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Alfa | Tresc: a1\n[1] Tytul: Beta | Tresc: b1\n[2] Tytul: Zeta | Tresc: z1\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "sortujBabelkowo",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Alfa",
+      "Beta",
+      "Zeta"
+     ],
+     "tresci": [
+      "d1",
+      "e1",
+      "c1"
+     ]
+    }
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Zeta",
+      "Alfa",
+      "Beta"
+     ],
+     [
+      "z1",
+      "a1",
+      "b1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Alfa",
+      "Beta",
+      "Zeta"
+     ],
+     [
+      "a1",
+      "b1",
+      "z1"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "e",
+      "d",
+      "c",
+      "b",
+      "a"
+     ],
+     [
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+     ],
+     [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "ala",
+      "Ola",
+      "Ala"
+     ],
+     [
+      "1",
+      "2",
+      "3"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ala",
+      "Ola",
+      "ala"
+     ],
+     [
+      "3",
+      "2",
+      "1"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Bob",
+      "Ewa"
+     ],
+     [
+      "1",
+      "2",
+      "3"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ala",
+      "Bob",
+      "Ewa"
+     ],
+     [
+      "1",
+      "2",
+      "3"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Kot"
+     ],
+     [
+      "1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Kot"
+     ],
+     [
+      "1"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [],
+     []
+    ],
+    "lists_end": [
+     [],
+     []
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Wewnętrzna pętla jest krótsza z każdym przejściem (n - i)",
+    "re": "for\\s*\\(\\s*int\\s+(\\w+)\\s*=[^;]*;[^;]*;[^{]*\\{[^{}]*?for\\s*\\((?:[^;]*\\b\\1\\b[^;]*;|[^;]*;[^;]*\\b\\1\\b[^;]*;)",
+    "msg": "W wewnętrznej pętli warunek ma odejmować numer przejścia (np. j < n - i) - koniec listy jest już posortowany i nie trzeba go znowu sprawdzać."
+   }
+  ],
+  "hints": [
+   "Dwie pętle jak w rozdziale 9: zewnętrzna liczy przejścia, wewnętrzna idzie po sąsiadach j - 1 i j, do n - i.",
+   "Zamieniasz, gdy lewy tytuł jest dalej w alfabecie niż prawy, czyli gdy compareTo lewego z prawym daje liczbę większą od zera.",
+   "W tym samym if dwie zamiany przez tmp, jedna pod drugą: najpierw w tytuly, potem w tresci, na tych samych numerach.",
+   "Ostatnia podpowiedź: String tmp2 = tresci.get(j - 1); tresci.set(j - 1, tresci.get(j)); tresci.set(j, tmp2);"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego: compareTo (rozdział 7), zamiana przez tmp i set (rozdziały 6 i 9).",
+  "quiz": [
+   {
+    "q": "Po sortowaniu wypis pokazuje Alfa | Tresc: z1. Co jest źle?",
+    "options": [
+     "compareTo działa odwrotnie",
+     "Zamiana rusza tylko tytuly, treści zostały na starych miejscach",
+     "deszyfruj jest zepsute"
+    ],
+    "answer": 1,
+    "why": "Tytuły pojechały, treści nie. Każda zamiana musi przestawić oba pudełka o tych samych numerach."
+   },
+   {
+    "q": "Kto jest pierwszy po sortowaniu: ala, Ola czy Ala?",
+    "options": [
+     "ala",
+     "Ala",
+     "Ola"
+    ],
+    "answer": 1,
+    "why": "compareTo patrzy na kody liter. Wielkie litery mają mniejsze kody niż małe: Ala (A=65), Ola (O=79), ala (a=97)."
+   }
+  ],
+  "lesson": "Sortujesz po tytułach, ale przestawiasz całe notatki: zamiana w tytuly i w tresci w tym samym if."
+ },
+ {
+  "id": 11,
+  "title": "Błąd: sortowane same tytuły",
+  "ref": "Typowe błędy w składaniu",
+  "view": "projekt",
+  "goal": "Ta wersja zamienia miejscami tylko tytuły. Uruchom i patrz na tabelę notatek: po [4] tytuły stoją w kolejce, ale treści zostały na starych miejscach - Alfa ma treść z1. Napraw tak, żeby notatki zostały całe.",
+  "starter": "public static void menu() {\n    System.out.println(\"[1] Dodaj nowa notatke\");\n    System.out.println(\"[2] Wyswietl wszystkie notatki\");\n    System.out.println(\"[3] Wyszukaj po tytule\");\n    System.out.println(\"[4] Posortuj notatki\");\n    System.out.println(\"[0] Wyjscie\");\n}\n\npublic static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'A' && c <= 'Z') {\n            znaki[i] = (char) ((c - 'A' + szyfr) % 26 + 'A');\n        } else if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' + szyfr) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'A' && c <= 'Z') {\n            znaki[i] = (char) ((c - 'A' - szyfr + 26) % 26 + 'A');\n        } else if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' - szyfr + 26) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void wyswietl(ArrayList<String> tytuly, ArrayList<String> tresci, int szyfr) {\n    if (tytuly.size() == 0) {\n        System.out.println(\"Brak notatek.\");\n    }\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(\"[\" + i + \"] Tytul: \" + tytuly.get(i) + \" | Tresc: \" + deszyfruj(tresci.get(i), szyfr));\n    }\n}\n\npublic static int szukajLiniowo(ArrayList<String> tytuly, String szukam) {\n    for (int i = 0; i < tytuly.size(); i++) {\n        if (tytuly.get(i).equals(szukam)) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void sortujBabelkowo(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    int n = tytuly.size();\n    for (int i = 0; i < n - 1; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tytuly.get(j - 1).compareTo(tytuly.get(j)) > 0) {\n                String tmp = tytuly.get(j - 1);\n                tytuly.set(j - 1, tytuly.get(j));\n                tytuly.set(j, tmp);\n            }\n        }\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    Scanner skan = new Scanner(System.in);\n    int szyfr = 3;\n    int wybor;\n    do {\n        menu();\n        wybor = skan.nextInt();\n        skan.nextLine();\n        switch (wybor) {\n            case 1:\n                System.out.println(\"Podaj tytul:\");\n                String tytul = skan.nextLine();\n                System.out.println(\"Podaj tresc:\");\n                String tresc = skan.nextLine();\n                tytuly.add(tytul);\n                tresci.add(szyfruj(tresc, szyfr));\n                System.out.println(\"Dodano notatke.\");\n                break;\n            case 2:\n                wyswietl(tytuly, tresci, szyfr);\n                break;\n            case 3:\n                System.out.println(\"Podaj szukany tytul:\");\n                String szukam = skan.nextLine();\n                int poz = szukajLiniowo(tytuly, szukam);\n                if (poz == -1) {\n                    System.out.println(\"Nie znalazlem notatki o tytule \" + szukam);\n                } else {\n                    System.out.println(\"[\" + poz + \"] Tytul: \" + tytuly.get(poz) + \" | Tresc: \" + deszyfruj(tresci.get(poz), szyfr));\n                }\n                break;\n            case 4:\n                sortujBabelkowo(tytuly, tresci);\n                System.out.println(\"Posortowano notatki po tytule.\");\n                break;\n            case 0:\n                System.out.println(\"Koniec programu.\");\n                break;\n            default:\n                System.out.println(\"Nie ma takiej opcji.\");\n        }\n    } while (wybor != 0);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nZeta\nz1\n1\nAlfa\na1\n1\nBeta\nb1\n4\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPosortowano notatki po tytule.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Alfa | Tresc: a1\n[1] Tytul: Beta | Tresc: b1\n[2] Tytul: Zeta | Tresc: z1\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "sortujBabelkowo",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Alfa",
+      "Beta",
+      "Zeta"
+     ],
+     "tresci": [
+      "d1",
+      "e1",
+      "c1"
+     ]
+    }
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Zeta",
+      "Alfa",
+      "Beta"
+     ],
+     [
+      "z1",
+      "a1",
+      "b1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Alfa",
+      "Beta",
+      "Zeta"
+     ],
+     [
+      "a1",
+      "b1",
+      "z1"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "e",
+      "d",
+      "c",
+      "b",
+      "a"
+     ],
+     [
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+     ],
+     [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   }
+  ],
+  "hints": [
+   "Zamiana w tytuly jest dobra. Brakuje drugiej, takiej samej zamiany w tresci, na tych samych numerach j - 1 i j.",
+   "Ostatnia podpowiedź: pod zamianą tytułów dopisz String tmp2 = tresci.get(j - 1); tresci.set(j - 1, tresci.get(j)); tresci.set(j, tmp2);"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. To ćwiczenie „zobacz, co się stanie” z rozdziału 6, tym razem w projekcie.",
+  "quiz": [
+   {
+    "q": "Czemu ten błąd jest groźny, choć program się nie wywraca?",
+    "options": [
+     "Bo program działa wolniej",
+     "Bo notatki po cichu dostają cudze treści i nic tego nie zgłasza",
+     "Bo lista robi się krótsza"
+    ],
+    "answer": 1,
+    "why": "Listy mają te same długości, więc nic się nie wywraca. Ale pary są zepsute - hasło stoi przy złym tytule."
+   }
+  ],
+  "lesson": "Para list: każda zamiana rusza obie listy."
+ },
+ {
+  "id": 12,
+  "title": "Przegląd wymagań",
+  "ref": "Krok 6. Przegląd wymagań i zakazanych metod",
+  "view": "projekt",
+  "carry": 10,
+  "carry_todo": "Krok 6: przeglad wymagan - gra sprawdzi grep i mape z karty.",
+  "goal": "Cały program jest złożony. Teraz kontrola jak u prowadzącego: gra puści długą sesję z klawiatury (dodaj 3 notatki, sortuj, wyświetl, szukaj, zła opcja, 0) i sprawdzi Twój kod listą z kroku 6: grep na zakazane metody (Collections.sort, Arrays.sort, contains, replace) ma być pusty, a każde wymaganie z mapy 6b ma mieć miejsce w kodzie. Jeśli coś się nie zgadza, popraw. Potem odpowiedz na pytania.",
+  "starter": "// Najpierw zalicz poziom 10 - wtedy gra wstawi tu Twój kod z tamtego kroku\n// (albo kliknij nad kodem „Wstaw mój kod z poziomu 10”). Tu jest tylko szkielet z kroku 1.\npublic static void menu() {\n    // wypisz 5 linijek menu, od [1] Dodaj nowa notatke do [0] Wyjscie\n\n}\n\npublic static void main(String[] args) {\n    Scanner skan = new Scanner(System.in);\n    int wybor;\n    // do {\n    //     menu();  wczytaj wybor przez nextInt(), potem lekarstwo skan.nextLine();\n    //     switch (wybor): case 1-4 puste z break, case 0 -> Koniec programu., default -> Nie ma takiej opcji.\n    // } while (wybor != 0);\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nZeta\nz1\n1\nAlfa\na1\n1\nBeta\nb1\n4\n2\n3\nBeta\n3\nBrak\n9\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPosortowano notatki po tytule.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Alfa | Tresc: a1\n[1] Tytul: Beta | Tresc: b1\n[2] Tytul: Zeta | Tresc: z1\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[1] Tytul: Beta | Tresc: b1\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Brak\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nNie ma takiej opcji.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj",
+     "szukajLiniowo",
+     "sortujBabelkowo"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Alfa",
+      "Beta",
+      "Zeta"
+     ],
+     "tresci": [
+      "d1",
+      "e1",
+      "c1"
+     ]
+    }
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Zeta",
+      "Alfa",
+      "Beta"
+     ],
+     [
+      "z1",
+      "a1",
+      "b1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Alfa",
+      "Beta",
+      "Zeta"
+     ],
+     [
+      "a1",
+      "b1",
+      "z1"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "e",
+      "d",
+      "c",
+      "b",
+      "a"
+     ],
+     [
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+     ],
+     [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Ryba"
+     ],
+     "Ryba"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Ryba"
+     ],
+     "Kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Ala ma kota xyz XYZ 123",
+     3
+    ],
+    "ret": "Dod pd nrwd abc ABC 123"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra 9",
+     1
+    ],
+    "ret": "Afcsb 9"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "abc ABC",
+     3
+    ],
+    "ret": "xyz XYZ"
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Grep z kroku 6a pusty: brak Collections.sort, Arrays.sort, .contains(, .replace",
+    "re": "Collections\\.sort|Arrays\\.sort|\\.contains\\(|\\.replace",
+    "want": false,
+    "raw": true,
+    "msg": "Grep trafia: w kodzie jest Collections.sort, Arrays.sort, contains albo replace (komentarz też się liczy). PDF zabrania tych metod - zrób to własną pętlą, a komentarz z tymi słowami usuń."
+   },
+   {
+    "label": "Statyczne metody: menu, szyfruj, deszyfruj, wyswietl, szukajLiniowo, sortujBabelkowo",
+    "re": "(?=[\\s\\S]*public\\s+static\\s+void\\s+menu\\s*\\(\\s*\\))(?=[\\s\\S]*public\\s+static\\s+String\\s+szyfruj\\s*\\(\\s*String\\s+\\w+\\s*,\\s*int\\s+\\w+\\s*\\))(?=[\\s\\S]*public\\s+static\\s+String\\s+deszyfruj\\s*\\(\\s*String\\s+\\w+\\s*,\\s*int\\s+\\w+\\s*\\))(?=[\\s\\S]*public\\s+static\\s+void\\s+wyswietl\\s*\\()(?=[\\s\\S]*public\\s+static\\s+int\\s+szukajLiniowo\\s*\\()(?=[\\s\\S]*public\\s+static\\s+void\\s+sortujBabelkowo\\s*\\()",
+    "msg": "Brakuje którejś z metod z mapy 6b albo ma inny nagłówek: public static void menu(), public static String szyfruj(String text, int szyfr), public static String deszyfruj(String text, int szyfr), public static void wyswietl(...), public static int szukajLiniowo(...), public static void sortujBabelkowo(...)."
+   },
+   {
+    "label": "Listy nazywają się dokładnie tytuly i tresci",
+    "re": "ArrayList<String>\\s+tytuly\\b[\\s\\S]*ArrayList<String>\\s+tresci\\b|ArrayList<String>\\s+tresci\\b[\\s\\S]*ArrayList<String>\\s+tytuly\\b",
+    "msg": "W main zrób ArrayList<String> tytuly i ArrayList<String> tresci - dokładnie te nazwy (wymaga ich PDF)."
+   },
+   {
+    "label": "Szyfr Cezara na char[]: toCharArray(), new String(...), % 26",
+    "re": "(?=[\\s\\S]*toCharArray\\(\\))(?=[\\s\\S]*new\\s+String\\s*\\()(?=[\\s\\S]*%\\s*26)",
+    "msg": "Szyfr ma iść przez char[]: text.toCharArray(), działanie z % 26 na każdej literze i new String(znaki) na końcu."
+   },
+   {
+    "label": "Wyszukiwanie przez equals, sortowanie przez compareTo",
+    "re": "(?=[\\s\\S]*\\.equals\\()(?=[\\s\\S]*\\.compareTo\\()",
+    "msg": "W szukajLiniowo porównuj tytuły przez equals, a w sortujBabelkowo przez compareTo."
+   },
+   {
+    "label": "Pętla kończy się na 0: while (wybor != 0)",
+    "re": "while\\s*\\(\\s*wybor\\s*!=\\s*0\\s*\\)",
+    "msg": "Na końcu do-while ma stać while (wybor != 0); - zmienna z numerem opcji nazywa się wybor."
+   },
+   {
+    "label": "Lekarstwo skan.nextLine(); zaraz po nextInt()",
+    "re": "nextInt\\(\\)\\s*;\\s*(?:String\\s+\\w+\\s*=\\s*)?\\w+\\.nextLine\\(\\)\\s*;|case\\s+1\\s*(?::|->)\\s*\\{?\\s*\\w+\\.nextLine\\(\\)\\s*;",
+    "msg": "Zaraz po linijce z nextInt() wpisz osobną linijkę skan.nextLine(); - zjada Enter, który został po liczbie."
+   },
+   {
+    "label": "Wewnętrzna pętla jest krótsza z każdym przejściem (n - i)",
+    "re": "for\\s*\\(\\s*int\\s+(\\w+)\\s*=[^;]*;[^;]*;[^{]*\\{[^{}]*?for\\s*\\((?:[^;]*\\b\\1\\b[^;]*;|[^;]*;[^;]*\\b\\1\\b[^;]*;)",
+    "msg": "W wewnętrznej pętli warunek ma odejmować numer przejścia (np. j < n - i) - koniec listy jest już posortowany i nie trzeba go znowu sprawdzać."
+   }
+  ],
+  "hints": [
+   "Czerwony punkt listy mówi, którego wymagania gra nie widzi. Zacznij od grepu: zakazane metody zamień na własne pętle (sortujBabelkowo, szukajLiniowo).",
+   "Nazwy metod i list muszą być dokładnie jak w mapie 6b: menu, szyfruj, deszyfruj, wyswietl, szukajLiniowo, sortujBabelkowo, tytuly, tresci.",
+   "Ostatnia podpowiedź: porównaj nagłówki swoich metod z punktem „Statyczne metody” - typ wyniku, nazwa, typy parametrów."
+  ],
+  "tools": [
+   {
+    "code": "grep -nE 'Collections\\.sort|Arrays\\.sort|\\.contains\\(|\\.replace' Main.java",
+    "kind": "szukanie zakazanych metod",
+    "desc": "grep przeszukuje plik i wypisuje każdą linię z numerem, w której pasuje wzór. Pusty wynik = nie ma zakazanych metod. Gra robi to samo za Ciebie (bez komentarzy i napisów).",
+    "ex": "grep -n 'println' Notatki.java\n# 12:    System.out.println(\"Hej\");"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "grep z kroku 6a trafia w linię z lista.contains(x). PDF zakazuje String.contains. Co robisz?",
+    "options": [
+     "Zostawiam, bo to ArrayList, nie String",
+     "Zamieniam na własną pętlę - w tym projekcie zakazujemy obu",
+     "Dopisuję komentarz, że to dozwolone"
+    ],
+    "answer": 1,
+    "why": "Karta mówi wprost: bezpieczniej zakazać obu. Własna pętla z equals robi to samo."
+   },
+   {
+    "q": "Gdzie w kodzie widać wymaganie „treść szyfrowana przed add”?",
+    "options": [
+     "W case 1: tresci.add(szyfruj(tresc, szyfr))",
+     "W wyswietl",
+     "W menu()"
+    ],
+    "answer": 0,
+    "why": "Szyfrowanie stoi w środku add - do listy wchodzi już zaszyfrowany tekst."
+   },
+   {
+    "q": "Która metoda NIE może się pojawić w projekcie?",
+    "options": [
+     "compareTo",
+     "Collections.sort",
+     "equals",
+     "toCharArray"
+    ],
+    "answer": 1,
+    "why": "Collections.sort to gotowe sortowanie - masz napisać własne bąbelkowe. compareTo, equals i toCharArray są dozwolone."
+   }
+  ],
+  "lesson": "Oddajesz program, który przechodzi testy kroków 1-5, ma pusty grep i pokrywa każdy wiersz mapy 6b."
+ },
+ {
+  "id": 13,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian końcowy",
+  "view": "projekt",
+  "goal": "Pusty plik i cały program od zera, bez podglądania (karta daje na to 60 minut): menu, dwie listy, szyfr, wyświetlanie, wyszukiwanie, sortowanie. Napisy dokładnie jak w krokach 1-5. Gra uruchomi testy kroków 1-5 po kolei, sprawdzi grep i mapę 6b. Podpowiedzi są tu tylko słowami.",
+  "starter": "// Sprawdzian: caly program od zera.\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "1\nZeta\nz1\n1\nAlfa\na1\n1\nBeta\nb1\n4\n2\n3\nBeta\n3\nBrak\n9\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPosortowano notatki po tytule.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Alfa | Tresc: a1\n[1] Tytul: Beta | Tresc: b1\n[2] Tytul: Zeta | Tresc: z1\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[1] Tytul: Beta | Tresc: b1\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Brak\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nNie ma takiej opcji.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj",
+     "szukajLiniowo",
+     "sortujBabelkowo"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Alfa",
+      "Beta",
+      "Zeta"
+     ],
+     "tresci": [
+      "d1",
+      "e1",
+      "c1"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "9\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nNie ma takiej opcji.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu"
+    ]
+   },
+   {
+    "main": true,
+    "in": "2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nBrak notatek.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "wyswietl"
+    ]
+   },
+   {
+    "main": true,
+    "in": "1\nAla ma kota xyz XYZ 123\nAla ma kota xyz XYZ 123\n2\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\n[0] Tytul: Ala ma kota xyz XYZ 123 | Tresc: Ala ma kota xyz XYZ 123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "wyswietl",
+     "deszyfruj"
+    ],
+    "named_lists_end": {
+     "tytuly": [
+      "Ala ma kota xyz XYZ 123"
+     ],
+     "tresci": [
+      "Dod pd nrwd abc ABC 123"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "1\nHaslo WiFi\nkot123\n3\nHaslo WiFi\n3\nBrak\n0\n",
+    "out": "[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj tytul:\nPodaj tresc:\nDodano notatke.\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\n[0] Tytul: Haslo WiFi | Tresc: kot123\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nPodaj szukany tytul:\nNie znalazlem notatki o tytule Brak\n[1] Dodaj nowa notatke\n[2] Wyswietl wszystkie notatki\n[3] Wyszukaj po tytule\n[4] Posortuj notatki\n[0] Wyjscie\nKoniec programu.",
+    "calls": [
+     "menu",
+     "szyfruj",
+     "szukajLiniowo",
+     "deszyfruj"
+    ],
+    "uses": [
+     "equals"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Ala ma kota xyz XYZ 123",
+     3
+    ],
+    "ret": "Dod pd nrwd abc ABC 123"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra 9",
+     1
+    ],
+    "ret": "Afcsb 9"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "abc ABC",
+     3
+    ],
+    "ret": "xyz XYZ"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Dod pd nrwd abc ABC 123",
+     3
+    ],
+    "ret": "Ala ma kota xyz XYZ 123"
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Ryba"
+     ],
+     "Ryba"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Ryba"
+     ],
+     "Kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies"
+     ],
+     "Lis"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Kot",
+      "Pies",
+      "Kot"
+     ],
+     "Kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajLiniowo",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [],
+     "Kot"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Zeta",
+      "Alfa",
+      "Beta"
+     ],
+     [
+      "z1",
+      "a1",
+      "b1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Alfa",
+      "Beta",
+      "Zeta"
+     ],
+     [
+      "a1",
+      "b1",
+      "z1"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "e",
+      "d",
+      "c",
+      "b",
+      "a"
+     ],
+     [
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+     ]
+    ],
+    "lists_end": [
+     [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+     ],
+     [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "ala",
+      "Ola",
+      "Ala"
+     ],
+     [
+      "1",
+      "2",
+      "3"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ala",
+      "Ola",
+      "ala"
+     ],
+     [
+      "3",
+      "2",
+      "1"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "sortujBabelkowo",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ala",
+      "Bob",
+      "Ewa"
+     ],
+     [
+      "1",
+      "2",
+      "3"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ala",
+      "Bob",
+      "Ewa"
+     ],
+     [
+      "1",
+      "2",
+      "3"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "Grep z kroku 6a pusty: brak Collections.sort, Arrays.sort, .contains(, .replace",
+    "re": "Collections\\.sort|Arrays\\.sort|\\.contains\\(|\\.replace",
+    "want": false,
+    "raw": true,
+    "msg": "Grep trafia: w kodzie jest Collections.sort, Arrays.sort, contains albo replace (komentarz też się liczy). PDF zabrania tych metod - zrób to własną pętlą, a komentarz z tymi słowami usuń."
+   },
+   {
+    "label": "Statyczne metody: menu, szyfruj, deszyfruj, wyswietl, szukajLiniowo, sortujBabelkowo",
+    "re": "(?=[\\s\\S]*public\\s+static\\s+void\\s+menu\\s*\\(\\s*\\))(?=[\\s\\S]*public\\s+static\\s+String\\s+szyfruj\\s*\\(\\s*String\\s+\\w+\\s*,\\s*int\\s+\\w+\\s*\\))(?=[\\s\\S]*public\\s+static\\s+String\\s+deszyfruj\\s*\\(\\s*String\\s+\\w+\\s*,\\s*int\\s+\\w+\\s*\\))(?=[\\s\\S]*public\\s+static\\s+void\\s+wyswietl\\s*\\()(?=[\\s\\S]*public\\s+static\\s+int\\s+szukajLiniowo\\s*\\()(?=[\\s\\S]*public\\s+static\\s+void\\s+sortujBabelkowo\\s*\\()",
+    "msg": "Brakuje którejś z metod z mapy 6b albo ma inny nagłówek: public static void menu(), public static String szyfruj(String text, int szyfr), public static String deszyfruj(String text, int szyfr), public static void wyswietl(...), public static int szukajLiniowo(...), public static void sortujBabelkowo(...)."
+   },
+   {
+    "label": "Listy nazywają się dokładnie tytuly i tresci",
+    "re": "ArrayList<String>\\s+tytuly\\b[\\s\\S]*ArrayList<String>\\s+tresci\\b|ArrayList<String>\\s+tresci\\b[\\s\\S]*ArrayList<String>\\s+tytuly\\b",
+    "msg": "W main zrób ArrayList<String> tytuly i ArrayList<String> tresci - dokładnie te nazwy (wymaga ich PDF)."
+   },
+   {
+    "label": "Szyfr Cezara na char[]: toCharArray(), new String(...), % 26",
+    "re": "(?=[\\s\\S]*toCharArray\\(\\))(?=[\\s\\S]*new\\s+String\\s*\\()(?=[\\s\\S]*%\\s*26)",
+    "msg": "Szyfr ma iść przez char[]: text.toCharArray(), działanie z % 26 na każdej literze i new String(znaki) na końcu."
+   },
+   {
+    "label": "Wyszukiwanie przez equals, sortowanie przez compareTo",
+    "re": "(?=[\\s\\S]*\\.equals\\()(?=[\\s\\S]*\\.compareTo\\()",
+    "msg": "W szukajLiniowo porównuj tytuły przez equals, a w sortujBabelkowo przez compareTo."
+   },
+   {
+    "label": "Pętla kończy się na 0: while (wybor != 0)",
+    "re": "while\\s*\\(\\s*wybor\\s*!=\\s*0\\s*\\)",
+    "msg": "Na końcu do-while ma stać while (wybor != 0); - zmienna z numerem opcji nazywa się wybor."
+   },
+   {
+    "label": "Pętla do-while: menu wraca po każdej opcji",
+    "re": "\\bdo\\s*\\{[\\s\\S]*\\}\\s*while\\s*\\(",
+    "msg": "Brakuje pętli do { ... } while (warunek); - menu ma się pokazać co najmniej raz i wracać po każdej opcji."
+   },
+   {
+    "label": "switch (wybor) z case i default",
+    "re": "switch\\s*\\(\\s*\\w+\\s*\\)[\\s\\S]*\\bdefault\\s*(?::|->)",
+    "msg": "Wybór obsługuje switch z case 1-4, case 0 i default (gdy numeru nie ma w menu)."
+   },
+   {
+    "label": "Lekarstwo skan.nextLine(); zaraz po nextInt()",
+    "re": "nextInt\\(\\)\\s*;\\s*(?:String\\s+\\w+\\s*=\\s*)?\\w+\\.nextLine\\(\\)\\s*;|case\\s+1\\s*(?::|->)\\s*\\{?\\s*\\w+\\.nextLine\\(\\)\\s*;",
+    "msg": "Zaraz po linijce z nextInt() wpisz osobną linijkę skan.nextLine(); - zjada Enter, który został po liczbie."
+   },
+   {
+    "label": "Wewnętrzna pętla jest krótsza z każdym przejściem (n - i)",
+    "re": "for\\s*\\(\\s*int\\s+(\\w+)\\s*=[^;]*;[^;]*;[^{]*\\{[^{}]*?for\\s*\\((?:[^;]*\\b\\1\\b[^;]*;|[^;]*;[^;]*\\b\\1\\b[^;]*;)",
+    "msg": "W wewnętrznej pętli warunek ma odejmować numer przejścia (np. j < n - i) - koniec listy jest już posortowany i nie trzeba go znowu sprawdzać."
+   }
+  ],
+  "hints": [
+   "Buduj w tej samej kolejności co w krokach: szkielet menu, listy, szyfr, szukanie, sortowanie. Po każdym kawałku kliknij Uruchom.",
+   "Czerwony punkt pod wynikiem mówi, który krok jeszcze nie działa - wróć do jego poziomu i karty, nie do gotowego kodu.",
+   "Ostatnia podpowiedź (bez kodu, to sprawdzian): lekarstwo po nextInt, szyfr przed add, equals w szukaniu, zamiana w obu listach."
+  ],
+  "tools": [],
+  "tools_note": "Wszystko już znasz. Teraz składasz to sam.",
+  "quiz": [
+   {
+    "q": "Prowadzący pyta: czemu tytuły nie są szyfrowane?",
+    "options": [
+     "Bo PDF każe szyfrować treść, a po tytułach sortujesz alfabetycznie",
+     "Bo szyfr nie działa na tytuły",
+     "Bo zapomniałem"
+    ],
+    "answer": 0,
+    "why": "PDF szyfruje treść notatki. Tytuły zostają jawne, bo [4] sortuje je alfabetycznie - po szyfrze kolejność liter by się zmieniła (np. z przechodzi w c) i alfabet przestałby się zgadzać."
+   },
+   {
+    "q": "Wpisujesz 1, potem tytuł i treść. Ile razy program woła nextLine()?",
+    "options": [
+     "2 razy",
+     "3 razy: lekarstwo, tytuł, treść",
+     "1 raz"
+    ],
+    "answer": 1,
+    "why": "Najpierw lekarstwo zjada Enter po 1, potem dwa prawdziwe odczyty: tytuł i treść."
+   }
+  ],
+  "lesson": "Cały projekt: menu w pętli, dwie listy jako tabela, szyfr przed add, wyszukiwanie przez equals, sortowanie z zamianą w obu listach."
+ }
+]

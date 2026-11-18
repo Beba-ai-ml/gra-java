@@ -1,0 +1,677 @@
+[
+  {
+    "id": 1,
+    "title": "Większa z dwóch",
+    "ref": "Ćwiczenie 2.1: większa z dwóch",
+    "goal": "Napisz metodę wieksza(int a, int b), która ZWRACA większą z dwóch liczb. W main: wypisz wieksza(3, 8), potem wieksza(-2, -7), a na końcu zapisz wieksza(10, 4) do zmiennej w i wypisz w = ...",
+    "starter": "public static int wieksza(int a, int b) {\n    // oddaj wieksza z liczb a i b\n\n}\n\npublic static void main(String[] args) {\n    // 1. wypisz wieksza(3, 8)\n    // 2. wypisz wieksza(-2, -7)\n    // 3. zapisz wieksza(10, 4) do w i wypisz \"w = \" + w\n\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "8\n-2\nw = 10",
+        "calls": [
+          "wieksza"
+        ]
+      },
+      {
+        "call": "wieksza",
+        "types": [
+          "int",
+          "int"
+        ],
+        "args": [
+          5,
+          5
+        ],
+        "ret": 5
+      },
+      {
+        "call": "wieksza",
+        "types": [
+          "int",
+          "int"
+        ],
+        "args": [
+          -1,
+          0
+        ],
+        "ret": 0
+      },
+      {
+        "call": "wieksza",
+        "types": [
+          "int",
+          "int"
+        ],
+        "args": [
+          9,
+          2
+        ],
+        "ret": 9
+      }
+    ],
+    "hints": [
+      "W metodzie porównaj a z b. Jeśli a jest większe - oddaj a. W każdym innym przypadku oddaj b.",
+      "Wypisywanie robisz w main, nie w metodzie. W main wywołanie wieksza(3, 8) możesz włożyć prosto do println(...).",
+      "Ostatnia podpowiedź: if (a > b) { return a; } a pod spodem return b;"
+    ],
+    "roles": {
+      "a": "pierwsza liczba, która wchodzi do metody",
+      "b": "druga liczba"
+    },
+    "tools": [
+      {
+        "code": "public static",
+        "kind": "nagłówek metody",
+        "desc": "Na razie każda Twoja metoda zaczyna się od public static. main jest static, a z metody static wołasz tylko metody static.",
+        "ex": "public static int dodaj(int x, int y) {\n    return x + y;\n}"
+      },
+      {
+        "code": "int (typ wyniku)",
+        "kind": "co metoda oddaje",
+        "desc": "Słowo przed nazwą metody mówi, jaki wynik metoda oddaje. int to liczba całkowita.",
+        "ex": "public static int zawszePiec() {\n    return 5;\n}"
+      },
+      {
+        "code": "( parametry )",
+        "kind": "co wchodzi do metody",
+        "desc": "W nawiasie po nazwie wypisujesz, co metoda dostaje. Każdy parametr ma typ i nazwę. Przy wywołaniu wartości wchodzą w tej samej kolejności.",
+        "ex": "public static int dodaj(int x, int y) {\n    return x + y;\n}\n// dodaj(2, 3): x = 2, y = 3, oddaje 5"
+      },
+      {
+        "code": "return",
+        "kind": "oddaj wynik",
+        "desc": "Kończy metodę i oddaje wartość do miejsca, z którego ją wywołano.",
+        "ex": "public static int podwoj(int x) {\n    return x * 2;\n}\n// int w = podwoj(4);   w dostaje 8"
+      },
+      {
+        "code": "wywołanie metody",
+        "kind": "użycie w main",
+        "desc": "Piszesz nazwę metody i w nawiasie wartości. Wynik możesz od razu wypisać albo zapisać do zmiennej.",
+        "ex": "System.out.println(dodaj(2, 3));   // na ekranie: 5\nint s = dodaj(10, 1);              // s = 11"
+      },
+      {
+        "code": "public static void main",
+        "kind": "start programu",
+        "desc": "Od tej metody Java zaczyna program. Wpisz psvm i naciśnij Tab, a edytor sam ją napisze.",
+        "ex": "public static void main(String[] args) {\n    System.out.println(\"start\");\n}\n// na ekranie: start"
+      }
+    ],
+    "quiz": [
+      {
+        "q": "Co dostaje zmienna w po int w = wieksza(10, 4);?",
+        "options": [
+          "10",
+          "4",
+          "nic, bo metoda tylko porównuje"
+        ],
+        "answer": 0,
+        "why": "Metoda robi return a, a a = 10. return oddaje 10 do main, a main wpisuje je do w."
+      }
+    ],
+    "lesson": "Metoda int dostaje wartości przez parametry i oddaje wynik przez return. Wypisywanie zostaje w main."
+  },
+  {
+    "id": 2,
+    "title": "Wypisz tablicę metodą",
+    "ref": "Ćwiczenie 2.2: wypisz tablicę metodą",
+    "goal": "Przenieś poziom 1 z rozdziału 1 do metody: wypiszTablice(int tab[]) wypisuje każdą szufladę w osobnej linijce: numer, spacja, wartość (np. 0 4). W main zrób tablicę {4, 7, 1} i wywołaj metodę.",
+    "starter": "public static void wypiszTablice(int tab[]) {\n    // wypisz kazda szuflade: numer wartosc\n\n}\n\npublic static void main(String[] args) {\n    int tab[] = {4, 7, 1};\n    // wywolaj wypiszTablice\n\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "0 4\n1 7\n2 1",
+        "calls": [
+          "wypiszTablice"
+        ]
+      },
+      {
+        "call": "wypiszTablice",
+        "types": [
+          "int[]"
+        ],
+        "args": [
+          [
+            9,
+            3
+          ]
+        ],
+        "out": "0 9\n1 3"
+      },
+      {
+        "call": "wypiszTablice",
+        "types": [
+          "int[]"
+        ],
+        "args": [
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "out": "0 5\n1 6\n2 7\n3 8"
+      }
+    ],
+    "hints": [
+      "Metoda nic nie oddaje, więc jest void i nie ma return z wartością. W środku ta sama pętla co w rozdziale 1.",
+      "W main wystarczy jedna linijka: nazwa metody i w nawiasie tablica."
+    ],
+    "tools": [
+      {
+        "code": "void",
+        "kind": "metoda nic nie oddaje",
+        "desc": "void zamiast int znaczy: metoda coś robi (np. wypisuje), ale nie oddaje żadnej wartości. Nie ma w niej return z liczbą.",
+        "ex": "public static void przywitaj() {\n    System.out.println(\"czesc\");\n}"
+      },
+      {
+        "code": "int tab[] jako parametr",
+        "kind": "tablica wchodzi do metody",
+        "desc": "Metoda może dostać całą tablicę. W środku używasz jej pod nazwą parametru, tak jak zwykłej tablicy.",
+        "ex": "public static int pierwszy(int t[]) {\n    return t[0];\n}\n// pierwszy(oceny) oddaje pierwsza ocene"
+      },
+      {
+        "code": "wywołanie metody void",
+        "kind": "osobna linijka",
+        "desc": "Metodę void wołasz w osobnej linijce, bez println i bez int ... =, bo nic nie oddaje.",
+        "ex": "przywitaj();   // na ekranie: czesc"
+      }
+    ],
+    "lesson": "void = metoda coś robi, ale nic nie oddaje. Tablica wchodzi do metody jako parametr."
+  },
+  {
+    "id": 3,
+    "title": "Numer największego w metodzie",
+    "ref": "Ćwiczenie 2.3: numer największego w metodzie",
+    "goal": "Napisz indeksMax(int tab[]), która ZWRACA numer największego elementu (przy remisie pierwszego). W main dla {4, 7, 1, 9, 2} zapisz wynik do nr i wypisz dwie linijki: indeks max: ... oraz wartosc: ...",
+    "starter": "public static int indeksMax(int tab[]) {\n    // oddaj NUMER najwiekszego elementu\n\n}\n\npublic static void main(String[] args) {\n    int tab[] = {4, 7, 1, 9, 2};\n    // zapisz indeksMax(tab) do nr i wypisz dwie linijki\n\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "indeks max: 3\nwartosc: 9",
+        "calls": [
+          "indeksMax"
+        ]
+      },
+      {
+        "call": "indeksMax",
+        "types": [
+          "int[]"
+        ],
+        "args": [
+          [
+            9,
+            1,
+            5
+          ]
+        ],
+        "ret": 0
+      },
+      {
+        "call": "indeksMax",
+        "types": [
+          "int[]"
+        ],
+        "args": [
+          [
+            3,
+            8,
+            8,
+            1
+          ]
+        ],
+        "ret": 1
+      },
+      {
+        "call": "indeksMax",
+        "types": [
+          "int[]"
+        ],
+        "args": [
+          [
+            1,
+            2,
+            3
+          ]
+        ],
+        "ret": 2
+      },
+      {
+        "call": "indeksMax",
+        "types": [
+          "int[]"
+        ],
+        "args": [
+          [
+            -5,
+            -2,
+            -9
+          ]
+        ],
+        "ret": 1
+      }
+    ],
+    "hints": [
+      "Wnętrze metody to poziom 3 z rozdziału 1. Na końcu return nr;",
+      "W main wartość pod numerem to tab[nr] - tablica tab jest w main, a nr dostajesz z metody."
+    ],
+    "roles": {
+      "nr": "numer najlepszej szuflady do tej pory"
+    },
+    "tools": [],
+    "tools_note": "Nic nowego: metoda int z parametrem tablicy i return. Wszystko było na poziomach 1 i 2.",
+    "lesson": "Metoda oddaje numer, a main używa go dalej: tab[nr]."
+  },
+  {
+    "id": 4,
+    "title": "Heron w metodzie",
+    "ref": "Ćwiczenie 2.4: pierwiastek w metodzie (Heron)",
+    "goal": "Twój aisd_lab02 liczył pierwiastek metodą Herona w main, ze Scannerem. Przerób go na metodę pierwiastek(double l), bez Scannera. Algorytm: a = l, b = 1, eps = 0.0000001; dopóki |a - b| > eps: a = (a + b) / 2, b = l / a. Wynik: (a + b) / 2. W main wypisz pierwiastek(16) i pierwiastek(2).",
+    "starter": "public static double pierwiastek(double l) {\n    double a = l;\n    double b = 1;\n    double eps = 0.0000001;\n    // petla while jak w aisd_lab02, potem return\n\n}\n\npublic static void main(String[] args) {\n    // wypisz pierwiastek(16) i pierwiastek(2)\n\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "4.0\n1.414213562373095",
+        "calls": [
+          "pierwiastek"
+        ]
+      },
+      {
+        "call": "pierwiastek",
+        "types": [
+          "double"
+        ],
+        "args": [
+          9
+        ],
+        "ret": "3.0"
+      },
+      {
+        "call": "pierwiastek",
+        "types": [
+          "double"
+        ],
+        "args": [
+          10
+        ],
+        "ret": "3.162277660168379"
+      }
+    ],
+    "hints": [
+      "Warunek pętli: while (Math.abs(a - b) > eps). Math.abs to wartość bezwzględna (bez minusa).",
+      "W środku pętli dwie linijki: najpierw nowe a, potem nowe b (b liczysz z NOWEGO a). Po pętli return (a + b) / 2; Jeśli różnią się tylko ostatnie cyfry, sprawdź, czy wzór i eps są dokładnie takie jak wyżej (Math.sqrt da inne końcówki)."
+    ],
+    "tools": [
+      {
+        "code": "double",
+        "kind": "liczba z przecinkiem",
+        "desc": "Typ dla liczb z częścią po przecinku. W Javie przecinek piszesz kropką: 2.5. Metoda double oddaje taką liczbę.",
+        "ex": "double cena = 2.5;\nSystem.out.println(cena * 2);   // na ekranie: 5.0"
+      },
+      {
+        "code": "Math.abs( )",
+        "kind": "wartość bezwzględna",
+        "desc": "Oddaje liczbę bez minusa: Math.abs(-3) to 3, Math.abs(3) to 3.",
+        "ex": "double roznica = 2 - 7;\nSystem.out.println(Math.abs(roznica));   // na ekranie: 5.0"
+      },
+      {
+        "code": "while",
+        "kind": "pętla z warunkiem",
+        "desc": "Kręci się tak długo, jak warunek w nawiasie jest prawdą.",
+        "ex": "double x = 100;\nwhile (x > 10) {\n    x = x / 2;\n}\n// x po petli: 6.25"
+      }
+    ],
+    "lesson": "Wejście przez parametr zamiast Scannera, wynik przez return zamiast println. Tak wygląda każda metoda w projekcie."
+  },
+  {
+    "id": 5,
+    "title": "Zmienna z main",
+    "ref": "Zmienne z `main` nie wchodzą do metody",
+    "goal": "Ten kod się nie kompiluje: metoda pokaz() używa x, a x jest tylko w main. Napraw tak, żeby x wchodziło do metody jako parametr: pokaz(int x). Program ma wypisać x = 5.",
+    "starter": "public static void pokaz() {\n    System.out.println(\"x = \" + x);\n}\n\npublic static void main(String[] args) {\n    int x = 5;\n    pokaz();\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "x = 5",
+        "calls": [
+          "pokaz"
+        ]
+      },
+      {
+        "call": "pokaz",
+        "types": [
+          "int"
+        ],
+        "args": [
+          7
+        ],
+        "out": "x = 7"
+      }
+    ],
+    "hints": [
+      "cannot find symbol przy x znaczy: metoda nie widzi zmiennych z main. Ma swoje własne szuflady.",
+      "Dopisz parametr w nagłówku: pokaz(int x). I podaj wartość przy wywołaniu: pokaz(x);"
+    ],
+    "tools": [],
+    "tools_note": "Nic nowego - to parametr, znasz go z poziomu 1.",
+    "quiz": [
+      {
+        "q": "Czy metoda widzi zmienną zadeklarowaną w main?",
+        "options": [
+          "Tak, każda metoda widzi wszystko w pliku",
+          "Nie, musi ją dostać jako parametr"
+        ],
+        "answer": 1,
+        "why": "Metoda ma własne zmienne. Wartość z main wchodzi do niej tylko przez parametr."
+      }
+    ],
+    "lesson": "Metoda nie widzi zmiennych z main. Co ma do niej wejść, przekazujesz w nawiasie."
+  },
+  {
+    "id": 6,
+    "title": "void nie da się wypisać",
+    "ref": "`int` vs `void`",
+    "goal": "Ten kod się nie kompiluje. Przeczytaj błąd i popraw main tak, żeby na ekranie było witaj Ola. Metody nie zmieniaj.",
+    "starter": "public static void witaj(String imie) {\n    System.out.println(\"witaj \" + imie);\n}\n\npublic static void main(String[] args) {\n    System.out.println(witaj(\"Ola\"));\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "witaj Ola",
+        "calls": [
+          "witaj"
+        ]
+      },
+      {
+        "call": "witaj",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "Ala"
+        ],
+        "out": "witaj Ala"
+      }
+    ],
+    "hints": [
+      "'void' type not allowed here: println chce coś wypisać, a witaj nic nie oddaje.",
+      "Metoda sama wypisuje. W main zostaw samo wywołanie w osobnej linijce."
+    ],
+    "tools": [
+      {
+        "code": "String",
+        "kind": "tekst",
+        "desc": "Typ dla tekstu. Tekst piszesz w cudzysłowie. Plusem doklejasz go do innego tekstu.",
+        "ex": "String imie = \"Kuba\";\nSystem.out.println(\"hej \" + imie);   // na ekranie: hej Kuba"
+      }
+    ],
+    "quiz": [
+      {
+        "q": "Którą metodę możesz włożyć do println(...)?",
+        "options": [
+          "Tylko taką, która coś oddaje (np. int)",
+          "Każdą, także void"
+        ],
+        "answer": 0,
+        "why": "println wypisuje wartość. void nic nie oddaje, więc nie ma czego wypisać."
+      }
+    ],
+    "lesson": "Metodę void wołasz osobno. Do println i do zmiennej wchodzi tylko metoda, która coś oddaje."
+  },
+  {
+    "id": 7,
+    "title": "Brakujące static",
+    "ref": "`int` vs `void`",
+    "goal": "Ten kod się nie kompiluje, bo w nagłówku metody czegoś brakuje. Napraw, żeby wypisało 6.",
+    "starter": "public int dodaj(int x, int y) {\n    return x + y;\n}\n\npublic static void main(String[] args) {\n    System.out.println(dodaj(2, 4));\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "6",
+        "calls": [
+          "dodaj"
+        ]
+      },
+      {
+        "call": "dodaj",
+        "types": [
+          "int",
+          "int"
+        ],
+        "args": [
+          10,
+          -3
+        ],
+        "ret": 7
+      }
+    ],
+    "hints": [
+      "Przeczytaj błąd: non-static method ... cannot be referenced from a static context.",
+      "Porównaj nagłówek dodaj z nagłówkiem main. Jednego słowa brakuje."
+    ],
+    "tools": [],
+    "tools_note": "Nic nowego - patrz na public static z poziomu 1.",
+    "lesson": "Na razie każda metoda: public static. Bez static main jej nie zawoła."
+  },
+  {
+    "id": 8,
+    "title": "Brakujący return",
+    "ref": "Typowe błędy",
+    "goal": "Ten kod się nie kompiluje: missing return statement. Gdy a nie jest większe od b, metoda dochodzi do końca i nie ma czego oddać. Dopisz brakującą linijkę, żeby program wypisał 8, potem -2, potem w = 10.",
+    "starter": "public static int wieksza(int a, int b) {\n    if (a > b) {\n        return a;\n    }\n}\n\npublic static void main(String[] args) {\n    System.out.println(wieksza(3, 8));\n    System.out.println(wieksza(-2, -7));\n    int w = wieksza(10, 4);\n    System.out.println(\"w = \" + w);\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "8\n-2\nw = 10",
+        "calls": [
+          "wieksza"
+        ]
+      },
+      {
+        "call": "wieksza",
+        "types": [
+          "int",
+          "int"
+        ],
+        "args": [
+          2,
+          6
+        ],
+        "ret": 6
+      },
+      {
+        "call": "wieksza",
+        "types": [
+          "int",
+          "int"
+        ],
+        "args": [
+          4,
+          4
+        ],
+        "ret": 4
+      }
+    ],
+    "hints": [
+      "Prześledź wieksza(3, 8): czy 3 > 8? Nie. To do którego return dochodzi metoda?",
+      "Pod klamrą zamykającą if dopisz, co metoda ma oddać w każdym innym przypadku."
+    ],
+    "roles": {
+      "a": "pierwsza liczba",
+      "b": "druga liczba"
+    },
+    "tools": [],
+    "tools_note": "Nic nowego - to return z poziomu 1. Chodzi o to, żeby każda droga przez metodę kończyła się return.",
+    "quiz": [
+      {
+        "q": "Metoda int ma tylko if (...) { return a; }. Co, gdy warunek nie wejdzie?",
+        "options": [
+          "Metoda odda 0",
+          "Java nie skompiluje takiej metody: nie ma czego oddać",
+          "Metoda odda a"
+        ],
+        "answer": 1,
+        "why": "Kompilator sprawdza każdą drogę przez metodę. Jeśli na którejś nie ma return, zgłasza missing return statement."
+      }
+    ],
+    "lesson": "W metodzie int każda droga musi kończyć się return. if bez else to za mało."
+  },
+  {
+    "id": 9,
+    "title": "Drukuje zamiast oddać",
+    "ref": "`int` vs `void`",
+    "goal": "potroj miało ODDAWAĆ trzykrotność, a tylko ją wypisuje i oddaje 0. Uruchom i zobacz, co dostaje w. Napraw metodę, żeby na ekranie było tylko w = 15.",
+    "starter": "public static int potroj(int x) {\n    System.out.println(x * 3);\n    return 0;\n}\n\npublic static void main(String[] args) {\n    int w = potroj(5);\n    System.out.println(\"w = \" + w);\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "w = 15",
+        "calls": [
+          "potroj"
+        ]
+      },
+      {
+        "call": "potroj",
+        "types": [
+          "int"
+        ],
+        "args": [
+          4
+        ],
+        "ret": 12,
+        "out": ""
+      }
+    ],
+    "hints": [
+      "Popatrz na ekran po uruchomieniu: najpierw 15 (println w metodzie), potem w = 0 (bo return 0).",
+      "W metodzie nie wypisuj nic. Wynik ma wyjść przez return."
+    ],
+    "tools": [],
+    "tools_note": "Nic nowego - chodzi o różnicę między println a return.",
+    "lesson": "println pokazuje liczbę na ekranie, return oddaje ją do programu. To nie to samo."
+  },
+  {
+    "id": 10,
+    "title": "Tablica to te same szuflady",
+    "ref": "Zmienne z `main` nie wchodzą do metody",
+    "goal": "Napisz void podwoj(int tab[]), która podwaja każdą szufladę. Nic nie zwraca, a mimo to main zobaczy zmienione szuflady, bo metoda dostaje TĘ SAMĄ tablicę, nie kopię. W main: tablica {4, 7, 1}, wywołaj podwoj, potem wypisz tab[0], tab[1], tab[2] w jednej linijce: 8 14 2",
+    "starter": "public static void podwoj(int tab[]) {\n    // podwoj kazda szuflade\n\n}\n\npublic static void main(String[] args) {\n    int tab[] = {4, 7, 1};\n    podwoj(tab);\n    System.out.println(tab[0] + \" \" + tab[1] + \" \" + tab[2]);\n}\n",
+    "tests": [
+      {
+        "main": true,
+        "out": "8 14 2",
+        "calls": [
+          "podwoj"
+        ]
+      },
+      {
+        "call": "podwoj",
+        "types": [
+          "int[]"
+        ],
+        "args": [
+          [
+            1,
+            2,
+            3,
+            4
+          ]
+        ],
+        "arr_end": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      {
+        "call": "podwoj",
+        "types": [
+          "int[]"
+        ],
+        "args": [
+          [
+            5
+          ]
+        ],
+        "arr_end": [
+          10
+        ]
+      }
+    ],
+    "hints": [
+      "Pętla po wszystkich szufladach. W środku nowa wartość szuflady to jej stara wartość razy 2.",
+      "Nie potrzebujesz return. Szuflady zmieniają się w tej samej tablicy, którą ma main.",
+      "Ostatnia podpowiedź: w pętli tab[i] = tab[i] * 2;"
+    ],
+    "tools": [],
+    "tools_note": "Nic nowego. Nowa jest tylko myśl: tablica w parametrze to te same szuflady co w main.",
+    "quiz": [
+      {
+        "q": "Metoda void zmieniła tab[0]. Co widzi main?",
+        "options": [
+          "Starą wartość, bo metoda dostała kopię",
+          "Nową wartość, bo to te same szuflady"
+        ],
+        "answer": 1,
+        "why": "Tablica nie jest kopiowana. Metoda i main patrzą na te same szuflady."
+      }
+    ],
+    "lesson": "Zwykła liczba wchodzi do metody jako kopia. Tablica - jako te same szuflady."
+  },
+  {
+    "id": 11,
+    "title": "Sprawdzian",
+    "ref": "Sprawdzian",
+    "goal": "Z pamięci, od pustego pliku: 1) metoda potroj(int x) oddaje trzykrotność x, 2) metoda witaj(String imie) wypisuje witaj i imię, 3) main wypisuje potroj(5) i woła witaj(\"Ola\"). Na ekranie: 15, potem witaj Ola. Na koniec pytanie pod kodem.",
+    "starter": "",
+    "tests": [
+      {
+        "main": true,
+        "out": "15\nwitaj Ola",
+        "calls": [
+          "potroj",
+          "witaj"
+        ]
+      },
+      {
+        "call": "potroj",
+        "types": [
+          "int"
+        ],
+        "args": [
+          7
+        ],
+        "ret": 21
+      },
+      {
+        "call": "witaj",
+        "types": [
+          "String"
+        ],
+        "args": [
+          "Ala"
+        ],
+        "out": "witaj Ala"
+      }
+    ],
+    "hints": [
+      "Na sprawdzianie nie ma podpowiedzi. Jeśli utkniesz, wróć do poziomów 1 i 2, a potem spróbuj tu znowu od pustego kodu."
+    ],
+    "tools": [],
+    "tools_note": "Nic nowego. Wszystko znasz z poziomów 1, 2 i 6 - piszesz z pamięci.",
+    "quiz": [
+      {
+        "q": "Czym różni się metoda int od void?",
+        "options": [
+          "int oddaje liczbę, którą można wypisać albo zapisać; void nic nie oddaje",
+          "void jest szybsza",
+          "Nie ma różnicy"
+        ],
+        "answer": 0,
+        "why": "int ma return z liczbą. void tylko coś robi, więc nie da się jej wypisać ani przypisać."
+      }
+    ],
+    "lesson": "Rozdział 2 zaliczony: metoda = nagłówek z typem, parametry, return. Projekt składa się z takich metod."
+  }
+]

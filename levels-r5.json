@@ -1,0 +1,724 @@
+[
+ {
+  "id": 1,
+  "title": "Tablica kontra lista",
+  "ref": "Przykład: pobieranie, zmiana i rozmiar",
+  "goal": "Tablica tab już jest i działa (stały rozmiar, 3 szuflady). Pod spodem zrób to samo na liście ArrayList<Integer> oceny: dołóż 3, 5 i 4, wypisz element nr 1, zmień go na 2, wypisz go znowu i wypisz rozmiar. Popatrz, jak lista rośnie, a tablica nie.",
+  "starter": "public static void main(String[] args) {\n    // TABLICA (znasz z rozdziału 1): 3 szuflady na zawsze\n    int[] tab = new int[3];\n    tab[0] = 3;\n    tab[1] = 5;\n    tab[2] = 4;\n    System.out.println(tab[1]);\n    tab[1] = 2;\n    System.out.println(tab[1]);\n    System.out.println(tab.length);\n\n    // LISTA: zrób to samo na ArrayList<Integer> o nazwie oceny\n    // 1. pusta lista oceny\n    // 2. dołóż 3, potem 5, potem 4\n    // 3. wypisz element nr 1, zmień go na 2, wypisz go znowu, wypisz rozmiar\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "5\n2\n3\n5\n2\n3",
+    "calls": [],
+    "list_ops": [
+     "add",
+     "get",
+     "set",
+     "size"
+    ]
+   }
+  ],
+  "hints": [
+   "Zajrzyj do tabeli w teorii „tablica kontra ArrayList”. Każdy zapis tablicy ma tam swój odpowiednik na liście. A zamiast wpisywania do gotowych szuflad lista dostaje nowe pudełka jedno po drugim.",
+   "Nowa lista jest pusta. Najpierw trzy razy dołóż liczbę na koniec - dopiero wtedy istnieje element nr 1, który możesz wypisać i podmienić.",
+   "Ostatnia podpowiedź: ArrayList<Integer> oceny = new ArrayList<>(); potem oceny.add(3); i dalej tak samo."
+  ],
+  "tools": [
+   {
+    "code": "ArrayList<Integer>",
+    "kind": "lista liczb",
+    "desc": "Lista, która rośnie, gdy dokładasz elementy. W nawiasach < > piszesz, co leży w pudełkach. Dla liczb całkowitych piszesz Integer, a nie int - lista nie przyjmuje słowa int. Nowa lista jest pusta: ma 0 pudełek. W IntelliJ na górze pliku potrzebny jest import java.util.ArrayList; - tutaj gra dopisuje go sama.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\n// wzrost jest pusta, size() = 0"
+   },
+   {
+    "code": "lista.add(x)",
+    "kind": "dołóż na koniec",
+    "desc": "Dokłada nowe pudełko z x na koniec listy. Lista rośnie o 1. Nowe pudełko dostaje numer o jeden większy od ostatniego. Tablica tak nie umie - ma stały rozmiar.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\nwzrost.add(150);   // [150]\nwzrost.add(162);   // [150, 162], size() = 2"
+   },
+   {
+    "code": "lista.get(i)",
+    "kind": "weź element nr i",
+    "desc": "Oddaje to, co leży w pudełku nr i. Numery zaczynają się od 0. To jak t[i] w tablicy, tylko innym zapisem.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\nmiasta.add(\"Opole\");\nSystem.out.println(miasta.get(1));   // Opole"
+   },
+   {
+    "code": "lista.set(i, x)",
+    "kind": "podmień element nr i",
+    "desc": "Wkłada x do pudełka nr i. To, co tam było, wypada. Rozmiar się nie zmienia. To jak t[i] = x w tablicy. Pudełko nr i musi już istnieć.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\nwzrost.add(150);\nwzrost.set(0, 151);   // [151], size() nadal 1"
+   },
+   {
+    "code": "lista.size()",
+    "kind": "ile jest elementów",
+    "desc": "Oddaje liczbę pudełek w liście. Ostatni numer to size() - 1. To jak t.length w tablicy, ale z nawiasami ( ), bo to metoda.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\nSystem.out.println(miasta.size());   // 1"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co robi oceny.set(1, 2)?",
+    "options": [
+     "podmienia element nr 1 na 2 - rozmiar zostaje 3",
+     "dokłada 2 na koniec - rozmiar robi się 4",
+     "wstawia 2 pod numer 1 i przesuwa resztę w prawo"
+    ],
+    "answer": 0,
+    "why": "set tylko podmienia to, co leży w istniejącym pudełku. Liczba pudełek się nie zmienia."
+   },
+   {
+    "q": "Co umie lista, a czego nie umie tablica tab?",
+    "options": [
+     "urosnąć, gdy dokładasz element",
+     "trzymać liczby",
+     "mieć numery od 0"
+    ],
+    "answer": 0,
+    "why": "Tablica ma stały rozmiar ustalony przy new int[3]. Lista rośnie przy każdym add."
+   }
+  ],
+  "lesson": "Lista działa na numerach jak tablica: get(i) zamiast t[i], set(i, x) zamiast t[i] = x, size() zamiast length. Ale lista rośnie przez add."
+ },
+ {
+  "id": 2,
+  "title": "Wypisz listę z numerami",
+  "ref": "Ćwiczenie 1",
+  "goal": "Napisz metodę wypisz(ArrayList<String> lista), która wypisuje każdy element w linijce „numer: imię”. Użyj pętli po i (od 0, warunek z size()), nie for-each. W main zrób listę imion Ola, Piotr, Kasia i wywołaj wypisz.",
+  "starter": "public static void wypisz(ArrayList<String> lista) {\n    // każdy element w linijce \"numer: imie\"\n    // pętla po i od 0, warunek z size()\n\n}\n\npublic static void main(String[] args) {\n    // lista imiona: \"Ola\", \"Piotr\", \"Kasia\"\n    // potem wywołaj wypisz(imiona)\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "0: Ola\n1: Piotr\n2: Kasia",
+    "calls": [
+     "wypisz"
+    ],
+    "list_ops": [
+     "get",
+     "size"
+    ]
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ewa"
+     ]
+    ],
+    "out": "0: Ewa"
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     []
+    ],
+    "out": ""
+   },
+   {
+    "call": "wypisz",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ]
+    ],
+    "out": "0: a\n1: b\n2: c\n3: d"
+   }
+  ],
+  "hints": [
+   "Pętla jest taka jak dla tablicy z rozdziału 1. Zmieniasz tylko dwie rzeczy: skąd bierzesz liczbę elementów i jak czytasz element nr i - obie są w tabeli w teorii.",
+   "Pętla ma dojść do ostatniego numeru, ale nie dalej. Gra sprawdzi też listę z jednym imieniem i pustą listę - nie wpisuj 3 na sztywno.",
+   "Ostatnia podpowiedź: for (int i = 0; i < lista.size(); i++) i w środku System.out.println(i + \": \" + lista.get(i));"
+  ],
+  "roles": {
+   "i": "numer pudełka, które teraz czytamy"
+  },
+  "tools": [
+   {
+    "code": "ArrayList<String>",
+    "kind": "lista tekstów",
+    "desc": "Taka sama lista, ale w pudełkach leżą teksty (String). Tak będziesz trzymać notatki w projekcie.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\n// miasta: [\"Gdynia\"], size() = 1"
+   },
+   {
+    "code": "i < lista.size()",
+    "kind": "pętla po numerach listy",
+    "desc": "Pętla po i od 0 do ostatniego numeru. Warunek to i < lista.size(), a nie <=. Przy 3 elementach i dostaje 0, 1, 2.",
+    "ex": "for (int i = 0; i < miasta.size(); i++) {\n    System.out.println(miasta.get(i));\n}"
+   },
+   {
+    "code": "lista w parametrze",
+    "kind": "lista wchodzi do metody",
+    "desc": "Metoda może dostać listę w parametrze. Dostaje TĘ SAMĄ listę, nie kopię. Gdy metoda coś doda albo zmieni, main to zobaczy. Z tablicą jest tak samo.",
+    "ex": "public static void dodajZero(ArrayList<Integer> l) {\n    l.add(0);\n}\n// po dodajZero(wzrost) w main wzrost ma o jeden element więcej"
+   }
+  ],
+  "lesson": "Pętla po liście wygląda jak po tablicy: i od 0, warunek i < lista.size(), element przez lista.get(i)."
+ },
+ {
+  "id": 3,
+  "title": "Zamiana przez tmp",
+  "ref": "Ćwiczenie 2",
+  "goal": "Napisz metodę zamien(ArrayList<String> lista, int a, int b), która zamienia miejscami element a i element b przez get, set i pomocniczą zmienną tmp. W main zamień element 0 i 2, a potem wypisz „PO:” i listę.",
+  "starter": "public static void wypisz(ArrayList<String> lista) {\n    for (int i = 0; i < lista.size(); i++) {\n        System.out.println(i + \": \" + lista.get(i));\n    }\n}\n\npublic static void zamien(ArrayList<String> lista, int a, int b) {\n    // zamień miejscami element a i element b\n    // get, set i pomocnicza zmienna tmp\n\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Ola\");\n    imiona.add(\"Piotr\");\n    imiona.add(\"Kasia\");\n    System.out.println(\"PRZED:\");\n    wypisz(imiona);\n    // zamień element 0 i 2 Twoją metodą, potem wypisz \"PO:\" i listę\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "PRZED:\n0: Ola\n1: Piotr\n2: Kasia\nPO:\n0: Kasia\n1: Piotr\n2: Ola",
+    "calls": [
+     "zamien",
+     "wypisz"
+    ],
+    "list_ops": [
+     "get",
+     "set"
+    ]
+   },
+   {
+    "call": "zamien",
+    "types": [
+     "ArrayList<String>",
+     "int",
+     "int"
+    ],
+    "args": [
+     [
+      "x",
+      "y"
+     ],
+     0,
+     1
+    ],
+    "list_end": [
+     "y",
+     "x"
+    ]
+   },
+   {
+    "call": "zamien",
+    "types": [
+     "ArrayList<String>",
+     "int",
+     "int"
+    ],
+    "args": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ],
+     1,
+     3
+    ],
+    "list_end": [
+     "a",
+     "d",
+     "c",
+     "b"
+    ]
+   },
+   {
+    "call": "zamien",
+    "types": [
+     "ArrayList<String>",
+     "int",
+     "int"
+    ],
+    "args": [
+     [
+      "a",
+      "b",
+      "c"
+     ],
+     2,
+     2
+    ],
+    "list_end": [
+     "a",
+     "b",
+     "c"
+    ]
+   }
+  ],
+  "hints": [
+   "Najpierw zapamiętaj element a w zmiennej tmp. Potem do pudełka a włóż element b. Na końcu do pudełka b włóż tmp.",
+   "Pomocnicza zmienna trzyma tekst, bo w liście leżą teksty. Bez niej oba pudełka dostaną to samo imię - zobaczysz to na animacji.",
+   "Ostatnia podpowiedź: String tmp = lista.get(a); lista.set(a, lista.get(b)); lista.set(b, tmp);"
+  ],
+  "roles": {
+   "a": "numer pierwszego pudełka do zamiany",
+   "b": "numer drugiego pudełka"
+  },
+  "tools": [
+   {
+    "code": "String tmp",
+    "kind": "kubek na chwilę",
+    "desc": "Pomocnicza zmienna zapamiętuje element, zanim set go nadpisze. Typ tmp jest taki sam jak typ w < > listy: dla ArrayList<String> to String.",
+    "ex": "String pierwsze = miasta.get(0);\nmiasta.set(0, \"Kalisz\");\n// pierwsze nadal pamięta stare miasto"
+   }
+  ],
+  "lesson": "Zamiana w liście to te same trzy kroki co w tablicy: tmp = get(a), set(a, get(b)), set(b, tmp)."
+ },
+ {
+  "id": 4,
+  "title": "Błąd: zamiana bez tmp",
+  "ref": "Typowe błędy",
+  "goal": "Ta metoda zamien nie używa tmp. Uruchom ją i popatrz na pudełka: po zamianie oba końce mają to samo imię. Popraw metodę tak, żeby naprawdę zamieniała.",
+  "starter": "public static void wypisz(ArrayList<String> lista) {\n    for (int i = 0; i < lista.size(); i++) {\n        System.out.println(i + \": \" + lista.get(i));\n    }\n}\n\npublic static void zamien(ArrayList<String> lista, int a, int b) {\n    lista.set(a, lista.get(b));\n    lista.set(b, lista.get(a));\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Ania\");\n    imiona.add(\"Bartek\");\n    imiona.add(\"Celina\");\n    zamien(imiona, 0, 2);\n    wypisz(imiona);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "0: Celina\n1: Bartek\n2: Ania",
+    "calls": [
+     "zamien",
+     "wypisz"
+    ],
+    "list_ops": [
+     "get",
+     "set"
+    ]
+   },
+   {
+    "call": "zamien",
+    "types": [
+     "ArrayList<String>",
+     "int",
+     "int"
+    ],
+    "args": [
+     [
+      "x",
+      "y"
+     ],
+     0,
+     1
+    ],
+    "list_end": [
+     "y",
+     "x"
+    ]
+   },
+   {
+    "call": "zamien",
+    "types": [
+     "ArrayList<String>",
+     "int",
+     "int"
+    ],
+    "args": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ],
+     3,
+     0
+    ],
+    "list_end": [
+     "d",
+     "b",
+     "c",
+     "a"
+    ]
+   }
+  ],
+  "hints": [
+   "Popatrz na animację: pierwsza zmiana nadpisuje pudełko a. Gdy druga zmiana czyta pudełko a, starego imienia już tam nie ma.",
+   "Stare imię z pudełka a trzeba zapamiętać, ZANIM pierwszy set je nadpisze.",
+   "Ostatnia podpowiedź: na początku metody String tmp = lista.get(a); a w drugim set użyj tmp zamiast lista.get(a)."
+  ],
+  "roles": {
+   "a": "numer pierwszego pudełka do zamiany",
+   "b": "numer drugiego pudełka"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego - potrzebne są get, set i tmp z poprzedniego poziomu.",
+  "lesson": "Pierwszy set nadpisuje element. Bez tmp stara wartość ginie i oba pudełka mają to samo."
+ },
+ {
+  "id": 5,
+  "title": "Lista wchodzi do metody",
+  "ref": "Ćwiczenie 3",
+  "goal": "Napisz metodę dodajImie(ArrayList<String> lista, String imie), która dokłada imię na koniec listy. W main zrób pustą listę, dodaj przez tę metodę „Ola” i „Piotr”, wypisz „Rozmiar: ” i listę z numerami. Popatrz: metoda dostaje TĘ SAMĄ listę, a nie kopię.",
+  "starter": "public static void dodajImie(ArrayList<String> lista, String imie) {\n    // dołóż imie na koniec listy\n\n}\n\npublic static void main(String[] args) {\n    // 1. pusta lista\n    // 2. dwa razy dodajImie: \"Ola\", potem \"Piotr\"\n    // 3. wypisz \"Rozmiar: \" + rozmiar, potem pętla po i jak w ćwiczeniu 1\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Rozmiar: 2\n0: Ola\n1: Piotr",
+    "calls": [
+     "dodajImie"
+    ],
+    "list_ops": [
+     "add",
+     "get",
+     "size"
+    ]
+   },
+   {
+    "call": "dodajImie",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [
+      "Ola"
+     ],
+     "Ewa"
+    ],
+    "list_end": [
+     "Ola",
+     "Ewa"
+    ]
+   },
+   {
+    "call": "dodajImie",
+    "types": [
+     "ArrayList<String>",
+     "String"
+    ],
+    "args": [
+     [],
+     "Jan"
+    ],
+    "list_end": [
+     "Jan"
+    ]
+   }
+  ],
+  "hints": [
+   "Zajrzyj do tabeli z teorii: która metoda dokłada element na koniec listy?",
+   "W metodzie nie twórz nowej listy. Dokładaj do tej, która przyszła w parametrze - main ją zobaczy, bo to te same pudełka.",
+   "Ostatnia podpowiedź: w metodzie jedna linijka lista.add(imie); a pętla w main jest taka jak w ćwiczeniu 1."
+  ],
+  "roles": {
+   "i": "numer pudełka, które teraz czytamy"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego: add, size, get, pętla i lista w parametrze były już wcześniej.",
+  "quiz": [
+   {
+    "q": "Metoda dostała listę w parametrze lista i zrobiła lista.add(\"Ewa\"). Co widzi main?",
+    "options": [
+     "Ewę na swojej liście - to ta sama lista",
+     "nic - metoda dostała kopię listy",
+     "błąd kompilacji"
+    ],
+    "answer": 0,
+    "why": "Lista przekazana do metody to TA SAMA lista. Na animacji parametr lista pokazuje te same pudełka co imiona w main."
+   }
+  ],
+  "lesson": "Lista w parametrze to ta sama lista co w main. To, co metoda doda, main widzi."
+ },
+ {
+  "id": 6,
+  "title": "Błąd: length i [ ]",
+  "ref": "Typowe błędy",
+  "goal": "Ten kod pisze do listy jak do tablicy: imiona.length i imiona[i]. Kompilator go nie przyjmie. Popraw na metody listy, żeby wypisał 3 imiona z numerami.",
+  "starter": "public static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Ola\");\n    imiona.add(\"Piotr\");\n    imiona.add(\"Kasia\");\n    for (int i = 0; i < imiona.length; i++) {\n        System.out.println(i + \": \" + imiona[i]);\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "0: Ola\n1: Piotr\n2: Kasia",
+    "calls": [],
+    "list_ops": [
+     "get",
+     "size"
+    ]
+   }
+  ],
+  "hints": [
+   "Uruchom i przeczytaj błędy kompilatora pod kodem. Są dwa: jeden przy length, drugi przy [i].",
+   "Lista nie ma length ani nawiasów kwadratowych. Zajrzyj do tabeli: tablica kontra ArrayList - tam jest zapis dla listy.",
+   "Ostatnia podpowiedź: i < imiona.size() oraz imiona.get(i)."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego - tylko zamiana zapisu tablicy na zapis listy.",
+  "lesson": "length i [ ] są tylko dla tablic. Lista ma size() i get(i)."
+ },
+ {
+  "id": 7,
+  "title": "Błąd: i <= size()",
+  "ref": "Typowe błędy",
+  "goal": "Ta pętla ma warunek i <= imiona.size(). Uruchom i popatrz, które pudełko chce przeczytać na końcu. Popraw warunek.",
+  "starter": "public static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Ola\");\n    imiona.add(\"Piotr\");\n    imiona.add(\"Kasia\");\n    for (int i = 0; i <= imiona.size(); i++) {\n        System.out.println(i + \": \" + imiona.get(i));\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "0: Ola\n1: Piotr\n2: Kasia",
+    "calls": [],
+    "list_ops": [
+     "get",
+     "size"
+    ]
+   }
+  ],
+  "hints": [
+   "Przy 3 imionach numery to 0, 1, 2. Pudełka nr 3 nie ma - tam pojawia się czerwony duch.",
+   "Ostatnia podpowiedź: warunek i < imiona.size()."
+  ],
+  "roles": {
+   "i": "numer pudełka, które teraz czytamy"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego.",
+  "quiz": [
+   {
+    "q": "Lista ma 3 elementy. Jaki numer ma ostatni?",
+    "options": [
+     "2",
+     "3",
+     "4"
+    ],
+    "answer": 0,
+    "why": "Numery zaczynają się od 0, więc ostatni to size() - 1 = 2. get(3) daje IndexOutOfBoundsException."
+   }
+  ],
+  "lesson": "Ostatni numer to size() - 1. Warunek pętli to i < size(), nie <=."
+ },
+ {
+  "id": 8,
+  "title": "Błąd: set na pustej liście",
+  "ref": "Typowe błędy",
+  "goal": "Ten kod chce wpisać dwie notatki przez set do pustej listy. Uruchom: lista nie ma jeszcze żadnego pudełka, więc set nie ma czego podmienić. Popraw tak, żeby lista miała 2 notatki.",
+  "starter": "public static void main(String[] args) {\n    ArrayList<String> notatki = new ArrayList<>();\n    notatki.set(0, \"kupic mleko\");\n    notatki.set(1, \"oddac ksiazke\");\n    System.out.println(\"Notatek: \" + notatki.size());\n    for (int i = 0; i < notatki.size(); i++) {\n        System.out.println(i + \": \" + notatki.get(i));\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Notatek: 2\n0: kupic mleko\n1: oddac ksiazke",
+    "calls": [],
+    "list_ops": [
+     "add",
+     "size",
+     "get"
+    ]
+   }
+  ],
+  "hints": [
+   "set podmienia element, który JUŻ jest. Pusta lista nie ma pudełka nr 0.",
+   "Do dokładania nowych pudełek służy inna metoda - ta z tabeli w teorii, która dokłada na koniec.",
+   "Ostatnia podpowiedź: notatki.add(\"kupic mleko\"); i notatki.add(\"oddac ksiazke\");"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego - add i set już znasz. Tu chodzi o różnicę między nimi.",
+  "quiz": [
+   {
+    "q": "Kiedy użyć set, a kiedy add?",
+    "options": [
+     "add dokłada nowe pudełko, set podmienia istniejące",
+     "to to samo, można zamiennie",
+     "set dokłada na początek, add na koniec"
+    ],
+    "answer": 0,
+    "why": "set(i, x) działa tylko na pudełku, które już istnieje. Nowe pudełko robi tylko add."
+   }
+  ],
+  "lesson": "Najpierw add (dokłada), potem dopiero set (podmienia)."
+ },
+ {
+  "id": 9,
+  "title": "Usuwanie przesuwa w lewo",
+  "ref": "Tablica kontra ArrayList",
+  "goal": "Dodatek do karty - remove nie ma w karcie (przyda się w projekcie przy usuwaniu notatki). Napisz metodę usunPierwszy(ArrayList<String> lista), która wyjmuje z listy element nr 0. W main po usunięciu wypisz „Zostalo: ” i rozmiar, a potem listę z numerami. Popatrz, jak pudełka jadą w lewo i zmieniają numery.",
+  "starter": "public static void usunPierwszy(ArrayList<String> lista) {\n    // wyjmij z listy element nr 0\n\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> notatki = new ArrayList<>();\n    notatki.add(\"mleko\");\n    notatki.add(\"chleb\");\n    notatki.add(\"jajka\");\n    notatki.add(\"ser\");\n    usunPierwszy(notatki);\n    // wypisz \"Zostalo: \" + rozmiar, potem listę z numerami\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Zostalo: 3\n0: chleb\n1: jajka\n2: ser",
+    "calls": [
+     "usunPierwszy"
+    ],
+    "list_ops": [
+     "remove",
+     "size",
+     "get"
+    ]
+   },
+   {
+    "call": "usunPierwszy",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "a",
+      "b"
+     ]
+    ],
+    "list_end": [
+     "b"
+    ]
+   },
+   {
+    "call": "usunPierwszy",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "x"
+     ]
+    ],
+    "list_end": []
+   },
+   {
+    "call": "usunPierwszy",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "p",
+      "q",
+      "r"
+     ]
+    ],
+    "list_end": [
+     "q",
+     "r"
+    ]
+   }
+  ],
+  "hints": [
+   "Do wyjmowania lista ma osobną metodę - jest w panelu „Co będzie potrzebne”. W nawiasie podajesz numer pudełka.",
+   "Pierwszy element ma numer 0, nie 1.",
+   "Ostatnia podpowiedź: w metodzie lista.remove(0); a w main pętla taka jak w ćwiczeniu 1."
+  ],
+  "roles": {
+   "i": "numer pudełka, które teraz czytamy"
+  },
+  "tools": [
+   {
+    "code": "lista.remove(i)",
+    "kind": "wyjmij element nr i",
+    "desc": "Wyjmuje pudełko nr i. Wszystkie pudełka za nim przesuwają się o jedno w lewo, więc ich numery maleją o 1. size() maleje o 1. Z tablicy nie da się wyjąć szuflady - ma stały rozmiar.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\nwzrost.add(150);\nwzrost.add(162);\nwzrost.add(171);\nwzrost.remove(0);   // [162, 171], 171 ma teraz numer 1"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Przed usunięciem „jajka” miały numer 2. Jaki numer mają po remove(0)?",
+    "options": [
+     "1",
+     "2",
+     "3"
+    ],
+    "answer": 0,
+    "why": "Wszystko za wyjętym pudełkiem jedzie o jedno w lewo, więc numer maleje o 1."
+   },
+   {
+    "q": "Czy z tablicy int[] da się wyjąć szufladę?",
+    "options": [
+     "nie - tablica ma stały rozmiar, można tylko zmienić wartość w szufladzie",
+     "tak, przez t.remove(0)"
+    ],
+    "answer": 0,
+    "why": "Tablica ma tyle szuflad, ile dostała przy new. Tylko lista umie rosnąć (add) i maleć (remove)."
+   }
+  ],
+  "lesson": "remove(i) wyjmuje pudełko i przesuwa resztę w lewo. Numery za nim maleją o 1, size() też."
+ },
+ {
+  "id": 10,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "goal": "Z pamięci, bez zaglądania do poprzednich poziomów. Napisz metodę zamienKrance(ArrayList<String> lista), która zamienia pierwszy i ostatni element przez get, set i tmp (ostatni numer weź z size()). W main zrób listę Ola, Piotr, Kasia, wywołaj zamienKrance i wypisz listę pętlą po i.",
+  "starter": "// Sprawdzian: pisz z pamięci.\n// 1. metoda zamienKrance(ArrayList<String> lista)\n// 2. main: lista, zamienKrance, wypisanie pętlą po i\n\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "0: Kasia\n1: Piotr\n2: Ola",
+    "calls": [
+     "zamienKrance"
+    ],
+    "list_ops": [
+     "get",
+     "set",
+     "size"
+    ]
+   },
+   {
+    "call": "zamienKrance",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ]
+    ],
+    "list_end": [
+     "d",
+     "b",
+     "c",
+     "a"
+    ]
+   },
+   {
+    "call": "zamienKrance",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "x",
+      "y"
+     ]
+    ],
+    "list_end": [
+     "y",
+     "x"
+    ]
+   },
+   {
+    "call": "zamienKrance",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "sam"
+     ]
+    ],
+    "list_end": [
+     "sam"
+    ]
+   }
+  ],
+  "hints": [
+   "Ostatni numer zależy od długości listy: to rozmiar minus jeden. Gra sprawdzi listy z 4, 2 i 1 elementem - nie wpisuj numeru na sztywno.",
+   "Trzy kroki zamiany: tmp, potem set pierwszego, potem set ostatniego.",
+   "Ostatnia podpowiedź: int ost = lista.size() - 1; String tmp = lista.get(0); lista.set(0, lista.get(ost)); lista.set(ost, tmp);"
+  ],
+  "tools": [],
+  "tools_note": "Wszystko już znasz: get, set, size, tmp i pętla po i.",
+  "quiz": [
+   {
+    "q": "Jak zapisać numer ostatniego elementu listy?",
+    "options": [
+     "lista.size() - 1",
+     "lista.size()",
+     "lista.length - 1"
+    ],
+    "answer": 0,
+    "why": "Numery idą od 0 do size() - 1. Lista nie ma length."
+   }
+  ],
+  "lesson": "Umiesz pracować na liście po numerach: get, set, size, add i zamiana przez tmp."
+ }
+]

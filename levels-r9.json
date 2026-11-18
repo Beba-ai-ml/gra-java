@@ -1,0 +1,1252 @@
+[
+ {
+  "id": 1,
+  "title": "Karteczki 3, 6, 2, 1",
+  "ref": "Ćwiczenie 1 (kartka, bez pliku)",
+  "roles": {
+   "j": "prawy z pary, którą zamieniasz (lewy to j - 1)"
+  },
+  "goal": "To ćwiczenie z karteczkami, tylko w kodzie. W tablicy leżą 3, 6, 2, 1. Sortujesz SAM, w głowie: patrzysz na pary sąsiadów od lewej i decydujesz, czy zamienić. Wolno Ci tylko wołać zamien(tab, j) - zamienia szufladę j - 1 z szufladą j (sąsiadów). Po każdym przejściu przez wszystkie pary zawołaj wypisz(tab, nr). Najpierw rozpisz to na kartce. Na końcu ma być 1 2 3 6.",
+  "starter": "public static void zamien(int tab[], int j) {\n    // zamienia sąsiadów: szufladę j - 1 i szufladę j\n    int tmp = tab[j - 1];\n    tab[j - 1] = tab[j];\n    tab[j] = tmp;\n}\n\npublic static void wypisz(int tab[], int nr) {\n    System.out.print(\"po przejsciu \" + nr + \":\");\n    for (int k = 0; k < tab.length; k++) {\n        System.out.print(\" \" + tab[k]);\n    }\n    System.out.println();\n}\n\npublic static void main(String[] args) {\n    int tab[] = {3, 6, 2, 1};\n    // przejście 0: pary (0,1), (1,2), (2,3) - zamieniaj tylko te, gdzie lewy jest większy\n    // np. zamien(tab, 2); zamienia szuflady 1 i 2\n\n    wypisz(tab, 0);\n    // przejście 1\n\n    wypisz(tab, 1);\n    // przejście 2\n\n    wypisz(tab, 2);\n    // przejście 3\n\n    wypisz(tab, 3);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "po przejsciu 0: 3 2 1 6\npo przejsciu 1: 2 1 3 6\npo przejsciu 2: 1 2 3 6\npo przejsciu 3: 1 2 3 6",
+    "calls": [
+     "zamien",
+     "wypisz"
+    ],
+    "arr_end": [
+     1,
+     2,
+     3,
+     6
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "w main tablicę zmienia tylko zamien(tab, j)",
+    "re": "void\\s+main[\\s\\S]*\\btab\\s*\\[[^\\]]+\\]\\s*=(?!=)",
+    "want": false,
+    "msg": "W main nie wpisuj liczb do szuflad. Na tym poziomie wolno tylko zamieniać sąsiadów: zamien(tab, j)."
+   },
+   {
+    "label": "w main nie ma nowej tablicy z gotowym wynikiem",
+    "re": "void\\s+main[\\s\\S]*\\{\\s*1\\s*,\\s*2\\s*,\\s*3\\s*,\\s*6\\s*\\}",
+    "want": false,
+    "msg": "Nie wpisuj gotowej tablicy {1, 2, 3, 6}. Dojdź do niej zamianami sąsiadów."
+   }
+  ],
+  "hints": [
+   "Przejście 0: porównaj 3 z 6 (dobrze stoją), potem 6 z 2 (źle - zamień), potem to, co stoi teraz na miejscu 2, z miejscem 3.",
+   "Po zamianie liczba 6 jedzie w prawo i w tym samym przejściu porównujesz ją dalej. Po przejściu 0 szóstka stoi już na końcu: 3 2 1 6.",
+   "Ostatnia podpowiedź: przejście 0 to zamien(tab, 2); zamien(tab, 3); a przejście 1 to zamien(tab, 1); zamien(tab, 2);"
+  ],
+  "tools": [
+   {
+    "code": "zamien(tab, j)",
+    "kind": "zamiana sąsiadów",
+    "desc": "Gotowa metoda z kodu startowego. Zamienia miejscami szuflady j - 1 i j przez kubek tmp. Sąsiedzi to dwie szuflady obok siebie.",
+    "ex": "int t[] = {9, 4};\nzamien(t, 1);\n// teraz t to {4, 9}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Po przejściu 0 jaka liczba na pewno stoi na końcu?",
+    "options": [
+     "Najmniejsza (1)",
+     "Największa (6)",
+     "Ta, która była pierwsza (3)"
+    ],
+    "answer": 1,
+    "why": "Największa liczba wygrywa każde porównanie, więc jedzie w prawo aż do końca - jak największy bąbelek w wodzie."
+   },
+   {
+    "q": "Ile zamian robisz w przejściu 3?",
+    "options": [
+     "Jedną",
+     "Żadnej",
+     "Trzy"
+    ],
+    "answer": 1,
+    "why": "Po przejściu 2 jest już 1 2 3 6. Każda para stoi dobrze, więc nic się nie zmienia."
+   }
+  ],
+  "lesson": "Bąbelek porównuje tylko sąsiadów i zamienia ich, gdy lewy jest większy. Po każdym przejściu kolejna największa liczba ląduje na końcu."
+ },
+ {
+  "id": 2,
+  "title": "Bąbelek na tablicy",
+  "ref": "Ćwiczenie 2 (plik `R9_cw2.java`)",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "Napisz metodę sortuj(int tab[]), która sortuje tablicę bąbelkiem: zewnętrzna pętla i liczy przejścia, wewnętrzna j idzie po parach sąsiadów tab[j - 1] i tab[j]. Gdy lewy jest większy, zamień je przez tmp. Po każdym przejściu wypisz linię po przejsciu NR: liczby (spacja przed każdą liczbą). Na animacji zobaczysz porównanie każdej pary, zamianę przez tmp i zielone szuflady, które już są na swoim miejscu.",
+  "starter": "public static void sortuj(int tab[]) {\n    int n = tab.length;\n    // przejścia i, w środku pary sąsiadów j - 1 i j\n\n}\n\npublic static void main(String[] args) {\n    int oceny[] = {4, 2, 5, 3, 1};\n    sortuj(oceny);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "po przejsciu 0: 2 4 3 1 5\npo przejsciu 1: 2 3 1 4 5\npo przejsciu 2: 2 1 3 4 5\npo przejsciu 3: 1 2 3 4 5\npo przejsciu 4: 1 2 3 4 5",
+    "calls": [
+     "sortuj"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      5,
+      1,
+      4,
+      2
+     ]
+    ],
+    "out": "po przejsciu 0: 1 4 2 5\npo przejsciu 1: 1 2 4 5\npo przejsciu 2: 1 2 4 5\npo przejsciu 3: 1 2 4 5",
+    "arr_end": [
+     1,
+     2,
+     4,
+     5
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      3,
+      -2,
+      3,
+      -2
+     ]
+    ],
+    "out": "po przejsciu 0: -2 3 -2 3\npo przejsciu 1: -2 -2 3 3\npo przejsciu 2: -2 -2 3 3\npo przejsciu 3: -2 -2 3 3",
+    "arr_end": [
+     -2,
+     -2,
+     3,
+     3
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      7
+     ]
+    ],
+    "out": "po przejsciu 0: 7",
+    "arr_end": [
+     7
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     []
+    ],
+    "out": "",
+    "arr_end": []
+   }
+  ],
+  "hints": [
+   "Dwie pętle jedna w drugiej. Zewnętrzna i od 0 do n. Wewnętrzna j od 1, dopóki j < n - i: wtedy para to tab[j - 1] i tab[j].",
+   "W środku if: gdy tab[j - 1] > tab[j], zamiana w trzech krokach przez tmp (tak jak w rozdziale 1).",
+   "Wypisywanie jest PO wewnętrznej pętli, ale jeszcze W zewnętrznej: najpierw print(\"po przejsciu \" + i + \":\"), potem pętla k z print(\" \" + tab[k]), na końcu println().",
+   "Ostatnia podpowiedź: for (int i = 0; i < n; i++) { for (int j = 1; j < n - i; j++) { if (tab[j - 1] > tab[j]) { ...zamiana... } } ...wypisz... }"
+  ],
+  "tools": [
+   {
+    "code": "for w for",
+    "kind": "pętla w pętli",
+    "desc": "Pętla wewnątrz pętli. Dla każdego obrotu zewnętrznej wewnętrzna przechodzi całą swoją drogę od nowa.",
+    "ex": "for (int w = 1; w <= 2; w++) {\n    for (int k = 1; k <= 3; k++) {\n        System.out.print(w * k + \" \");\n    }\n    System.out.println();\n}\n// 1 2 3\n// 2 4 6"
+   },
+   {
+    "code": "j < n - i",
+    "kind": "coraz krótsze przejście",
+    "desc": "Granica wewnętrznej pętli maleje z każdym przejściem. Po przejściu i ostatnie i liczb stoi już na swoim miejscu, więc nie ma po co ich sprawdzać.",
+    "ex": "int n = 4;\nfor (int i = 0; i < n; i++) {\n    System.out.println(\"i = \" + i + \", granica = \" + (n - i));\n}"
+   },
+   {
+    "code": "System.out.print",
+    "kind": "wypisz bez nowej linii",
+    "desc": "print wypisuje i zostaje w tej samej linii. println() bez niczego w środku tylko kończy linię.",
+    "ex": "System.out.print(\"a\");\nSystem.out.print(\" b\");\nSystem.out.println();\n// a b"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Po przejściu i = 1 ile liczb z końca na pewno stoi już na swoim miejscu?",
+    "options": [
+     "Jedna",
+     "Dwie",
+     "Wszystkie"
+    ],
+    "answer": 1,
+    "why": "Każde przejście dowozi na koniec kolejną największą liczbę. Po przejściach 0 i 1 to dwie liczby: 5 i 4."
+   }
+  ],
+  "lesson": "Bąbelek to dwie pętle: i liczy przejścia, j chodzi po parach tab[j - 1] i tab[j] aż do n - i. Zamiana zawsze przez tmp."
+ },
+ {
+  "id": 3,
+  "title": "Napraw: tab[j + 1] za tablicą",
+  "ref": "Typowe błędy",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "Ten kod porównuje tab[j] z tab[j + 1] i puszcza j aż do n - 1. Uruchom go i patrz na ostatnią parę: Java szuka szuflady, której nie ma. Napraw tak, jak w teorii: j od 1, para to tab[j - 1] i tab[j], a granica j < n - i.",
+  "starter": "public static void sortuj(int tab[]) {\n    int n = tab.length;\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            if (tab[j] > tab[j + 1]) {\n                int tmp = tab[j];\n                tab[j] = tab[j + 1];\n                tab[j + 1] = tmp;\n            }\n        }\n    }\n}\n\npublic static void main(String[] args) {\n    int tab[] = {5, 1, 4, 2};\n    sortuj(tab);\n    for (int k = 0; k < tab.length; k++) {\n        System.out.print(tab[k] + \" \");\n    }\n    System.out.println();\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "1 2 4 5",
+    "calls": [
+     "sortuj"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      9,
+      8,
+      7,
+      6,
+      5
+     ]
+    ],
+    "arr_end": [
+     5,
+     6,
+     7,
+     8,
+     9
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      2,
+      2,
+      1
+     ]
+    ],
+    "arr_end": [
+     1,
+     2,
+     2
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      -3,
+      10,
+      -7
+     ]
+    ],
+    "arr_end": [
+     -7,
+     -3,
+     10
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      1
+     ]
+    ],
+    "arr_end": [
+     1
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     []
+    ],
+    "arr_end": []
+   }
+  ],
+  "hints": [
+   "Gdy j = n - 1, to tab[j + 1] jest tab[n] - a ostatnia szuflada ma numer n - 1. Stąd ArrayIndexOutOfBoundsException.",
+   "Przesuń parę w lewo: porównuj tab[j - 1] z tab[j]. Wtedy j musi zaczynać od 1, bo tab[-1] też nie istnieje.",
+   "Ostatnia podpowiedź: for (int j = 1; j < n - i; j++) { if (tab[j - 1] > tab[j]) { int tmp = tab[j - 1]; tab[j - 1] = tab[j]; tab[j] = tmp; } }"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Zmieniasz tylko numery w parze i granice pętli j.",
+  "quiz": [
+   {
+    "q": "Dla tablicy z 4 szufladami: jaki numer ma ostatnia szuflada?",
+    "options": [
+     "4",
+     "3",
+     "5"
+    ],
+    "answer": 1,
+    "why": "Numery idą od 0 do n - 1, czyli 0, 1, 2, 3. Szuflady nr 4 nie ma - to w nią celował tab[j + 1]."
+   }
+  ],
+  "lesson": "Para tab[j - 1] i tab[j] z j od 1 nigdy nie wyjdzie za tablicę. tab[j + 1] przy j < n zawsze wychodzi o jedną szufladę za daleko."
+ },
+ {
+  "id": 4,
+  "title": "Napraw: zapomniany tmp",
+  "ref": "Typowe błędy",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "Tu zamiana nie ma kubka tmp. Uruchom i patrz na pierwszą zamianę 5 i 1: obie szuflady dostają 1, a piątka znika na zawsze. Napraw zamianę tak, żeby żadna liczba nie zginęła.",
+  "starter": "public static void sortuj(int tab[]) {\n    int n = tab.length;\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (tab[j - 1] > tab[j]) {\n                tab[j - 1] = tab[j];\n                tab[j] = tab[j - 1];\n            }\n        }\n    }\n}\n\npublic static void main(String[] args) {\n    int tab[] = {5, 1, 4, 2};\n    sortuj(tab);\n    for (int k = 0; k < tab.length; k++) {\n        System.out.print(tab[k] + \" \");\n    }\n    System.out.println();\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "1 2 4 5",
+    "calls": [
+     "sortuj"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      8,
+      3,
+      6
+     ]
+    ],
+    "arr_end": [
+     3,
+     6,
+     8
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      0,
+      -1,
+      -1,
+      5,
+      2
+     ]
+    ],
+    "arr_end": [
+     -1,
+     -1,
+     0,
+     2,
+     5
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      4
+     ]
+    ],
+    "arr_end": [
+     4
+    ]
+   }
+  ],
+  "hints": [
+   "Po linii tab[j - 1] = tab[j] stara wartość z tab[j - 1] jest już nadpisana. Druga linia nie ma skąd jej wziąć.",
+   "Zanim nadpiszesz tab[j - 1], odłóż ją do kubka: int tmp = tab[j - 1];",
+   "Ostatnia podpowiedź: int tmp = tab[j - 1]; tab[j - 1] = tab[j]; tab[j] = tmp;"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Kubek tmp znasz z rozdziału 1 - tu przypominasz sobie, po co on jest.",
+  "quiz": [
+   {
+    "q": "Co zostanie w tablicy {5, 1} po tab[0] = tab[1]; tab[1] = tab[0]; ?",
+    "options": [
+     "{1, 5}",
+     "{1, 1}",
+     "{5, 5}"
+    ],
+    "answer": 1,
+    "why": "Pierwsza linia wpisuje 1 do szuflady 0. Druga przepisuje z szuflady 0 - a tam już jest 1. Piątka zginęła."
+   }
+  ],
+  "lesson": "Zamiana dwóch szuflad zawsze ma trzy kroki i kubek tmp. Bez tmp jedna liczba ginie, a druga jest dwa razy."
+ },
+ {
+  "id": 5,
+  "title": "Bąbelek na liście imion",
+  "ref": "Ćwiczenie 3 (plik `R9_cw3.java`)",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "To samo co w ćwiczeniu 2, ale na ArrayList<String>. Napisz sortuj(ArrayList<String> lista): tam, gdzie było tab[j - 1] > tab[j], porównaj teksty przez compareTo i sprawdź znak wyniku. Zamiana na liście: get i set. Po każdym przejściu wypisz po przejsciu NR: i imiona po spacji. Zobacz na animacji, dlaczego kasia z małej litery ląduje na końcu.",
+  "starter": "public static void sortuj(ArrayList<String> lista) {\n    int n = lista.size();\n    // to samo co dla tablicy, tylko get, set i compareTo\n\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Zosia\");\n    imiona.add(\"Adam\");\n    imiona.add(\"Ola\");\n    imiona.add(\"kasia\");\n    imiona.add(\"Basia\");\n    sortuj(imiona);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "po przejsciu 0: Adam Ola Zosia Basia kasia\npo przejsciu 1: Adam Ola Basia Zosia kasia\npo przejsciu 2: Adam Basia Ola Zosia kasia\npo przejsciu 3: Adam Basia Ola Zosia kasia\npo przejsciu 4: Adam Basia Ola Zosia kasia",
+    "calls": [
+     "sortuj"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola",
+      "ola",
+      "Ala"
+     ]
+    ],
+    "out": "po przejsciu 0: Ola Ala ola\npo przejsciu 1: Ala Ola ola\npo przejsciu 2: Ala Ola ola",
+    "list_end": [
+     "Ala",
+     "Ola",
+     "ola"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Olaf",
+      "Ola"
+     ]
+    ],
+    "out": "po przejsciu 0: Ola Ola Olaf\npo przejsciu 1: Ola Ola Olaf\npo przejsciu 2: Ola Ola Olaf",
+    "list_end": [
+     "Ola",
+     "Ola",
+     "Olaf"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ewa"
+     ]
+    ],
+    "out": "po przejsciu 0: Ewa",
+    "list_end": [
+     "Ewa"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     []
+    ],
+    "out": "",
+    "list_end": []
+   }
+  ],
+  "hints": [
+   "Pętle zostają takie same jak w ćwiczeniu 2. Zmienia się tylko porównanie i zamiana.",
+   "lista.get(j - 1).compareTo(lista.get(j)) daje liczbę. Dodatnia znaczy: lewy jest PO prawym, czyli stoją w złej kolejności.",
+   "Zamiana na liście: String tmp = lista.get(j - 1); potem set na j - 1 tego, co jest pod j; potem set na j kubka tmp.",
+   "Ostatnia podpowiedź: if (lista.get(j - 1).compareTo(lista.get(j)) > 0) { String tmp = lista.get(j - 1); lista.set(j - 1, lista.get(j)); lista.set(j, tmp); }"
+  ],
+  "tools": [
+   {
+    "code": "lista.get(a).compareTo(lista.get(b)) > 0",
+    "kind": "czy stoją w złej kolejności",
+    "desc": "compareTo wprost na elementach listy. Wynik większy od zera: lewy tekst jest PO prawym. Znak wyniku decyduje, liczba nie ma znaczenia.",
+    "ex": "ArrayList<String> s = new ArrayList<>();\ns.add(\"kot\");\ns.add(\"Ala\");\nif (s.get(0).compareTo(s.get(1)) > 0) {\n    System.out.println(\"kot jest po Ala\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Dlaczego kasia stoi na końcu, za Zosią?",
+    "options": [
+     "Bo jest najdłuższa",
+     "Bo mała litera 'k' ma większy kod (107) niż każda wielka litera, także 'Z' (90)",
+     "Bo została dodana jako czwarta"
+    ],
+    "answer": 1,
+    "why": "compareTo porównuje kody liter. Wszystkie małe litery mają kody większe niż wielkie, więc kasia jest po Zosi."
+   }
+  ],
+  "lesson": "Bąbelek na liście tekstów to te same pętle. > zamieniasz na compareTo(...) > 0, a zamianę robisz przez get i set z tmp."
+ },
+ {
+  "id": 6,
+  "title": "Napraw: > na tekstach",
+  "ref": "Typowe błędy",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "Ktoś przepisał bąbelek z tablicy liczb i zostawił > na tekstach. Uruchom: kompilator nie przyjmie tego kodu. Napraw porównanie (zamiana jest dobra). Lista ma wyjść w kolejności kodów liter: Ala Ola kot zebra.",
+  "starter": "public static void sortuj(ArrayList<String> lista) {\n    int n = lista.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (lista.get(j - 1) > lista.get(j)) {\n                String tmp = lista.get(j - 1);\n                lista.set(j - 1, lista.get(j));\n                lista.set(j, tmp);\n            }\n        }\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> lista = new ArrayList<>();\n    lista.add(\"kot\");\n    lista.add(\"Ala\");\n    lista.add(\"zebra\");\n    lista.add(\"Ola\");\n    sortuj(lista);\n    for (int k = 0; k < lista.size(); k++) {\n        System.out.print(lista.get(k) + \" \");\n    }\n    System.out.println();\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ala Ola kot zebra",
+    "calls": [
+     "sortuj"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "b",
+      "a",
+      "C"
+     ]
+    ],
+    "list_end": [
+     "C",
+     "a",
+     "b"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Zosia",
+      "zosia",
+      "Adam"
+     ]
+    ],
+    "list_end": [
+     "Adam",
+     "Zosia",
+     "zosia"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     []
+    ],
+    "list_end": []
+   }
+  ],
+  "hints": [
+   "> działa tylko na liczbach. Teksty porównuje compareTo (rozdział 7).",
+   "Zła kolejność to wynik compareTo większy od zera.",
+   "Ostatnia podpowiedź: if (lista.get(j - 1).compareTo(lista.get(j)) > 0) {"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. compareTo znasz z rozdziału 7.",
+  "quiz": [
+   {
+    "q": "Co zwróci \"kot\".compareTo(\"Ola\")?",
+    "options": [
+     "Liczbę ujemną",
+     "Liczbę dodatnią",
+     "Zero"
+    ],
+    "answer": 1,
+    "why": "'k' ma kod 107, 'O' ma 79. 107 - 79 = 28, czyli liczba dodatnia: kot jest po Ola."
+   }
+  ],
+  "lesson": "Tekstów nie porównasz przez > ani <. Bąbelek na tekstach pyta: lista.get(j - 1).compareTo(lista.get(j)) > 0."
+ },
+ {
+  "id": 7,
+  "title": "Napraw: zamiana tylko w jednej liście",
+  "ref": "Typowe błędy",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "Dwie listy równoległe: Kasia 3, Bartek 6, Ania 4. Ten sortuj zamienia tylko imiona. Uruchom i patrz na kolory par: oceny zostają na miejscu, więc każda osoba dostaje cudzą ocenę (czerwone ✗). Dopisz zamianę w oceny tymi samymi numerami j - 1 i j.",
+  "starter": "public static void sortuj(ArrayList<String> imiona, ArrayList<String> oceny) {\n    int n = imiona.size();\n    for (int i = 0; i < n; i++) {\n        for (int j = 1; j < n - i; j++) {\n            if (imiona.get(j - 1).compareTo(imiona.get(j)) > 0) {\n                String tmp = imiona.get(j - 1);\n                imiona.set(j - 1, imiona.get(j));\n                imiona.set(j, tmp);\n            }\n        }\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    ArrayList<String> oceny = new ArrayList<>();\n    imiona.add(\"Kasia\");\n    oceny.add(\"3\");\n    imiona.add(\"Bartek\");\n    oceny.add(\"6\");\n    imiona.add(\"Ania\");\n    oceny.add(\"4\");\n    sortuj(imiona, oceny);\n    for (int i = 0; i < imiona.size(); i++) {\n        System.out.println(\"[\" + i + \"] \" + imiona.get(i) + \": \" + oceny.get(i));\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "[0] Ania: 4\n[1] Bartek: 6\n[2] Kasia: 3",
+    "calls": [
+     "sortuj"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Ewa"
+     ],
+     [
+      "2",
+      "5"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ewa",
+      "Ola"
+     ],
+     [
+      "5",
+      "2"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Tomek",
+      "Ewa",
+      "Jan",
+      "Adam"
+     ],
+     [
+      "2",
+      "5",
+      "4",
+      "3"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Adam",
+      "Ewa",
+      "Jan",
+      "Tomek"
+     ],
+     [
+      "3",
+      "5",
+      "4",
+      "2"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   }
+  ],
+  "hints": [
+   "Lista oceny w ogóle się nie rusza. A każda ocena musi jechać razem ze swoim imieniem.",
+   "W tym samym if, zaraz po zamianie imion, zamień oceny pod tymi samymi numerami j - 1 i j. Drugi kubek nazwij np. tmp2.",
+   "Ostatnia podpowiedź: String tmp2 = oceny.get(j - 1); oceny.set(j - 1, oceny.get(j)); oceny.set(j, tmp2);"
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Zamianę w dwóch listach znasz z rozdziału 6.",
+  "quiz": [
+   {
+    "q": "Co wypisze kod startowy w wierszu [0]?",
+    "options": [
+     "[0] Ania: 4",
+     "[0] Ania: 3",
+     "[0] Kasia: 3"
+    ],
+    "answer": 1,
+    "why": "Imię Ani przyjechało na numer 0, ale ocena pod numerem 0 została na miejscu: 3, czyli ocena Kasi."
+   }
+  ],
+  "lesson": "Sortując listy równoległe, każdą zamianę robisz w OBU listach tymi samymi numerami. Porównujesz tylko jedną listę (tę, po której sortujesz)."
+ },
+ {
+  "id": 8,
+  "title": "Sortuj imiona razem z ocenami",
+  "ref": "Ćwiczenie 4 (plik `R9_cw4.java`)",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "Dwie listy równoległe: imiona (Zosia, Adam, Ola) i oceny (4, 5, 3). Napisz sortuj(ArrayList<String> imiona, ArrayList<String> oceny): bąbelek po imionach, a każda zamiana w imiona idzie RAZEM z zamianą w oceny. Metoda nic nie wypisuje. W main zbuduj listy, wywołaj sortuj, potem wypisz [NR] imie: ocena. Kolory par na animacji muszą zostać razem.",
+  "starter": "public static void sortuj(ArrayList<String> imiona, ArrayList<String> oceny) {\n    // bąbelek po imionach, każda zamiana w obu listach\n\n}\n\npublic static void main(String[] args) {\n    // zbuduj imiona i oceny, posortuj, wypisz [NR] imie: ocena\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "[0] Adam: 5\n[1] Ola: 3\n[2] Zosia: 4",
+    "calls": [
+     "sortuj"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Tomek",
+      "Ewa",
+      "Jan",
+      "Adam"
+     ],
+     [
+      "2",
+      "5",
+      "4",
+      "3"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Adam",
+      "Ewa",
+      "Jan",
+      "Tomek"
+     ],
+     [
+      "3",
+      "5",
+      "4",
+      "2"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola",
+      "Adam",
+      "Ola"
+     ],
+     [
+      "1",
+      "2",
+      "3"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Adam",
+      "Ola",
+      "Ola"
+     ],
+     [
+      "2",
+      "1",
+      "3"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ewa"
+     ],
+     [
+      "5"
+     ]
+    ],
+    "lists_end": [
+     [
+      "Ewa"
+     ],
+     [
+      "5"
+     ]
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [],
+     []
+    ],
+    "lists_end": [
+     [],
+     []
+    ],
+    "list_names": [
+     "imiona",
+     "oceny"
+    ]
+   }
+  ],
+  "hints": [
+   "Pętle i warunek są jak w ćwiczeniu 3 - porównujesz imiona. Oceny nie biorą udziału w porównaniu.",
+   "W if dwie zamiany: najpierw imiona (tmp), potem oceny (tmp2), te same numery j - 1 i j.",
+   "W main: dwa new ArrayList<>(), na zmianę add do imion i do ocen, potem sortuj(imiona, oceny) i pętla z println(\"[\" + i + \"] \" + imiona.get(i) + \": \" + oceny.get(i))."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Składasz bąbelek z ćwiczenia 3 z listami równoległymi z rozdziału 6.",
+  "quiz": [
+   {
+    "q": "Po której liście porównujesz w if?",
+    "options": [
+     "Po obu naraz",
+     "Tylko po imiona - oceny jadą za nimi",
+     "Tylko po oceny"
+    ],
+    "answer": 1,
+    "why": "Sortujemy po imionach. Oceny tylko jadą razem z imionami, żeby pary się nie rozjechały."
+   }
+  ],
+  "lesson": "Sortowanie list równoległych: porównujesz jedną listę, a zamieniasz obie. To będzie opcja [4] w Twoim projekcie."
+ },
+ {
+  "id": 9,
+  "title": "Stary bąbelek z aisd_lab03",
+  "ref": "Ćwiczenie 5 (plik `R9_cw5.java`): czytanie starego kodu",
+  "roles": {
+   "i": "numer przejścia",
+   "j": "prawy z pary - lewy to j - 1",
+   "a": "długość tablicy w starym kodzie"
+  },
+  "goal": "W kodzie startowym jest zakomentowany fragment // sort babelkowe z Twojego aisd_lab03. Odkomentuj go (nie zmieniaj pętli). Przed nim zadeklaruj tablicę int tab[] = {5, 1, 4, 2}; i dopisz int a = tab.length; - w starym pliku a było długością tablicy. Na końcu wypisz liczby w jednej linii: print(tab[i] + \" \") i println(). Patrz na licznik porównań nad szufladami: stara wersja ma j < a w każdym przejściu.",
+  "starter": "public static void main(String[] args) {\n    // tu zadeklaruj tab i a\n\n    // sort babelkowe\n    // for (int i = 0; i < a; i++) {\n    //     for (int j = 1; j < a; j++) {\n    //         if ( tab[j - 1] > tab[j] ) {\n    //             int tmp = tab[j - 1];\n    //             tab[j - 1] = tab[j];\n    //             tab[j] = tmp;\n    //         }\n    //     }\n    // }\n\n    // wypisz liczby w jednej linii\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "1 2 4 5",
+    "arr_end": [
+     1,
+     2,
+     4,
+     5
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "a to długość tablicy: int a = tab.length",
+    "re": "int\\s+a\\s*=\\s*tab\\s*\\.\\s*length\\s*;",
+    "msg": "Dopisz int a = tab.length; - stary kod używa a jako długości tablicy."
+   },
+   {
+    "label": "stary kod zostaje: j < a w każdym przejściu",
+    "re": "for\\s*\\(\\s*int\\s+j\\s*=\\s*1\\s*;\\s*j\\s*<\\s*a\\s*;",
+    "msg": "Na tym poziomie nie poprawiaj starego kodu. Wewnętrzna pętla ma zostać: for (int j = 1; j < a; j++)."
+   }
+  ],
+  "hints": [
+   "Odkomentuj = usuń // z początku linii. W IntelliJ zaznacz linie i wciśnij Ctrl+/ (tutaj też działa).",
+   "Bez linii int a = tab.length; kompilator powie cannot find symbol, bo nie zna a.",
+   "Ostatnia podpowiedź: na końcu for (int i = 0; i < a; i++) { System.out.print(tab[i] + \" \"); } System.out.println();"
+  ],
+  "tools": [
+   {
+    "code": "Ctrl+/",
+    "kind": "komentarz włącz / wyłącz",
+    "desc": "Zaznacz kilka linii i wciśnij Ctrl+/. Linie z // tracą komentarz, linie bez dostają //. Działa w IntelliJ i w tej grze.",
+    "ex": "// System.out.println(\"a\");\n// System.out.println(\"b\");\n// po Ctrl+/ oba println znowu działają"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Ile porównań robi stara wersja (j < a) dla 4 liczb?",
+    "options": [
+     "6",
+     "12",
+     "16"
+    ],
+    "answer": 1,
+    "why": "4 przejścia i w każdym 3 pary (j = 1, 2, 3): 4 * 3 = 12. Licznik nad szufladami pokazał to samo."
+   },
+   {
+    "q": "A ile porównań robi wersja z j < n - i dla tych samych 4 liczb?",
+    "options": [
+     "6",
+     "12",
+     "10"
+    ],
+    "answer": 0,
+    "why": "Przejścia mają 3, 2, 1 i 0 par: 3 + 2 + 1 = 6. Wynik ten sam, tylko bez zbędnych sprawdzeń."
+   }
+  ],
+  "lesson": "Stara wersja z j < a też sortuje, ale w każdym przejściu sprawdza wszystkie pary, także te już ułożone na końcu: 12 porównań zamiast 6."
+ },
+ {
+  "id": 10,
+  "title": "Ile porównań? O(N^2)",
+  "ref": "O(N^2): dwie pętle jedna w drugiej",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "Napisz metodę int porownania(int tab[]): sortuje tablicę bąbelkiem z j < n - i i ZWRACA, ile razy porównała parę sąsiadów (licz każde porównanie, nie tylko zamiany). W main wypisz porownan: X dla tablicy {4, 2, 5, 3, 1}, a potem posortowane liczby po spacji. Dla 5 liczb wyjdzie 4 + 3 + 2 + 1 = 10.",
+  "starter": "public static int porownania(int tab[]) {\n    int n = tab.length;\n    int licznik = 0;\n    // bąbelek z j < n - i, licznik++ przy KAŻDYM porównaniu\n\n    return licznik;\n}\n\npublic static void main(String[] args) {\n    int tab[] = {4, 2, 5, 3, 1};\n    System.out.println(\"porownan: \" + porownania(tab));\n    for (int k = 0; k < tab.length; k++) {\n        System.out.print(tab[k] + \" \");\n    }\n    System.out.println();\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "porownan: 10\n1 2 3 4 5",
+    "calls": [
+     "porownania"
+    ]
+   },
+   {
+    "call": "porownania",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      5,
+      1,
+      4,
+      2
+     ]
+    ],
+    "ret": 6,
+    "arr_end": [
+     1,
+     2,
+     4,
+     5
+    ]
+   },
+   {
+    "call": "porownania",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    ],
+    "ret": 15,
+    "arr_end": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ]
+   },
+   {
+    "call": "porownania",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      9,
+      3
+     ]
+    ],
+    "ret": 1,
+    "arr_end": [
+     3,
+     9
+    ]
+   },
+   {
+    "call": "porownania",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     [
+      7
+     ]
+    ],
+    "ret": 0,
+    "arr_end": [
+     7
+    ]
+   },
+   {
+    "call": "porownania",
+    "types": [
+     "int[]"
+    ],
+    "args": [
+     []
+    ],
+    "ret": 0,
+    "arr_end": []
+   }
+  ],
+  "hints": [
+   "licznik++ stawiasz w wewnętrznej pętli, ale PRZED if - wtedy liczy każde porównanie, także to bez zamiany.",
+   "Posortowana tablica {1, 2, 3, 4, 5, 6} też ma 15 porównań: bąbelek sprawdza każdą parę, nawet gdy nic nie zamienia.",
+   "Ostatnia podpowiedź: for (int j = 1; j < n - i; j++) { licznik++; if (tab[j - 1] > tab[j]) { ...zamiana... } }"
+  ],
+  "tools": [
+   {
+    "code": "licznik++ w pętli",
+    "kind": "liczenie kroków",
+    "desc": "Zmienna, która rośnie o 1 przy każdym obrocie. Na końcu mówi, ile razy coś się stało. Tak mierzysz pracę algorytmu.",
+    "ex": "int ile = 0;\nfor (int a = 0; a < 3; a++) {\n    for (int b = 0; b < 4; b++) {\n        ile++;\n    }\n}\nSystem.out.println(ile); // 12"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Ile porównań zrobi ta metoda dla 6 liczb?",
+    "options": [
+     "6",
+     "15",
+     "36"
+    ],
+    "answer": 1,
+    "why": "5 + 4 + 3 + 2 + 1 = 15. Dla n liczb to około n * n / 2 - dlatego mówimy O(N^2)."
+   },
+   {
+    "q": "Tablica urosła z 5 do 10 liczb. Ile razy więcej porównań?",
+    "options": [
+     "Mniej więcej 2 razy",
+     "Mniej więcej 4 razy",
+     "Tyle samo"
+    ],
+    "answer": 1,
+    "why": "10 porównań dla 5 liczb, 45 dla 10. Dwa razy więcej liczb to około cztery razy więcej pracy - tak rośnie n * n."
+   }
+  ],
+  "lesson": "Dwie pętle jedna w drugiej to około n * n kroków: O(N^2). Bąbelek porównuje tyle samo par nawet dla już posortowanej tablicy."
+ },
+ {
+  "id": 11,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "roles": {
+   "i": "numer przejścia (ile razy przeszliśmy przez całą tablicę)",
+   "j": "prawy z pary sąsiadów - lewy to j - 1"
+  },
+  "goal": "Z pamięci: napisz wersję z ćwiczenia 3. Metoda sortuj(ArrayList<String> lista) z n = lista.size(), pętla i < n, pętla j od 1 do j < n - i, porównanie compareTo(...) > 0, zamiana przez tmp z get i set, po każdym przejściu linia po przejsciu NR: imiona. W main lista Zosia, Adam, Ola. Zanim uruchomisz, odpowiedz na pytania pod kodem - to rozpisanie na kartce.",
+  "starter": "// sortuj(ArrayList<String> lista) z pamięci\n\npublic static void main(String[] args) {\n    ArrayList<String> lista = new ArrayList<>();\n    lista.add(\"Zosia\");\n    lista.add(\"Adam\");\n    lista.add(\"Ola\");\n    sortuj(lista);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "po przejsciu 0: Adam Ola Zosia\npo przejsciu 1: Adam Ola Zosia\npo przejsciu 2: Adam Ola Zosia",
+    "calls": [
+     "sortuj"
+    ],
+    "uses": [
+     "compareTo"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola",
+      "ola",
+      "Ala"
+     ]
+    ],
+    "out": "po przejsciu 0: Ola Ala ola\npo przejsciu 1: Ala Ola ola\npo przejsciu 2: Ala Ola ola",
+    "list_end": [
+     "Ala",
+     "Ola",
+     "ola"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ewa",
+      "Adam",
+      "Ewa",
+      "Adam"
+     ]
+    ],
+    "out": "po przejsciu 0: Adam Ewa Adam Ewa\npo przejsciu 1: Adam Adam Ewa Ewa\npo przejsciu 2: Adam Adam Ewa Ewa\npo przejsciu 3: Adam Adam Ewa Ewa",
+    "list_end": [
+     "Adam",
+     "Adam",
+     "Ewa",
+     "Ewa"
+    ]
+   },
+   {
+    "call": "sortuj",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     []
+    ],
+    "out": "",
+    "list_end": []
+   }
+  ],
+  "code_checks": [
+   {
+    "label": "pętla zewnętrzna: for (int i = 0; i < n; i++)",
+    "re": "for\\s*\\(\\s*int\\s+i\\s*=\\s*0\\s*;\\s*i\\s*<\\s*n\\s*;",
+    "msg": "Pętla przejść ma być for (int i = 0; i < n; i++), z n = lista.size()."
+   },
+   {
+    "label": "pętla wewnętrzna: j = 1 i j < n - i",
+    "re": "for\\s*\\(\\s*int\\s+j\\s*=\\s*1\\s*;\\s*j\\s*<\\s*n\\s*-\\s*i\\s*;",
+    "msg": "Pętla par ma być for (int j = 1; j < n - i; j++)."
+   },
+   {
+    "label": "porównanie: compareTo(...) > 0",
+    "re": "\\.compareTo\\([^;{]*\\)\\s*>\\s*0",
+    "msg": "Porównaj tak: lista.get(j - 1).compareTo(lista.get(j)) > 0."
+   },
+   {
+    "label": "zamiana przez tmp z get i set",
+    "re": "String\\s+\\w+\\s*=\\s*\\w+\\.get\\([^;]*\\)\\s*;[\\s\\S]*\\.set\\([\\s\\S]*\\.set\\(",
+    "msg": "Zamiana: String tmp = lista.get(j - 1); potem dwa razy set."
+   },
+   {
+    "label": "indeksy j - 1 i j, bez j + 1",
+    "re": "j\\s*\\+\\s*1",
+    "want": false,
+    "msg": "Para to j - 1 i j. Nie używaj j + 1."
+   }
+  ],
+  "hints": [
+   "Kolejność: nagłówek metody, n = lista.size(), pętla i, w niej pętla j, w niej if z compareTo i zamianą, po pętli j wypisywanie.",
+   "Wypisywanie: print(\"po przejsciu \" + i + \":\"), pętla k z print(\" \" + lista.get(k)), na końcu println()."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego - wszystko było w tym rozdziale.",
+  "quiz": [
+   {
+    "q": "Lista Zosia, Adam, Ola. Przejście 0, para Zosia i Adam - co się dzieje?",
+    "options": [
+     "Bez zmian",
+     "Zamiana, bo Zosia jest po Adam",
+     "Zamiana, bo Zosia jest dłuższa"
+    ],
+    "answer": 1,
+    "why": "'Z' ma kod 90, 'A' 65. compareTo daje 25 > 0, więc zamiana: Adam, Zosia, Ola."
+   },
+   {
+    "q": "Dalej w przejściu 0: para Zosia i Ola. Jak wygląda lista po przejściu 0?",
+    "options": [
+     "Adam Zosia Ola",
+     "Adam Ola Zosia",
+     "Ola Adam Zosia"
+    ],
+    "answer": 1,
+    "why": "Zosia jest po Oli ('Z' 90 > 'O' 79), więc znowu zamiana. Zosia dojechała na koniec: Adam Ola Zosia."
+   },
+   {
+    "q": "Po co w pętli j jest n - i, a nie n?",
+    "options": [
+     "Bo inaczej program się wywróci",
+     "Po przejściu i ostatnie i elementów stoi już na swoim miejscu, więc nie trzeba ich sprawdzać",
+     "Żeby pominąć pierwszy element"
+    ],
+    "answer": 1,
+    "why": "Każde przejście dowozi na koniec kolejny największy element. Wersja z n też działa, tylko robi zbędne porównania."
+   }
+  ],
+  "lesson": "Bąbelek: i liczy przejścia, j od 1 do n - i, para j - 1 i j, compareTo(...) > 0, zamiana przez tmp. Po przejściu i ostatnie i elementów jest już na miejscu."
+ }
+]

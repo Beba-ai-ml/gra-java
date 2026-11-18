@@ -1,0 +1,1046 @@
+[
+ {
+  "id": 1,
+  "title": "Ala na kartce",
+  "ref": "Ćwiczenie 1 (na kartce)",
+  "view": "szyfr",
+  "goal": "Najpierw na kartce zaszyfruj „Ala” przesunięciem 3: numer litery, plus 3, z powrotem na literę. Potem sprawdź w grze. Program robi to już dla pierwszej litery A. Dopisz te same kroki dla l i dla a. Małe litery liczysz od 'a', nie od 'A'.",
+  "starter": "public static void main(String[] args) {\n    char c = 'A';\n    int numer = c - 'A';              // A to 0\n    numer = (numer + 3) % 26;         // 0 + 3 = 3\n    char nowa = (char) ('A' + numer); // 3 to D\n    System.out.println(c + \" -> \" + nowa);\n\n    // to samo dla 'l', potem dla 'a' (male litery licz od 'a')\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "A -> D\nl -> o\na -> d"
+   }
+  ],
+  "hints": [
+   "Zmienne c, numer i nowa już istnieją. Nie pisz drugi raz char ani int przed nazwą - tylko nadaj im nowe wartości.",
+   "Dla małej litery wszystkie trzy 'A' zamieniasz na 'a': odejmujesz 'a', a na końcu dodajesz 'a'.",
+   "Ostatnia podpowiedź: c = 'l'; numer = c - 'a'; numer = (numer + 3) % 26; nowa = (char) ('a' + numer); i ten sam println."
+  ],
+  "roles": {
+   "numer": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [
+   {
+    "code": "char",
+    "kind": "jedna litera",
+    "desc": "Typ char trzyma jeden znak. Znak piszesz w apostrofach: 'a'. Napis z wielu liter (String) stoi w cudzysłowie: \"ala\".",
+    "ex": "char c = 'k';\nSystem.out.println(c);   // na ekranie: k"
+   },
+   {
+    "code": "c - 'a'",
+    "kind": "numer litery",
+    "desc": "Znak to w środku liczba (kod). Odejmując 'a', dostajesz numer litery w alfabecie: 'a' daje 0, 'b' daje 1, 'z' daje 25. Wielkie litery liczysz od 'A'.",
+    "ex": "char c = 'e';\nint nr = c - 'a';\nSystem.out.println(nr);   // na ekranie: 4"
+   },
+   {
+    "code": "% 26",
+    "kind": "reszta z dzielenia",
+    "desc": "a % b to reszta z dzielenia a przez b. Przy 26 literach zawija numer: 26 zamienia się w 0, 27 w 1. Liczby od 0 do 25 zostają bez zmian.",
+    "ex": "System.out.println(29 % 26);   // 3\nSystem.out.println(7 % 26);    // 7"
+   },
+   {
+    "code": "(char) liczba",
+    "kind": "liczba z powrotem na znak",
+    "desc": "Rzutowanie (char) zamienia kod z powrotem na znak. 'a' + 2 to liczba 99, a (char) ('a' + 2) to litera c. Bez dodania 'a' dostaniesz znak o kodzie 2, czyli nie literę.",
+    "ex": "char c = (char) ('a' + 4);\nSystem.out.println(c);   // na ekranie: e"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Policz na kartce: co wychodzi z „Ala” przesuniętej o 3?",
+    "options": [
+     "Dod",
+     "Dmd",
+     "dod"
+    ],
+    "answer": 0,
+    "why": "A (0) + 3 = 3 to D, l (11) + 3 = 14 to o, a (0) + 3 = 3 to d. Wielka litera zostaje wielka."
+   },
+   {
+    "q": "Jaki numer w alfabecie ma litera l?",
+    "options": [
+     "11",
+     "12",
+     "108"
+    ],
+    "answer": 0,
+    "why": "Liczymy od zera: a=0, b=1 ... l=11. 108 to kod znaku 'l', a numer w alfabecie to 'l' - 'a' = 108 - 97 = 11."
+   }
+  ],
+  "lesson": "Szyfr Cezara to trzy kroki: numer litery (c - 'a'), przesunięcie ((numer + 3) % 26), z powrotem na literę ((char) ('a' + numer))."
+ },
+ {
+  "id": 2,
+  "title": "xyz i zawijanie",
+  "ref": "Ćwiczenie 2 (na kartce)",
+  "view": "szyfr",
+  "goal": "Na kartce zaszyfruj „xyz” przesunięciem 3: raz bez % 26, raz z % 26. Program liczy oba wyniki dla x. Dopisz to samo dla y i z. Na pasku alfabetu zobaczysz, gdzie ląduje numer bez % 26.",
+  "starter": "public static void main(String[] args) {\n    char c = 'x';\n    int numer = c - 'a';             // x to 23\n    int bez = numer + 3;             // bez % 26\n    int z = (numer + 3) % 26;        // z % 26\n    System.out.println(c + \" -> \" + (char) ('a' + bez) + \" albo \" + (char) ('a' + z));\n\n    // to samo dla 'y' i dla 'z'\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "x -> { albo a\ny -> | albo b\nz -> } albo c"
+   }
+  ],
+  "hints": [
+   "Zmienne już istnieją, więc piszesz tylko c = 'y'; i liczysz numer, bez i z jeszcze raz.",
+   "Te cztery linijki (c, numer, bez, z) plus println powtarzasz dla y, a potem dla z.",
+   "Ostatnia podpowiedź: c = 'y'; numer = c - 'a'; bez = numer + 3; z = (numer + 3) % 26; i ten sam println."
+  ],
+  "roles": {
+   "numer": "numer litery w alfabecie",
+   "bez": "numer bez % 26",
+   "z": "numer z % 26"
+  },
+  "tools": [
+   {
+    "code": "% 26",
+    "kind": "reszta z dzielenia",
+    "desc": "a % b to reszta z dzielenia a przez b. Przy 26 literach zawija numer: 26 zamienia się w 0, 27 w 1. Liczby od 0 do 25 zostają bez zmian.",
+    "ex": "System.out.println(29 % 26);   // 3\nSystem.out.println(7 % 26);    // 7"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "x ma numer 23. Ile wychodzi bez % 26 i jaki to znak?",
+    "options": [
+     "26, znak {",
+     "26, litera a",
+     "0, litera a"
+    ],
+    "answer": 0,
+    "why": "23 + 3 = 26, a numeru 26 nie ma w alfabecie. 'a' + 26 = 97 + 26 = 123, a kod 123 to znak {."
+   },
+   {
+    "q": "Ile to 28 % 26?",
+    "options": [
+     "2",
+     "28",
+     "1"
+    ],
+    "answer": 0,
+    "why": "28 podzielone przez 26 to 1 i reszta 2. % daje resztę, więc 2, czyli litera c."
+   }
+  ],
+  "lesson": "Bez % 26 numer wychodzi za z i trafia w inne znaki ASCII ({, |, }). % 26 zawija go na początek alfabetu."
+ },
+ {
+  "id": 3,
+  "title": "szyfruj: małe litery",
+  "ref": "Ćwiczenie 3",
+  "view": "szyfr",
+  "goal": "Napisz metodę szyfruj(String text, int szyfr), która przesuwa tylko małe litery (a-z). Wielkie litery i inne znaki zostają. Pracuj na tablicy znaków char[]: text.toCharArray() na początku, new String(znaki) przy return. W main wypisz szyfruj dla \"ala\", \"xyz\" i \"Ala\" (szyfr 3), każdy w osobnej linii.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    // 1. zamien text na tablice znakow char[]\n    // 2. w petli przesun male litery\n    // 3. oddaj napis zrobiony z tablicy\n\n}\n\npublic static void main(String[] args) {\n    // wypisz szyfruj(\"ala\", 3), szyfruj(\"xyz\", 3), szyfruj(\"Ala\", 3)\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "dod\nabc\nAod",
+    "calls": [
+     "szyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "abc",
+     1
+    ],
+    "ret": "bcd"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "z",
+     1
+    ],
+    "ret": "a"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "hello",
+     13
+    ],
+    "ret": "uryyb"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zoo, xyz!",
+     2
+    ],
+    "ret": "Zqq, zab!"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "",
+     5
+    ],
+    "ret": ""
+   }
+  ],
+  "hints": [
+   "Pętla idzie po wszystkich szufladach: i od 0, dopóki i < znaki.length.",
+   "W pętli sprawdź, czy znaki[i] jest między 'a' a 'z'. Tylko wtedy licz: tmp = znaki[i] - 'a', potem (tmp + szyfr) % 26.",
+   "Na koniec tmp zamień z powrotem na literę i wpisz do tej samej szuflady.",
+   "Ostatnia podpowiedź: znaki[i] = (char) ('a' + tmp); a po pętli return new String(znaki);"
+  ],
+  "roles": {
+   "i": "numer szuflady z literą",
+   "tmp": "numer litery w alfabecie (0-25)",
+   "szyfr": "o ile miejsc przesuwamy"
+  },
+  "tools": [
+   {
+    "code": "public static String",
+    "kind": "metoda oddaje napis",
+    "desc": "Słowo String przed nazwą metody mówi, że metoda oddaje napis. return musi wtedy oddać String.",
+    "ex": "public static String powitanie(String imie) {\n    return \"hej \" + imie;\n}"
+   },
+   {
+    "code": "text.toCharArray()",
+    "kind": "napis na szuflady",
+    "desc": "Robi z napisu tablicę znaków char[]: każda litera trafia do osobnej szuflady z numerem od 0. Szuflady możesz zmieniać, napisu nie.",
+    "ex": "char[] t = \"kot\".toCharArray();\nSystem.out.println(t[1]);        // o\nSystem.out.println(t.length);    // 3"
+   },
+   {
+    "code": "c >= 'a' && c <= 'z'",
+    "kind": "czy to mała litera",
+    "desc": "Znaki porównujesz jak liczby. Warunek jest prawdziwy tylko dla liter od a do z. Spacja, cyfry i wielkie litery go nie spełniają.",
+    "ex": "char c = '7';\nif (c >= '0' && c <= '9') {\n    System.out.println(\"cyfra\");\n}"
+   },
+   {
+    "code": "new String(znaki)",
+    "kind": "szuflady z powrotem w napis",
+    "desc": "Skleja wszystkie szuflady tablicy char[] w jeden napis String. Robisz to na końcu metody, przy return.",
+    "ex": "char[] t = {'k', 'o', 't'};\nt[0] = 'r';\nSystem.out.println(new String(t));   // rot"
+   }
+  ],
+  "lesson": "Napis zamieniasz na szuflady char[], zmieniasz szuflady jedna po drugiej i sklejasz z powrotem przez new String. Wielkie litery na razie przechodzą bez zmian.",
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   }
+  ]
+ },
+ {
+  "id": 4,
+  "title": "Wielkie litery też",
+  "ref": "Ćwiczenie 4",
+  "view": "szyfr",
+  "goal": "Dopisz do szyfruj obsługę wielkich liter: ta sama logika, tylko od 'A'. Spacje, cyfry i inne znaki zostają. W main wypisz szyfruj dla \"Ala\", \"xyz\", \"XYZ\" i \"Ala ma kota 123\" (szyfr 3).",
+  "starter": "// skopiuj tu swoja metode szyfruj z poziomu 3\n// i dopisz else if dla wielkich liter\n\n\npublic static void main(String[] args) {\n    // wypisz szyfruj dla \"Ala\", \"xyz\", \"XYZ\", \"Ala ma kota 123\" (szyfr 3)\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Dod\nabc\nABC\nDod pd nrwd 123",
+    "calls": [
+     "szyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra",
+     1
+    ],
+    "ret": "Afcsb"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "ABC xyz",
+     25
+    ],
+    "ret": "ZAB wxy"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "123 !?",
+     7
+    ],
+    "ret": "123 !?"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Hello World",
+     13
+    ],
+    "ret": "Uryyb Jbeyq"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "@[`{",
+     1
+    ],
+    "ret": "@[`{"
+   }
+  ],
+  "hints": [
+   "Pod blokiem if dla małych liter dopisz else if dla wielkich: znaki[i] między 'A' a 'Z'.",
+   "W drugim bloku wszystko jest jak w pierwszym, tylko każde 'a' zamieniasz na 'A' - i przy odejmowaniu, i przy dodawaniu z powrotem.",
+   "Ostatnia podpowiedź: else if (znaki[i] >= 'A' && znaki[i] <= 'Z') { int tmp = znaki[i] - 'A'; tmp = (tmp + szyfr) % 26; znaki[i] = (char) ('A' + tmp); }"
+  ],
+  "roles": {
+   "i": "numer szuflady z literą",
+   "tmp": "numer litery w alfabecie (0-25)",
+   "szyfr": "o ile miejsc przesuwamy"
+  },
+  "tools": [
+   {
+    "code": "else if",
+    "kind": "drugi przypadek",
+    "desc": "Jeśli pierwszy warunek nie wszedł, Java sprawdza następny. Gdy żaden nie pasuje, nic się nie dzieje i znak zostaje bez zmian.",
+    "ex": "if (x > 0) {\n    System.out.println(\"dodatnia\");\n}\nelse if (x < 0) {\n    System.out.println(\"ujemna\");\n}"
+   }
+  ],
+  "lesson": "Małe i wielkie litery mają osobne miejsca w tablicy znaków, więc każda grupa liczy numer od swojej bazy: 'a' albo 'A'.",
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   }
+  ]
+ },
+ {
+  "id": 5,
+  "title": "deszyfruj: w lewo",
+  "ref": "Ćwiczenie 5",
+  "view": "szyfr",
+  "goal": "Napisz metodę deszyfruj(String text, int szyfr): to samo co szyfruj, ale przesuwa w lewo. Pamiętaj o + 26 przed % 26. W main wypisz deszyfruj dla \"Dod\", \"abc\", \"ABC\" i \"Dod pd nrwd 123\" (szyfr 3).",
+  "starter": "public static String deszyfruj(String text, int szyfr) {\n    // jak szyfruj, ale przesuniecie w lewo (pamietaj o + 26)\n\n}\n\npublic static void main(String[] args) {\n    // wypisz deszyfruj dla \"Dod\", \"abc\", \"ABC\", \"Dod pd nrwd 123\" (szyfr 3)\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ala\nxyz\nXYZ\nAla ma kota 123",
+    "calls": [
+     "deszyfruj"
+    ]
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "abc",
+     3
+    ],
+    "ret": "xyz"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "A",
+     1
+    ],
+    "ret": "Z"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Afcsb",
+     1
+    ],
+    "ret": "Zebra"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "ZAB wxy",
+     25
+    ],
+    "ret": "ABC xyz"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "@[`{ 9",
+     4
+    ],
+    "ret": "@[`{ 9"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "hello",
+     0
+    ],
+    "ret": "hello"
+   }
+  ],
+  "hints": [
+   "Skopiuj swoją metodę szyfruj i zmień nazwę na deszyfruj. Zmienia się jedna linijka w każdym bloku.",
+   "Zamiast dodać szyfr, odejmujesz go. Dla a (tmp = 0) wyjdzie -3 - patrz na pasek alfabetu, gdzie wtedy ląduje tmp.",
+   "Ostatnia podpowiedź: tmp = (tmp - szyfr + 26) % 26; w obu blokach."
+  ],
+  "roles": {
+   "i": "numer szuflady z literą",
+   "tmp": "numer litery w alfabecie (0-25)",
+   "szyfr": "o ile miejsc przesuwamy"
+  },
+  "tools": [
+   {
+    "code": "(liczba + 26) % 26",
+    "kind": "cofanie bez minusa",
+    "desc": "W Javie reszta z liczby ujemnej jest ujemna: -3 % 26 daje -3. Dodanie 26 (pełne okrążenie alfabetu) przed % robi z -3 liczbę 23, a 23 % 26 to dalej 23. Liczby od 0 do 25 po + 26 i % 26 wracają takie same.",
+    "ex": "int dzien = -2;                         // 2 dni przed poniedziałkiem\nSystem.out.println(dzien % 7);          // -2\nSystem.out.println((dzien + 7) % 7);    // 5, czyli sobota"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Ile w Javie wychodzi z -3 % 26?",
+    "options": [
+     "-3",
+     "23",
+     "0"
+    ],
+    "answer": 0,
+    "why": "Java zostawia minus przy reszcie: -3 % 26 to -3. Dlatego najpierw dodajesz 26: (-3 + 26) % 26 = 23, czyli litera x."
+   }
+  ],
+  "lesson": "Deszyfrowanie to przesunięcie w lewo. + 26 to pełne okrążenie alfabetu: nie zmienia litery, ale nie pozwala numerowi zejść poniżej zera.",
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   }
+  ]
+ },
+ {
+  "id": 6,
+  "title": "Tam i z powrotem",
+  "ref": "Ćwiczenie 6: test w obie strony",
+  "view": "szyfr",
+  "goal": "W jednym programie mają być obie metody: szyfruj i deszyfruj. W main zaszyfruj \"Ala ma kota xyz XYZ 123\" przesunięciem 3, odszyfruj wynik i wypisz: zaszyfrowany tekst, odszyfrowany tekst i czy odszyfrowany jest równy oryginałowi (equals).",
+  "starter": "// tu wklej obie metody: szyfruj i deszyfruj\n\n\npublic static void main(String[] args) {\n    String x = \"Ala ma kota xyz XYZ 123\";\n    // zaszyfruj x, odszyfruj wynik, wypisz oba i x.equals(...)\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Dod pd nrwd abc ABC 123\nAla ma kota xyz XYZ 123\ntrue",
+    "calls": [
+     "szyfruj",
+     "deszyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra",
+     1
+    ],
+    "ret": "Afcsb"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "abc",
+     3
+    ],
+    "ret": "xyz"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "ZAB wxy",
+     25
+    ],
+    "ret": "ABC xyz"
+   }
+  ],
+  "hints": [
+   "Zapisz wynik szyfruj(x, 3) do zmiennej String, potem daj tę zmienną do deszyfruj.",
+   "Napisy porównujesz przez equals, nie przez ==. == sprawdza coś innego i tu da false.",
+   "Ostatnia podpowiedź: System.out.println(x.equals(odszyfrowany));"
+  ],
+  "tools": [
+   {
+    "code": "a.equals(b)",
+    "kind": "czy napisy są takie same",
+    "desc": "Porównuje dwa napisy litera po literze i daje true albo false. Do napisów używaj equals, nie ==.",
+    "ex": "String a = \"kot\";\nString b = \"ko\";\nb = b + \"t\";\nSystem.out.println(a.equals(b));   // true"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co powinno dać deszyfruj(szyfruj(x, 3), 3)?",
+    "options": [
+     "dokładnie x",
+     "x przesunięte o 3",
+     "x przesunięte o 6"
+    ],
+    "answer": 0,
+    "why": "szyfruj przesuwa o 3 w prawo, deszyfruj o 3 w lewo. Razem stoisz w miejscu, więc wraca oryginał."
+   }
+  ],
+  "lesson": "deszyfruj(szyfruj(x, 3), 3) wraca do x. Taki test w obie strony łapie błędy w każdej z metod, a napisy porównujesz przez equals.",
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "title": "Stary kod z charAt",
+  "ref": "Ćwiczenie 7: czytanie starego kodu",
+  "view": "szyfr",
+  "goal": "To Twój stary plik szyfrcezara.java (bez package i class). Uruchom go wolno i patrz: charAt tylko czyta literę z napisu, a coded += ... za każdym razem robi nowy, dłuższy napis. Dopisz pod każdą linijką komentarz // co robi i odpowiedz na pytania.",
+  "starter": "public static void main(String[] args) {\n    int szyfr = 3;\n    String text = \"Ala ma kota\";\n    String coded = \"\";\n    for (int i = 0; i < text.length(); i++) {\n        if (text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') {\n            int tmp = text.charAt(i) - 'A';\n            tmp = (tmp + szyfr) % 26 + 'A';\n            coded += (char) tmp;\n        } else if (text.charAt(i) >= 'a' && text.charAt(i) <= 'z') {\n            int tmp = text.charAt(i) - 'a';\n            tmp = (tmp + szyfr) % 26 + 'a';\n            coded += (char) tmp;\n        }\n        else {\n            coded += text.charAt(i);\n        }\n    }\n    System.out.println(text);\n    System.out.println(coded);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ala ma kota\nDod pd nrwd"
+   }
+  ],
+  "hints": [
+   "Patrz na ramkę main: zmienna coded rośnie o jedną literę w każdym obrocie pętli.",
+   "Zobacz linię tmp = (tmp + szyfr) % 26 + 'A'. Tu tmp nie jest już numerem 0-25, tylko od razu kodem znaku (np. 68 to D).",
+   "Różnica z Twoją wersją: tu nie ma tablicy char[], wynik jest sklejany z kawałków przez +=."
+  ],
+  "roles": {
+   "i": "numer litery w napisie",
+   "tmp": "najpierw numer 0-25, potem od razu kod znaku"
+  },
+  "tools": [
+   {
+    "code": "text.charAt(i)",
+    "kind": "litera z napisu",
+    "desc": "Czyta znak numer i z napisu (od 0). Tylko czyta - napisu String nie da się zmienić w środku.",
+    "ex": "String s = \"kot\";\nSystem.out.println(s.charAt(2));   // t"
+   },
+   {
+    "code": "coded += znak",
+    "kind": "doklejanie do napisu",
+    "desc": "Robi NOWY napis: stary plus jeden znak na końcu. Stary napis się nie zmienia, zmienna dostaje nowy.",
+    "ex": "String s = \"\";\ns += 'o';\ns += 'k';\nSystem.out.println(s);   // ok"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czym ten kod różni się od Twojej wersji z char[]?",
+    "options": [
+     "czyta litery przez charAt i skleja wynik przez +=, zamiast zmieniać szuflady char[]",
+     "nie używa % 26, więc z robi się {",
+     "przesuwa w lewo zamiast w prawo"
+    ],
+    "answer": 0,
+    "why": "Stary kod nie ma tablicy. Czyta text.charAt(i), a wynik buduje przez coded += ..., co za każdym razem tworzy nowy napis."
+   },
+   {
+    "q": "Co jest w tmp po linii tmp = (tmp + szyfr) % 26 + 'A'; dla litery A?",
+    "options": [
+     "68, czyli kod znaku D",
+     "3, numer litery D",
+     "litera D"
+    ],
+    "answer": 0,
+    "why": "(0 + 3) % 26 = 3, a 3 + 'A' = 3 + 65 = 68. tmp jest int, więc trzyma kod 68. Dopiero (char) tmp robi z niego D."
+   }
+  ],
+  "lesson": "charAt czyta jedną literę napisu, ale jej nie zmienia. += skleja nowy napis za każdym razem. Wersja z char[] zmienia szuflady w miejscu i skleja napis raz, na końcu."
+ },
+ {
+  "id": 8,
+  "title": "Pułapka minusa",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "goal": "Ta metoda deszyfruj zapomniała o + 26. Uruchom ją: dla \"abc\" zamiast xyz wychodzą dziwne znaki. Zobacz na pasku alfabetu, gdzie ląduje numer -3, i napraw metodę.",
+  "starter": "public static String deszyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(deszyfruj(\"abc\", 3));\n    System.out.println(deszyfruj(\"Dod\", 3));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "xyz\nAla",
+    "calls": [
+     "deszyfruj"
+    ]
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "ABC",
+     2
+    ],
+    "ret": "YZA"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra",
+     1
+    ],
+    "ret": "Ydaqz"
+   }
+  ],
+  "hints": [
+   "Dla a numer to 0. 0 - 3 = -3, a w Javie -3 % 26 to dalej -3. 'a' + (-3) to znak ^.",
+   "Przed % 26 dodaj 26 - pełne okrążenie alfabetu. Zrób to w obu blokach.",
+   "Ostatnia podpowiedź: tmp = (tmp - szyfr + 26) % 26;"
+  ],
+  "roles": {
+   "i": "numer szuflady z literą",
+   "tmp": "numer litery w alfabecie (0-25)",
+   "szyfr": "o ile miejsc przesuwamy"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego: + 26 znasz z poziomu 5. Tu widzisz, co się dzieje bez niego.",
+  "quiz": [
+   {
+    "q": "Dlaczego deszyfruj(\"abc\", 3) bez + 26 daje ^_` zamiast xyz?",
+    "options": [
+     "bo -3 % 26 w Javie to -3, a 'a' - 3 to znak ^ przed literą a",
+     "bo litery a, b, c nie mają numerów",
+     "bo % 26 zamienia -3 na 3"
+    ],
+    "answer": 0,
+    "why": "Reszta z liczby ujemnej zostaje ujemna. Numer -3 wypada przed a, a tam w tablicy znaków stoją ^, _ i `."
+   }
+  ],
+  "lesson": "Bez + 26 numer przy cofaniu schodzi poniżej zera i trafia w znaki przed a. + 26 przed % 26 zawsze trzyma go w alfabecie."
+ },
+ {
+  "id": 9,
+  "title": "Numer to nie litera",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "goal": "Ta metoda szyfruj pisze do szuflady (char) tmp zamiast (char) ('a' + tmp). Uruchom: szuflady dostają niewidoczne znaki sterujące. Napraw obie linijki.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) tmp;\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) tmp;\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfruj(\"ala\", 3));\n    System.out.println(szyfruj(\"Kot\", 1));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "dod\nLpu",
+    "calls": [
+     "szyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra",
+     1
+    ],
+    "ret": "Afcsb"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "xyz",
+     3
+    ],
+    "ret": "abc"
+   }
+  ],
+  "hints": [
+   "tmp to numer w alfabecie (0-25), a nie kod litery. Kod 3 to niewidoczny znak sterujący, nie litera d.",
+   "Żeby z numeru zrobić literę, dodaj z powrotem bazę: 'a' w bloku małych liter, 'A' w bloku wielkich.",
+   "Ostatnia podpowiedź: znaki[i] = (char) ('a' + tmp); i w drugim bloku (char) ('A' + tmp);"
+  ],
+  "roles": {
+   "i": "numer szuflady z literą",
+   "tmp": "numer litery w alfabecie (0-25)",
+   "szyfr": "o ile miejsc przesuwamy"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego: (char) ('a' + numer) znasz z poziomu 1.",
+  "lesson": "Numer litery (0-25) i kod znaku to dwie różne liczby. Z numeru robisz literę dopiero po dodaniu 'a' albo 'A'."
+ },
+ {
+  "id": 10,
+  "title": "Wielkie liczone od 'a'",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "goal": "W bloku wielkich liter numer jest liczony od 'a' zamiast od 'A'. Uruchom: z A wychodzi znak >. Zobacz na pasku, jaki numer wychodzi z 'A' - 'a', i napraw.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfruj(\"Ala\", 3));\n    System.out.println(szyfruj(\"XYZ\", 3));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Dod\nABC",
+    "calls": [
+     "szyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra",
+     1
+    ],
+    "ret": "Afcsb"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "HAL",
+     1
+    ],
+    "ret": "IBM"
+   }
+  ],
+  "hints": [
+   "'A' ma kod 65, 'a' ma kod 97. 'A' - 'a' to -32, a nie 0.",
+   "Każdy blok liczy numer od swojej bazy. W bloku wielkich liter odejmujesz 'A'.",
+   "Ostatnia podpowiedź: w else if zamień int tmp = znaki[i] - 'a'; na int tmp = znaki[i] - 'A';"
+  ],
+  "roles": {
+   "i": "numer szuflady z literą",
+   "tmp": "numer litery w alfabecie (0-25)",
+   "szyfr": "o ile miejsc przesuwamy"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego. Wielkie litery od 'A' znasz z poziomu 4.",
+  "lesson": "Wielkie litery zaczynają się od 'A' (kod 65), małe od 'a' (kod 97). Numer liczysz zawsze od bazy tej samej wielkości co litera."
+ },
+ {
+  "id": 11,
+  "title": "Brak rzutowania",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "goal": "Tu kompilator nie przepuszcza kodu: possible lossy conversion from int to char. Najedź na podkreśloną linię, przeczytaj wyjaśnienie i napraw obie linijki.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = 'a' + tmp;\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = 'A' + tmp;\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfruj(\"ala\", 3));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "dod",
+    "calls": [
+     "szyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Zebra",
+     1
+    ],
+    "ret": "Afcsb"
+   }
+  ],
+  "hints": [
+   "'a' + tmp to dodawanie liczb, więc wynik jest int. Szuflada tablicy char[] przyjmuje tylko char.",
+   "Całe dodawanie weź w nawias i postaw przed nim (char).",
+   "Ostatnia podpowiedź: znaki[i] = (char) ('a' + tmp); i tak samo z 'A'."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego. Rzutowanie (char) znasz z poziomu 1.",
+  "lesson": "Znak plus liczba daje liczbę int. Do szuflady char wpiszesz ją dopiero po rzutowaniu (char) (...)."
+ },
+ {
+  "id": 12,
+  "title": "Napis się nie zmienia",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "goal": "Ta metoda próbuje zmienić literę w środku napisu: text.charAt(i) = ... Kompilator się nie zgadza, bo String się nie zmienia. Przerób metodę na tablicę znaków char[].",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    for (int i = 0; i < text.length(); i++) {\n        if (text.charAt(i) >= 'a' && text.charAt(i) <= 'z') {\n            int tmp = text.charAt(i) - 'a';\n            tmp = (tmp + szyfr) % 26;\n            text.charAt(i) = (char) ('a' + tmp);\n        }\n    }\n    return text;\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfruj(\"ala\", 3));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "dod",
+    "calls": [
+     "szyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "xyz",
+     3
+    ],
+    "ret": "abc"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "ala ma",
+     1
+    ],
+    "ret": "bmb nb"
+   }
+  ],
+  "hints": [
+   "charAt(i) tylko czyta literę. Po lewej stronie = musi stać coś, do czego da się wpisać - np. szuflada tablicy.",
+   "Na początku metody zrób tablicę znaków z napisu, w pętli czytaj i zapisuj jej szuflady, a na końcu zrób z niej napis.",
+   "Ostatnia podpowiedź: char[] znaki = text.toCharArray(); ... znaki[i] = (char) ('a' + tmp); ... return new String(znaki);"
+  ],
+  "roles": {
+   "i": "numer szuflady z literą",
+   "tmp": "numer litery w alfabecie (0-25)",
+   "szyfr": "o ile miejsc przesuwamy"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego. toCharArray() i new String(...) znasz z poziomu 3.",
+  "quiz": [
+   {
+    "q": "Dlaczego nie da się napisać text.charAt(i) = 'x';?",
+    "options": [
+     "bo napisu String nie da się zmienić - charAt tylko czyta literę",
+     "bo charAt działa tylko dla wielkich liter",
+     "bo trzeba napisać text[i] = 'x';"
+    ],
+    "answer": 0,
+    "why": "String w Javie się nie zmienia. Dlatego zamieniasz go na char[], zmieniasz szuflady i na końcu robisz nowy napis."
+   }
+  ],
+  "lesson": "String się nie zmienia. Zmieniasz tablicę char[], a na końcu robisz z niej nowy napis.",
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   }
+  ]
+ },
+ {
+  "id": 13,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "view": "szyfr",
+  "goal": "Z pamięci, bez podglądania: napisz obie metody szyfruj i deszyfruj (public static String, parametry String text i int szyfr, tablica char[]). W main zaszyfruj \"Kot ma Ale 2026\" przesunięciem 10, odszyfruj wynik i wypisz: zaszyfrowany, odszyfrowany i czy odszyfrowany equals oryginał.",
+  "starter": "",
+  "tests": [
+   {
+    "main": true,
+    "out": "Uyd wk Kvo 2026\nKot ma Ale 2026\ntrue",
+    "calls": [
+     "szyfruj",
+     "deszyfruj"
+    ]
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "xyz XYZ",
+     3
+    ],
+    "ret": "abc ABC"
+   },
+   {
+    "call": "szyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "@[`{ 9",
+     4
+    ],
+    "ret": "@[`{ 9"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "abc ABC",
+     3
+    ],
+    "ret": "xyz XYZ"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Ofaf cde",
+     5
+    ],
+    "ret": "Java xyz"
+   },
+   {
+    "call": "deszyfruj",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "",
+     7
+    ],
+    "ret": ""
+   }
+  ],
+  "hints": [
+   "Zacznij od szyfruj: tablica znaków, pętla, dwa bloki (małe od 'a', wielkie od 'A'), new String na końcu.",
+   "deszyfruj to kopia szyfruj z jedną zmianą w każdym bloku: szyfr odejmujesz, a przed % 26 dodajesz 26.",
+   "W main: zapisz wynik szyfruj do zmiennej, daj go do deszyfruj, porównaj przez equals."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego - wszystko było w poprzednich poziomach.",
+  "quiz": [
+   {
+    "q": "Po co + 26 w deszyfruj? Co by było bez niego dla litery a i szyfru 3?",
+    "options": [
+     "0 - 3 = -3, a -3 % 26 w Javie to -3, więc wyszedłby znak ^ zamiast x",
+     "bez + 26 wyszłaby litera d",
+     "+ 26 jest tylko dla wielkich liter"
+    ],
+    "answer": 0,
+    "why": "Reszta z liczby ujemnej zostaje ujemna. + 26 (pełne okrążenie) robi z -3 liczbę 23, czyli x."
+   }
+  ],
+  "lesson": "Szyfr Cezara jako dwie metody: szyfruj przesuwa w prawo, deszyfruj w lewo z + 26, obie na tablicy char[]. Test w obie strony sprawdza je razem.",
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   }
+  ]
+ }
+]

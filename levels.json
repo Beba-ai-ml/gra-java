@@ -1,0 +1,858 @@
+[
+  {
+    "id": 1,
+    "title": "Szuflady po kolei",
+    "goal": "Wypisz każdą szufladę w postaci: numer, spacja, wartość (np. 0 4). Numer to indeks, wartość to to, co leży w środku.",
+    "ret": "void",
+    "starter": "// wypisz kazda szuflade: numer wartosc\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1
+        ],
+        "out": "0 4\n1 7\n2 1"
+      },
+      {
+        "arr": [
+          9,
+          3,
+          5,
+          2
+        ],
+        "out": "0 9\n1 3\n2 5\n3 2"
+      }
+    ],
+    "hints": [
+      "Potrzebujesz pętli for z licznikiem i, który zaczyna od 0. Warunek pętli porównuje i z tab.length.",
+      "Numer szuflady to i, a jej zawartość to tab[i]. W środku pętli wystarczy jedna linijka System.out.println."
+    ],
+    "lesson": "Pętla z i < tab.length odwiedza numery 0, 1, ..., length - 1. Ani jednej szuflady za dużo.",
+    "ref": "Ćwiczenie 1.1: wypisz tablicę z numerami",
+    "tools": [
+      {
+        "code": "tab[ ]",
+        "desc": "Dostęp do jednej szuflady tablicy. W nawiasie kwadratowym wpisujesz numer szuflady (indeks). Numery zaczynają się od 0.",
+        "kind": "szuflada",
+        "ex": "int oceny[] = {5, 3, 4};\nSystem.out.println(oceny[0]);   // na ekranie: 5\nSystem.out.println(oceny[2]);   // na ekranie: 4"
+      },
+      {
+        "code": "tab.length",
+        "desc": "Mówi, ile szuflad ma tablica. Piszesz bez nawiasów okrągłych na końcu.",
+        "kind": "długość tablicy",
+        "ex": "int oceny[] = {5, 3, 4, 2};\nSystem.out.println(oceny.length);   // na ekranie: 4"
+      },
+      {
+        "code": "for",
+        "desc": "Pętla z licznikiem. W nawiasie są trzy części rozdzielone średnikami: od czego licznik startuje, do kiedy pętla się kręci i co się dzieje z licznikiem po każdym obrocie.",
+        "kind": "pętla",
+        "ex": "for (int n = 0; n < 3; n++) {\n    System.out.println(\"hej\");\n}\n// na ekranie 3 razy: hej"
+      },
+      {
+        "code": "i++",
+        "desc": "Zwiększa zmienną o 1.",
+        "kind": "licznik w górę",
+        "ex": "int licznik = 5;\nlicznik++;\nSystem.out.println(licznik);   // na ekranie: 6"
+      },
+      {
+        "code": "System.out.println",
+        "desc": "Wypisuje w konsoli to, co dostanie w nawiasie, i przechodzi do nowej linii.",
+        "kind": "wypisanie",
+        "ex": "System.out.println(\"Ala\");\nSystem.out.println(42);\n// na ekranie:\n// Ala\n// 42"
+      },
+      {
+        "code": "+ (sklejanie tekstu)",
+        "desc": "Gdy po jednej stronie + stoi tekst w cudzysłowie, + skleja wszystko w jeden napis, także liczby.",
+        "kind": "tekst",
+        "ex": "int wiek = 19;\nSystem.out.println(\"Mam \" + wiek + \" lat\");\n// na ekranie: Mam 19 lat"
+      }
+    ],
+    "roles": {
+      "i": "numer szuflady, którą pętla teraz odwiedza"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Od końca",
+    "goal": "Wypisz szuflady od ostatniej do pierwszej. Numery zostają prawdziwe: 2 1, 1 7, 0 4.",
+    "ret": "void",
+    "starter": "// wypisz od ostatniej szuflady do pierwszej\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1
+        ],
+        "out": "2 1\n1 7\n0 4"
+      },
+      {
+        "arr": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "out": "3 8\n2 7\n1 6\n0 5"
+      }
+    ],
+    "hints": [
+      "Ostatnia szuflada nie ma numeru tab.length. Spójrz na numery pod szufladami: jaki jest największy?",
+      "Licznik ma maleć (i--). Pomyśl, jaki jest najmniejszy numer, który jeszcze chcesz wypisać - to wyznacza warunek."
+    ],
+    "lesson": "Start od tab.length - 1, warunek i >= 0. Ostatni numer zawsze jest o jeden mniejszy niż długość.",
+    "ref": "Ćwiczenie 1.2: to samo od końca",
+    "tools": [
+      {
+        "code": "i--",
+        "desc": "Zmniejsza zmienną o 1.",
+        "kind": "licznik w dół",
+        "ex": "int zycia = 3;\nzycia--;\nSystem.out.println(zycia);   // na ekranie: 2"
+      },
+      {
+        "code": ">=",
+        "desc": "Większe lub równe. Daje prawdę także wtedy, gdy obie strony są równe.",
+        "kind": "porównanie",
+        "ex": "int punkty = 50;\nif (punkty >= 50) {\n    System.out.println(\"zdane\");\n}\n// 50 >= 50 to prawda, wiec na ekranie: zdane"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Numer największego",
+    "goal": "Znajdź NUMER (nie wartość) największego elementu i zwróć go przez return. Gdy największe są dwa takie same, zwróć numer pierwszego.",
+    "ret": "int",
+    "starter": "// zwroc numer najwiekszego elementu\n\nreturn 0;\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1,
+          9,
+          2
+        ],
+        "ret": 3
+      },
+      {
+        "arr": [
+          9,
+          1,
+          5
+        ],
+        "ret": 0
+      },
+      {
+        "arr": [
+          1,
+          2,
+          3,
+          8
+        ],
+        "ret": 3
+      },
+      {
+        "arr": [
+          3,
+          8,
+          8,
+          1
+        ],
+        "ret": 1
+      },
+      {
+        "arr": [
+          -5,
+          -2,
+          -9
+        ],
+        "ret": 1
+      }
+    ],
+    "hints": [
+      "Trzymaj w zmiennej (np. nr) numer najlepszego kandydata, nie jego wartość. Na start kandydatem jest szuflada 0.",
+      "Porównuj zawartość szuflady i z zawartością szuflady kandydata, czyli tab[i] z tab[nr]. Kiedy wolno zmienić kandydata?"
+    ],
+    "lesson": "Numer i wartość to dwie różne rzeczy: nr to adres szuflady, tab[nr] to to, co w niej leży.",
+    "ref": "Ćwiczenie 1.3: numer największego elementu",
+    "tools": [
+      {
+        "code": "if",
+        "desc": "Sprawdza warunek w nawiasie. Kod w klamrach { } wykona się tylko wtedy, gdy warunek jest prawdą.",
+        "kind": "warunek",
+        "ex": "int temperatura = 30;\nif (temperatura > 25) {\n    System.out.println(\"goraco\");\n}\n// na ekranie: goraco"
+      },
+      {
+        "code": ">",
+        "desc": "Większe niż. Porównuje dwie liczby i daje prawdę albo fałsz.",
+        "kind": "porównanie",
+        "ex": "int a = 7;\nint b = 3;\nif (a > b) {\n    System.out.println(\"a wieksze\");\n}\n// na ekranie: a wieksze"
+      },
+      {
+        "code": "return",
+        "desc": "Kończy metodę i oddaje wynik temu, kto ją wywołał. W metodzie int musi oddać liczbę.",
+        "kind": "wynik metody",
+        "ex": "static int podwoj(int x) {\n    return x * 2;\n}\n// podwoj(5) oddaje 10"
+      }
+    ],
+    "roles": {
+      "i": "szuflada, którą teraz oglądasz",
+      "nr": "numer najlepszej szuflady do tej pory"
+    }
+  },
+  {
+    "id": 4,
+    "title": "Kubek tmp",
+    "goal": "Zamień miejscami pierwszą i ostatnią szufladę. Użyj zmiennej tmp jako trzeciego kubka. Kod ma działać dla tablicy każdej długości.",
+    "ret": "void",
+    "starter": "// zamien pierwsza i ostatnia szuflade przez tmp\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1
+        ],
+        "arr_end": [
+          1,
+          7,
+          4
+        ]
+      },
+      {
+        "arr": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "arr_end": [
+          8,
+          6,
+          7,
+          5
+        ]
+      },
+      {
+        "arr": [
+          3,
+          9
+        ],
+        "arr_end": [
+          9,
+          3
+        ]
+      }
+    ],
+    "hints": [
+      "Jeśli od razu wpiszesz coś do tab[0], stara wartość przepadnie. Najpierw odłóż ją do kubka: int tmp = ...",
+      "Ostatnia szuflada to tab[tab.length - 1]. Zamiana to trzy linijki: odłóż, przesyp, wsyp z kubka."
+    ],
+    "lesson": "Zamiana: tmp = a; a = b; b = tmp. Bez kubka jedna wartość ginie.",
+    "ref": "Ćwiczenie 1.4: zamień pierwszy i ostatni",
+    "tools": [
+      {
+        "code": "tmp",
+        "desc": "Zwykła zmienna pomocnicza (trzeci kubek). Odkładasz do niej wartość na chwilę, żeby nie zginęła, zanim ją nadpiszesz.",
+        "kind": "zmienna pomocnicza",
+        "ex": "int a = 5;\nint b = 8;\nint tmp = a;   // odloz 5 na bok\na = b;         // a to teraz 8\nb = tmp;       // b to teraz 5"
+      },
+      {
+        "code": "tab[ ] =",
+        "desc": "Wpisanie wartości do szuflady. Po lewej stronie znaku = stoi szuflada, do której wsypujesz, po prawej to, co wsypujesz. Stara zawartość znika.",
+        "kind": "zapis do szuflady",
+        "ex": "int oceny[] = {5, 3, 4};\noceny[1] = 6;\n// teraz oceny to {5, 6, 4}"
+      }
+    ]
+  },
+  {
+    "title": "Losowe szuflady",
+    "ref": "Ćwiczenie 1.5: losowe liczby",
+    "goal": "Dostajesz puste szuflady (same zera). Zrób Random rnd = new Random(7), wsyp do każdej szuflady rnd.nextInt(10), a potem wypisz wszystkie jako numer, spacja, wartość. Import java.util.Random już jest.",
+    "ret": "void",
+    "starter": "Random rnd = new Random(7);\n// 1. petla: wsyp rnd.nextInt(10) do kazdej szuflady\n// 2. petla: wypisz numer wartosc\n",
+    "tests": [
+      {
+        "arr": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "out": "0 6\n1 4\n2 5\n3 4\n4 0\n5 4\n6 8\n7 9",
+        "arr_end": [
+          6,
+          4,
+          5,
+          4,
+          0,
+          4,
+          8,
+          9
+        ]
+      },
+      {
+        "arr": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "out": "0 6\n1 4\n2 5\n3 4\n4 0",
+        "arr_end": [
+          6,
+          4,
+          5,
+          4,
+          0
+        ]
+      }
+    ],
+    "hints": [
+      "Dwie pętle, obie od 0 i z warunkiem i < tab.length. W pierwszej do każdej szuflady wpisujesz nową losową liczbę z rnd.",
+      "Druga pętla to dokładnie poziom 1. Ziarno 7 sprawia, że zawsze wypadają te same liczby.",
+      "Ostatnia podpowiedź: w pierwszej pętli tab[i] = rnd.nextInt(10);"
+    ],
+    "quiz": [
+      {
+        "q": "Czy rnd.nextInt(10) może dać 10?",
+        "options": [
+          "Tak, losuje od 0 do 10",
+          "Nie, losuje od 0 do 9",
+          "Nie, losuje od 1 do 10"
+        ],
+        "answer": 1,
+        "why": "Liczba w nawiasie to granica, której NIE dostaniesz. nextInt(10) daje 0, 1, ..., 9."
+      },
+      {
+        "q": "Po co jest 7 w new Random(7)?",
+        "options": [
+          "To największa liczba, jaka wypadnie",
+          "To ziarno: przy tym samym ziarnie wypadają zawsze te same liczby",
+          "To liczba szuflad"
+        ],
+        "answer": 1,
+        "why": "Ziarno ustala ciąg liczb. Dzięki temu Twój wynik da się porównać z podanym."
+      }
+    ],
+    "lesson": "nextInt(10) daje 0-9. Ziarno w new Random(7) sprawia, że losowanie jest powtarzalne.",
+    "id": 5,
+    "tools": [
+      {
+        "code": "new Random( )",
+        "desc": "Tworzy losowacz liczb. Liczba w nawiasie to ziarno: przy tym samym ziarnie zawsze wypadają te same liczby. Import java.util.Random gra już ma.",
+        "kind": "losowanie",
+        "ex": "Random los = new Random(3);\n// los to Twoj losowacz, ziarno 3\n// sam z siebie nic nie wypisuje - liczby daje nextInt"
+      },
+      {
+        "code": "nextInt( )",
+        "desc": "Metoda losowacza. Daje losową liczbę od 0 do liczby z nawiasu MINUS 1. Granicy z nawiasu nigdy nie dostaniesz.",
+        "kind": "losowanie",
+        "ex": "Random los = new Random(3);\nint kostka = los.nextInt(6);\nSystem.out.println(kostka);\n// na ekranie jakas liczba od 0 do 5\n// kazde kolejne los.nextInt(6) daje nastepna liczbe"
+      }
+    ]
+  },
+  {
+    "title": "Min i max z aisd_lab03",
+    "ref": "Ćwiczenie 1.6: czytanie starego kodu (aisd_lab03)",
+    "goal": "To tablica, którą wylosował Twój aisd_lab03 z ziarnem 111 (12 szuflad). Znajdź najmniejszą i największą wartość tak jak w labie: startujesz od tab[0], potem idziesz od szuflady 1. Wypisz: min: X, max: Y",
+    "ret": "void",
+    "starter": "int minimum = tab[0];\nint maximum = tab[0];\n// przejdz reszte szuflad (od numeru 1) i popraw minimum / maximum\n\nSystem.out.println(\"min: \" + minimum + \", max: \" + maximum);\n",
+    "tests": [
+      {
+        "arr": [
+          -2707,
+          3978,
+          2241,
+          3853,
+          -1380,
+          2658,
+          4979,
+          -2513,
+          631,
+          -227,
+          157,
+          -920
+        ],
+        "out": "min: -2707, max: 4979"
+      },
+      {
+        "arr": [
+          5,
+          3,
+          9,
+          1
+        ],
+        "out": "min: 1, max: 9"
+      },
+      {
+        "arr": [
+          7
+        ],
+        "out": "min: 7, max: 7"
+      },
+      {
+        "arr": [
+          -3,
+          -8,
+          -1,
+          -9
+        ],
+        "out": "min: -9, max: -1"
+      }
+    ],
+    "hints": [
+      "Pętla zaczyna od i = 1, bo szuflada 0 już siedzi w minimum i maximum. Warunek jak zawsze: i < tab.length.",
+      "W środku dwa pytania: czy tab[i] jest mniejsze od minimum? czy tab[i] jest większe od maximum? Jeśli tak, przepisz tab[i] do tej zmiennej."
+    ],
+    "quiz": [
+      {
+        "q": "W labie było int a = rnd.nextInt(11) + 10; i potem new int[a]. Czym jest a?",
+        "options": [
+          "Największą wartością w tablicy",
+          "Długością tablicy: losowo od 10 do 20",
+          "Numerem ostatniej szuflady"
+        ],
+        "answer": 1,
+        "why": "nextInt(11) daje 0-10, po + 10 wychodzi 10-20. new int[a] robi tyle szuflad."
+      },
+      {
+        "q": "Dlaczego pętla min/max zaczyna od i = 1, a nie od 0?",
+        "options": [
+          "Bo szuflada 0 nie istnieje",
+          "Bo tab[0] już jest w minimum i maximum, nie trzeba go porównywać",
+          "Bo ostatnia szuflada ma numer length - 1"
+        ],
+        "answer": 1,
+        "why": "Start minimum = tab[0] i maximum = tab[0] już ,,obejrzał\" szufladę 0."
+      }
+    ],
+    "lesson": "Min i max: zacznij od tab[0], porównuj resztę od szuflady 1. To dokładnie linie 15-25 Twojego aisd_lab03.",
+    "id": 6,
+    "tools": [
+      {
+        "code": "else if",
+        "desc": "Drugie pytanie zaraz po if. Zadajesz je tylko wtedy, gdy odpowiedź na pierwsze brzmi nie.",
+        "kind": "warunek",
+        "ex": "int ocena = 3;\nif (ocena == 5) {\n    System.out.println(\"super\");\n}\nelse if (ocena == 3) {\n    System.out.println(\"ok\");\n}\n// na ekranie: ok"
+      },
+      {
+        "code": "<",
+        "desc": "Mniejsze niż. Porównuje dwie liczby i daje prawdę albo fałsz.",
+        "kind": "porównanie",
+        "ex": "int wzrost = 150;\nif (wzrost < 160) {\n    System.out.println(\"niski\");\n}\n// na ekranie: niski"
+      }
+    ]
+  },
+  {
+    "title": "Gdzie pada aisd_lab03",
+    "ref": "Ćwiczenie 1.6: czytanie starego kodu (aisd_lab03)",
+    "goal": "To wyszukiwanie binarne z Twojego aisd_lab03, tylko szukamy 100 (którego w tablicy nie ma). NIC nie naprawiasz (naprawa to rozdział na 4.0). Uruchom, obejrzyj, jak p, k i mid idą w prawo, i odpowiedz na pytania pod kodem.",
+    "ret": "void",
+    "starter": "int szukam = 100;\nint p = 0, k = tab.length;\nwhile ( p <= k ) {\n    int mid = (p + k) / 2;\n    if (tab[mid] < szukam) {\n        p = mid + 1;\n    }\n    else if (tab[mid] > szukam) {\n        k = mid - 1;\n    }\n    else {\n        System.out.println(\"Znalazlem wartosc \" + szukam + \" na pozycji \" + mid);\n        break;\n    }\n}\nif (p > k) {\n    System.out.println(\"Nie znalazlem wartosci \" + szukam + \" w tablicy.\");\n}\n",
+    "tests": [
+      {
+        "arr": [
+          -10,
+          -5,
+          -1,
+          0,
+          2,
+          5,
+          7,
+          12,
+          15,
+          22
+        ],
+        "exc": "java.lang.ArrayIndexOutOfBoundsException"
+      }
+    ],
+    "hints": [
+      "Patrz na zmienną mid nad szufladami: 5, potem 8, potem 9, potem...",
+      "Ile wynosi k na starcie? A jaki numer ma ostatnia szuflada w tablicy z 10 szufladami?"
+    ],
+    "quiz": [
+      {
+        "q": "Do której szuflady program próbuje zajrzeć, kiedy się wywraca?",
+        "options": [
+          "tab[9]",
+          "tab[10]",
+          "tab[100]",
+          "tab[-1]"
+        ],
+        "answer": 1,
+        "why": "mid idzie 5, 8, 9, 10. A tab[10] nie istnieje: Index 10 out of bounds for length 10."
+      },
+      {
+        "q": "Która linijka jest winna?",
+        "options": [
+          "int szukam = 100;",
+          "int p = 0, k = tab.length;",
+          "System.out.println(...)"
+        ],
+        "answer": 1,
+        "why": "k dostaje 10, a ostatnia szuflada ma numer 9 (length - 1). Przy p <= k program wchodzi do tab[10]."
+      }
+    ],
+    "lesson": "Błąd z labu: k = tab.length zamiast tab.length - 1. Wiesz już, gdzie jest - naprawisz go w rozdziale na 4.0.",
+    "id": 7,
+    "tools": [
+      {
+        "code": "while",
+        "desc": "Pętla bez licznika. Kręci się tak długo, jak warunek w nawiasie jest prawdą.",
+        "kind": "pętla",
+        "ex": "int n = 3;\nwhile (n > 0) {\n    System.out.println(n);\n    n--;\n}\n// na ekranie: 3, 2, 1 (kazde w nowej linii)"
+      },
+      {
+        "code": "/ (dzielenie int)",
+        "desc": "Dzielenie dwóch liczb całkowitych ucina część po przecinku. Wynik zawsze jest całkowity.",
+        "kind": "rachunek",
+        "ex": "System.out.println(7 / 2);    // na ekranie: 3\nSystem.out.println(10 / 3);   // na ekranie: 3"
+      },
+      {
+        "code": "break",
+        "desc": "Natychmiast przerywa pętlę i wychodzi z niej.",
+        "kind": "wyjście z pętli",
+        "ex": "for (int n = 0; n < 100; n++) {\n    if (n == 2) {\n        break;\n    }\n    System.out.println(n);\n}\n// na ekranie: 0, 1 i koniec"
+      }
+    ],
+    "roles": {
+      "p": "lewy brzeg szukania",
+      "k": "prawy brzeg szukania",
+      "mid": "środek, tu zaglądamy",
+      "szukam": "liczba, której szukamy"
+    }
+  },
+  {
+    "id": 8,
+    "title": "Pułapka <=",
+    "goal": "Ten kod miał podwoić każdą szufladę. Uruchom go bez zmian i zobacz, gdzie się wywraca. Potem popraw JEDEN znak.",
+    "ret": "void",
+    "starter": "for (int i = 0; i <= tab.length; i++) {\n    tab[i] = tab[i] * 2;\n}\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1
+        ],
+        "arr_end": [
+          8,
+          14,
+          2
+        ]
+      },
+      {
+        "arr": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "arr_end": [
+          2,
+          4,
+          6,
+          8,
+          10
+        ]
+      }
+    ],
+    "hints": [
+      "Patrz na czerwoną szufladę-ducha: pod jakim numerem? A ile szuflad ma tablica?",
+      "Ostatni numer, który ma sens, to tab.length - 1. Który znak w warunku pętli wpuszcza i = tab.length?"
+    ],
+    "lesson": "To ten sam błąd co w Twoim aisd_lab03: k = tablica.length dało 'Index 10 out of bounds for length 10'.",
+    "ref": "Typowe błędy",
+    "tools": [
+      {
+        "code": "<=",
+        "desc": "Mniejsze lub równe. Daje prawdę także wtedy, gdy obie strony są równe. Uważaj, ile razy przez to obróci się pętla.",
+        "kind": "porównanie",
+        "ex": "for (int n = 1; n <= 3; n++) {\n    System.out.println(n);\n}\n// na ekranie: 1, 2, 3 (trzy razy, bo 3 <= 3 to prawda)"
+      },
+      {
+        "code": "* (mnożenie)",
+        "desc": "Mnoży dwie liczby.",
+        "kind": "rachunek",
+        "ex": "int cena = 4;\nSystem.out.println(cena * 3);   // na ekranie: 12"
+      }
+    ]
+  },
+  {
+    "title": "Zamiana bez kubka",
+    "ref": "Zamiana dwóch szuflad: potrzebny trzeci kubek",
+    "goal": "Ktoś zamienił pierwszą i ostatnią szufladę bez kubka tmp. Uruchom bez zmian i zobacz, która wartość przepada. Potem popraw kod, żeby z 4 7 1 zrobiło się 1 7 4.",
+    "ret": "void",
+    "starter": "tab[0] = tab[tab.length - 1];\ntab[tab.length - 1] = tab[0];\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1
+        ],
+        "arr_end": [
+          1,
+          7,
+          4
+        ]
+      },
+      {
+        "arr": [
+          9,
+          3,
+          6,
+          2
+        ],
+        "arr_end": [
+          2,
+          3,
+          6,
+          9
+        ]
+      }
+    ],
+    "hints": [
+      "Po pierwszej linijce w szufladzie 0 nie ma już 4. Skąd druga linijka ma ją wziąć?",
+      "Dopisz na samej górze int tmp = tab[0]; a w drugiej linijce wsyp tmp zamiast tab[0]."
+    ],
+    "lesson": "Bez tmp obie szuflady mają tę samą wartość, a jedna przepada na zawsze.",
+    "id": 9,
+    "tools": [
+      {
+        "code": "tmp",
+        "desc": "Zwykła zmienna pomocnicza (trzeci kubek). Odkładasz do niej wartość na chwilę, żeby nie zginęła, zanim ją nadpiszesz.",
+        "kind": "zmienna pomocnicza",
+        "ex": "int a = 5;\nint b = 8;\nint tmp = a;   // odloz 5 na bok\na = b;         // a to teraz 8\nb = tmp;       // b to teraz 5"
+      }
+    ]
+  },
+  {
+    "title": "length bez nawiasów",
+    "ref": "Typowe błędy",
+    "goal": "Ten kod się nie kompiluje. Uruchom, przeczytaj błąd kompilatora i popraw. Ma wypisać każdą szufladę jak na poziomie 1.",
+    "ret": "void",
+    "starter": "for (int i = 0; i < tab.length(); i++) {\n    System.out.println(i + \" \" + tab[i]);\n}\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1
+        ],
+        "out": "0 4\n1 7\n2 1"
+      },
+      {
+        "arr": [
+          2,
+          8
+        ],
+        "out": "0 2\n1 8"
+      }
+    ],
+    "hints": [
+      "cannot find symbol przy length() znaczy: tablica nie ma takiej metody.",
+      "Tablica ma length BEZ nawiasów. Nawiasy ma tylko napis (String): tekst.length()."
+    ],
+    "lesson": "tab.length - tablica, bez nawiasów. tekst.length() - String, z nawiasami.",
+    "id": 10,
+    "tools": [
+      {
+        "code": "length()",
+        "desc": "Długość napisu (String) - z nawiasami, bo to metoda. Tablica ma length bez nawiasów. Pomyłka daje błąd kompilatora cannot find symbol.",
+        "kind": "długość napisu",
+        "ex": "String imie = \"Ola\";\nSystem.out.println(imie.length());   // na ekranie: 3\nint oceny[] = {5, 3};\nSystem.out.println(oceny.length);    // na ekranie: 2"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Bonus: o jedno w lewo",
+    "goal": "Przesuń wszystkie wartości o jedną szufladę w lewo. Pierwsza wartość ma wylądować na końcu. Z 4 7 1 9 robi się 7 1 9 4.",
+    "ret": "void",
+    "starter": "// przesun wszystko o jedna szuflade w lewo, pierwsza na koniec\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1,
+          9
+        ],
+        "arr_end": [
+          7,
+          1,
+          9,
+          4
+        ]
+      },
+      {
+        "arr": [
+          1,
+          2,
+          3
+        ],
+        "arr_end": [
+          2,
+          3,
+          1
+        ]
+      },
+      {
+        "arr": [
+          5,
+          6
+        ],
+        "arr_end": [
+          6,
+          5
+        ]
+      }
+    ],
+    "hints": [
+      "Pierwszą wartość zaraz nadpiszesz, więc zanim zaczniesz przesuwać, odłóż ją do kubka tmp.",
+      "Do szuflady i wsypujesz zawartość szuflady i + 1. Dla jakiego ostatniego i szuflada i + 1 jeszcze istnieje?"
+    ],
+    "lesson": "Gdy w pętli piszesz tab[i + 1], pętla musi skończyć się o jeden wcześniej: i < tab.length - 1.",
+    "ref": "Pętla po wszystkich szufladach",
+    "tools": [
+      {
+        "code": "tab[ ] z rachunkiem",
+        "desc": "W nawiasie kwadratowym może stać rachunek, nie tylko zmienna. Java najpierw go liczy, a potem bierze szufladę o takim numerze. Sprawdź, czy ten numer na pewno istnieje.",
+        "kind": "szuflada",
+        "ex": "int oceny[] = {5, 3, 4};\nint n = 0;\nSystem.out.println(oceny[n + 2]);   // n + 2 to 2, na ekranie: 4"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Bonus: odwróć komodę",
+    "goal": "Odwróć tablicę w miejscu (bez drugiej tablicy): z 4 7 1 9 2 ma być 2 9 1 7 4.",
+    "ret": "void",
+    "starter": "// odwroc tablice w miejscu\n",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1,
+          9,
+          2
+        ],
+        "arr_end": [
+          2,
+          9,
+          1,
+          7,
+          4
+        ]
+      },
+      {
+        "arr": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "arr_end": [
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      {
+        "arr": [
+          6
+        ],
+        "arr_end": [
+          6
+        ]
+      }
+    ],
+    "hints": [
+      "To kilka zamian przez tmp: pierwsza z ostatnią, druga z przedostatnią... Rozpisz na kartce numery par dla 5 szuflad i znajdź wzór z tab.length.",
+      "Jeśli pętla przejdzie przez całą tablicę, każda para zamieni się dwa razy i wszystko wróci na stare miejsce. Ile zamian naprawdę trzeba?"
+    ],
+    "lesson": "Para szuflady i to tab.length - 1 - i. Zamian jest tylko połowa: i < tab.length / 2.",
+    "ref": "Zamiana dwóch szuflad: potrzebny trzeci kubek",
+    "tools": [
+      {
+        "code": "tmp",
+        "desc": "Zwykła zmienna pomocnicza (trzeci kubek). Odkładasz do niej wartość na chwilę, żeby nie zginęła, zanim ją nadpiszesz.",
+        "kind": "zmienna pomocnicza",
+        "ex": "int a = 5;\nint b = 8;\nint tmp = a;   // odloz 5 na bok\na = b;         // a to teraz 8\nb = tmp;       // b to teraz 5"
+      },
+      {
+        "code": "/ (dzielenie int)",
+        "desc": "Dzielenie dwóch liczb całkowitych ucina część po przecinku. Wynik zawsze jest całkowity.",
+        "kind": "rachunek",
+        "ex": "System.out.println(7 / 2);    // na ekranie: 3\nSystem.out.println(10 / 3);   // na ekranie: 3"
+      }
+    ]
+  },
+  {
+    "title": "Sprawdzian",
+    "ref": "Sprawdzian",
+    "goal": "Z pamięci, bez podglądania: 1) pętlą wypisz każdą szufladę jako numer, spacja, wartość, 2) zamień pierwszą i ostatnią przez tmp, 3) wypisz wszystko jeszcze raz. Na koniec odpowiedz na pytanie pod kodem.",
+    "ret": "void",
+    "starter": "",
+    "tests": [
+      {
+        "arr": [
+          4,
+          7,
+          1
+        ],
+        "out": "0 4\n1 7\n2 1\n0 1\n1 7\n2 4",
+        "arr_end": [
+          1,
+          7,
+          4
+        ]
+      },
+      {
+        "arr": [
+          9,
+          3,
+          6,
+          2
+        ],
+        "out": "0 9\n1 3\n2 6\n3 2\n0 2\n1 3\n2 6\n3 9",
+        "arr_end": [
+          2,
+          3,
+          6,
+          9
+        ]
+      }
+    ],
+    "hints": [
+      "Na sprawdzianie nie ma podpowiedzi. Jeśli utkniesz, wróć do poziomów 1 i 4, a potem spróbuj tu znowu od pustego kodu."
+    ],
+    "quiz": [
+      {
+        "q": "Dlaczego ostatnia szuflada ma numer length - 1?",
+        "options": [
+          "Bo Java gubi ostatnią szufladę",
+          "Bo numeracja zaczyna się od 0, więc n szuflad ma numery 0 ... n-1",
+          "Bo pętla ma warunek <"
+        ],
+        "answer": 1,
+        "why": "3 szuflady mają numery 0, 1, 2. Ostatni numer to 3 - 1 = 2."
+      }
+    ],
+    "lesson": "Rozdział 1 zaliczony: i < tab.length, ostatnia to tab.length - 1, zamiana przez tmp w trzech linijkach.",
+    "id": 13,
+    "tools": [],
+    "tools_note": "Nic nowego. Wszystko znasz z poziomów 1 i 4 - na sprawdzianie piszesz z pamięci."
+  }
+]
