@@ -56,22 +56,58 @@
   ],
   "tools": [
    {
+    "code": "new Scanner(System.in)",
+    "kind": "czyta z klawiatury",
+    "desc": "Tworzy Scanner o nazwie skan. System.in to klawiatura. To, co wpiszesz razem z Enterem, trafia najpierw do bufora Scannera (ramka „Bufor Scannera” pokazuje go na żywo), a nextInt() i nextLine() zabierają z niego po kawałku. Jeden Scanner na cały program, tworzony w main przed pętlą. W IntelliJ nad klasą potrzebny jest import java.util.Scanner; - tu gra dopisuje go sama.",
+    "ex": "Scanner skan = new Scanner(System.in);\nint wiek = skan.nextInt();  // 20\nskan.nextLine();            // zjada Enter\nString imie = skan.nextLine();  // Ola"
+   },
+   {
+    "code": "skan.nextInt()",
+    "kind": "czyta liczbę z klawiatury",
+    "desc": "Czeka, aż ktoś wpisze liczbę i wciśnie Enter, i oddaje tę liczbę jako int. Bierze TYLKO cyfry - Enter zostaje w buforze Scannera.",
+    "ex": "Scanner sc = new Scanner(System.in);\nint lata = sc.nextInt();   // wpisano 15 i Enter\nSystem.out.println(lata + 1);  // 16"
+   },
+   {
+    "code": "skan.nextLine(); // lekarstwo",
+    "kind": "zjada Enter po liczbie",
+    "desc": "Puste skan.nextLine(); zaraz po nextInt() zabiera z bufora Enter, który został po liczbie. Wynik wyrzucamy - chodzi tylko o to, żeby bufor był pusty.",
+    "ex": "int wiek = sc.nextInt();\nsc.nextLine();             // zjada Enter po liczbie\nString miasto = sc.nextLine(); // teraz naprawdę czeka na tekst"
+   },
+   {
     "code": "do { ... } while (warunek);",
-    "kind": "pętla, która rusza co najmniej raz",
-    "desc": "Najpierw robi to, co w klamrach, a warunek sprawdza dopiero na końcu. Dlatego menu pokaże się zawsze co najmniej raz. Po while jest średnik.",
-    "ex": "int licznik = 0;\ndo {\n    System.out.println(\"obrot \" + licznik);\n    licznik++;\n} while (licznik < 2);   // obrot 0, obrot 1"
+    "kind": "pętla: najpierw robi, potem pyta",
+    "desc": "Ciało pętli wykona się zawsze przynajmniej raz, bo warunek jest sprawdzany NA KOŃCU. Gdy warunek daje true, pętla wraca na górę. Na końcu stoi średnik.",
+    "ex": "int n = 3;\ndo {\n    System.out.println(n);\n    n--;\n} while (n > 0);\n// 3, 2, 1"
    },
    {
-    "code": "switch / case / break / default",
-    "kind": "skok do pasującej opcji",
-    "desc": "switch patrzy na liczbę i skacze do case z tą liczbą. break kończy ten case - bez niego program wpadnie w następny. default łapie każdą liczbę, której nie ma w żadnym case.",
-    "ex": "int dzien = 2;\nswitch (dzien) {\n    case 1:\n        System.out.println(\"pon\");\n        break;\n    case 2:\n        System.out.println(\"wt\");   // to sie wypisze\n        break;\n    default:\n        System.out.println(\"?\");\n}"
+    "code": "switch (x) { case 1: ... break; }",
+    "kind": "skok do pasującego case",
+    "desc": "switch patrzy na wartość x i skacze do case z tą samą liczbą. Od tego miejsca wykonuje kod w dół, aż trafi na break.",
+    "ex": "int dzien = 2;\nswitch (dzien) {\n    case 1:\n        System.out.println(\"pon\");\n        break;\n    case 2:\n        System.out.println(\"wt\");\n        break;\n}\n// wt"
    },
    {
-    "code": "skan.nextInt(); skan.nextLine();",
-    "kind": "liczba z klawiatury + lekarstwo",
-    "desc": "nextInt() czyta samą liczbę, a Enter po niej zostaje. Następne nextLine() oddałoby pusty tekst. Dlatego zaraz po nextInt() stoi puste skan.nextLine(); - zjada ten Enter.",
-    "ex": "Scanner s = new Scanner(System.in);\nint wiek = s.nextInt();  // wpisujesz: 20\ns.nextLine();            // zjada Enter po 20\nString imie = s.nextLine(); // teraz czeka na imie"
+    "code": "default:",
+    "kind": "gdy żaden case nie pasuje",
+    "desc": "Kod pod default wykona się, gdy wartość nie pasuje do żadnego case. Stoi zwykle na końcu switch, więc nie potrzebuje break.",
+    "ex": "int ocena = 9;\nswitch (ocena) {\n    case 5:\n        System.out.println(\"super\");\n        break;\n    default:\n        System.out.println(\"nie znam takiej oceny\");\n}"
+   },
+   {
+    "code": "void",
+    "kind": "metoda nic nie oddaje",
+    "desc": "void zamiast int znaczy: metoda coś robi (np. wypisuje), ale nie oddaje żadnej wartości. Nie ma w niej return z liczbą.",
+    "ex": "public static void przywitaj() {\n    System.out.println(\"czesc\");\n}"
+   },
+   {
+    "code": "System.out.println",
+    "desc": "Wypisuje w konsoli to, co dostanie w nawiasie, i przechodzi do nowej linii.",
+    "kind": "wypisanie",
+    "ex": "System.out.println(\"Ala\");\nSystem.out.println(42);\n// na ekranie:\n// Ala\n// 42"
+   },
+   {
+    "code": "wywołanie metody void",
+    "kind": "osobna linijka",
+    "desc": "Metodę void wołasz w osobnej linijce, bez println i bez int ... =, bo nic nie oddaje.",
+    "ex": "przywitaj();   // na ekranie: czesc"
    }
   ],
   "quiz": [
@@ -205,10 +241,70 @@
   ],
   "tools": [
    {
+    "code": "ArrayList<String>",
+    "kind": "lista tekstów",
+    "desc": "Taka sama lista, ale w pudełkach leżą teksty (String). Tak będziesz trzymać notatki w projekcie.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\n// miasta: [\"Gdynia\"], size() = 1"
+   },
+   {
     "code": "String x = skan.nextLine();",
     "kind": "cała linijka tekstu z klawiatury",
     "desc": "nextLine() czeka, aż ktoś wpisze linijkę i wciśnie Enter, i oddaje ją jako tekst - razem ze spacjami (Haslo WiFi to jeden tytuł).",
     "ex": "Scanner s = new Scanner(System.in);\nSystem.out.println(\"Miasto:\");\nString miasto = s.nextLine();  // wpisujesz: Nowy Targ\nSystem.out.println(miasto);      // Nowy Targ"
+   },
+   {
+    "code": "lista.add(x)",
+    "kind": "dołóż na koniec",
+    "desc": "Dokłada nowe pudełko z x na koniec listy. Lista rośnie o 1. Nowe pudełko dostaje numer o jeden większy od ostatniego. Tablica tak nie umie - ma stały rozmiar.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\nwzrost.add(150);   // [150]\nwzrost.add(162);   // [150, 162], size() = 2"
+   },
+   {
+    "code": "lista w parametrze",
+    "kind": "lista wchodzi do metody",
+    "desc": "Metoda może dostać listę w parametrze. Dostaje TĘ SAMĄ listę, nie kopię. Gdy metoda coś doda albo zmieni, main to zobaczy. Z tablicą jest tak samo.",
+    "ex": "public static void dodajZero(ArrayList<Integer> l) {\n    l.add(0);\n}\n// po dodajZero(wzrost) w main wzrost ma o jeden element więcej"
+   },
+   {
+    "code": "lista.size()",
+    "kind": "ile jest elementów",
+    "desc": "Oddaje liczbę pudełek w liście. Ostatni numer to size() - 1. To jak t.length w tablicy, ale z nawiasami ( ), bo to metoda.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\nSystem.out.println(miasta.size());   // 1"
+   },
+   {
+    "code": "if",
+    "desc": "Sprawdza warunek w nawiasie. Kod w klamrach { } wykona się tylko wtedy, gdy warunek jest prawdą.",
+    "kind": "warunek",
+    "ex": "int temperatura = 30;\nif (temperatura > 25) {\n    System.out.println(\"goraco\");\n}\n// na ekranie: goraco"
+   },
+   {
+    "code": "i < lista.size()",
+    "kind": "pętla po numerach listy",
+    "desc": "Pętla po i od 0 do ostatniego numeru. Warunek to i < lista.size(), a nie <=. Przy 3 elementach i dostaje 0, 1, 2.",
+    "ex": "for (int i = 0; i < miasta.size(); i++) {\n    System.out.println(miasta.get(i));\n}"
+   },
+   {
+    "code": "lista.get(i)",
+    "kind": "weź element nr i",
+    "desc": "Oddaje to, co leży w pudełku nr i. Numery zaczynają się od 0. To jak t[i] w tablicy, tylko innym zapisem.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\nmiasta.add(\"Opole\");\nSystem.out.println(miasta.get(1));   // Opole"
+   },
+   {
+    "code": "a.get(i) + b.get(i)",
+    "kind": "jeden wiersz z dwóch list",
+    "desc": "Dwie listy to dwie kolumny jednej tabeli. Ten sam numer i w obu listach to ten sam wiersz, czyli ta sama rzecz.",
+    "ex": "// produkty: chleb, mleko   ceny: 4, 3\nSystem.out.println(produkty.get(0) + \" kosztuje \" + ceny.get(0)); // chleb kosztuje 4"
+   },
+   {
+    "code": "+ (sklejanie tekstu)",
+    "desc": "Gdy po jednej stronie + stoi tekst w cudzysłowie, + skleja wszystko w jeden napis, także liczby.",
+    "kind": "tekst",
+    "ex": "int wiek = 19;\nSystem.out.println(\"Mam \" + wiek + \" lat\");\n// na ekranie: Mam 19 lat"
+   },
+   {
+    "code": "wywołanie metody void",
+    "kind": "osobna linijka",
+    "desc": "Metodę void wołasz w osobnej linijce, bez println i bez int ... =, bo nic nie oddaje.",
+    "ex": "przywitaj();   // na ekranie: czesc"
    }
   ],
   "quiz": [
@@ -300,8 +396,26 @@
    "Po wpisaniu 1 i Enter, nextInt() bierze tylko 1. Enter zostaje i następne nextLine() oddaje go jako pusty tekst.",
    "Ostatnia podpowiedź: zaraz pod wybor = skan.nextInt(); dopisz skan.nextLine();"
   ],
-  "tools": [],
-  "tools_note": "Nic nowego. To lekarstwo znasz z kroku 1 - tu widać, co się dzieje bez niego.",
+  "tools": [
+   {
+    "code": "skan.nextInt()",
+    "kind": "czyta liczbę z klawiatury",
+    "desc": "Czeka, aż ktoś wpisze liczbę i wciśnie Enter, i oddaje tę liczbę jako int. Bierze TYLKO cyfry - Enter zostaje w buforze Scannera.",
+    "ex": "Scanner sc = new Scanner(System.in);\nint lata = sc.nextInt();   // wpisano 15 i Enter\nSystem.out.println(lata + 1);  // 16"
+   },
+   {
+    "code": "skan.nextLine(); // lekarstwo",
+    "kind": "zjada Enter po liczbie",
+    "desc": "Puste skan.nextLine(); zaraz po nextInt() zabiera z bufora Enter, który został po liczbie. Wynik wyrzucamy - chodzi tylko o to, żeby bufor był pusty.",
+    "ex": "int wiek = sc.nextInt();\nsc.nextLine();             // zjada Enter po liczbie\nString miasto = sc.nextLine(); // teraz naprawdę czeka na tekst"
+   },
+   {
+    "code": "String x = skan.nextLine();",
+    "kind": "cała linijka tekstu z klawiatury",
+    "desc": "nextLine() czeka, aż ktoś wpisze linijkę i wciśnie Enter, i oddaje ją jako tekst - razem ze spacjami (Haslo WiFi to jeden tytuł).",
+    "ex": "Scanner s = new Scanner(System.in);\nSystem.out.println(\"Miasto:\");\nString miasto = s.nextLine();  // wpisujesz: Nowy Targ\nSystem.out.println(miasto);      // Nowy Targ"
+   }
+  ],
   "quiz": [
    {
     "q": "Bez lekarstwa wpisujesz: 1, Haslo WiFi, kot123. Co trafi do tytułu?",
@@ -374,8 +488,32 @@
    "Spójrz na dwa add w case 1. Do której listy idzie tytuł, a do której treść?",
    "Ostatnia podpowiedź: druga linijka to tresci.add(tresc);"
   ],
-  "tools": [],
-  "tools_note": "Nic nowego. Para list działa tylko wtedy, gdy każda operacja rusza obie.",
+  "tools": [
+   {
+    "code": "lista.add(x)",
+    "kind": "dołóż na koniec",
+    "desc": "Dokłada nowe pudełko z x na koniec listy. Lista rośnie o 1. Nowe pudełko dostaje numer o jeden większy od ostatniego. Tablica tak nie umie - ma stały rozmiar.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\nwzrost.add(150);   // [150]\nwzrost.add(162);   // [150, 162], size() = 2"
+   },
+   {
+    "code": "a.get(i) + b.get(i)",
+    "kind": "jeden wiersz z dwóch list",
+    "desc": "Dwie listy to dwie kolumny jednej tabeli. Ten sam numer i w obu listach to ten sam wiersz, czyli ta sama rzecz.",
+    "ex": "// produkty: chleb, mleko   ceny: 4, 3\nSystem.out.println(produkty.get(0) + \" kosztuje \" + ceny.get(0)); // chleb kosztuje 4"
+   },
+   {
+    "code": "lista.size()",
+    "kind": "ile jest elementów",
+    "desc": "Oddaje liczbę pudełek w liście. Ostatni numer to size() - 1. To jak t.length w tablicy, ale z nawiasami ( ), bo to metoda.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\nSystem.out.println(miasta.size());   // 1"
+   },
+   {
+    "code": "IndexOutOfBoundsException",
+    "kind": "wyjątek: nie ma takiego numeru",
+    "desc": "Lista wyrzuca go, gdy prosisz o numer, którego nie ma, np. get(3), gdy lista ma 3 elementy (numery 0, 1, 2). To siostra ArrayIndexOutOfBoundsException z tablic.",
+    "ex": "ArrayList<String> kolory = new ArrayList<>();\nkolory.add(\"czerwony\");\nkolory.get(1); // wyjątek: Index 1 out of bounds for length 1"
+   }
+  ],
   "quiz": [
    {
     "q": "Po dwóch notatkach tytuly ma 4 elementy, a tresci 0. Co zrobi wyswietl?",
@@ -529,10 +667,70 @@
   ],
   "tools": [
    {
+    "code": "public static String",
+    "kind": "metoda oddaje napis",
+    "desc": "Słowo String przed nazwą metody mówi, że metoda oddaje napis. return musi wtedy oddać String.",
+    "ex": "public static String powitanie(String imie) {\n    return \"hej \" + imie;\n}"
+   },
+   {
+    "code": "text.toCharArray()",
+    "kind": "napis na szuflady",
+    "desc": "Robi z napisu tablicę char[]: każda litera dostaje swoją szufladę. Szuflady możesz zmieniać, napisu nie.",
+    "ex": "String s = \"kot\";\nchar t[] = s.toCharArray();\nSystem.out.println(t[1]);   // o"
+   },
+   {
+    "code": "for",
+    "desc": "Pętla z licznikiem. W nawiasie są trzy części rozdzielone średnikami: od czego licznik startuje, do kiedy pętla się kręci i co się dzieje z licznikiem po każdym obrocie.",
+    "kind": "pętla",
+    "ex": "for (int n = 0; n < 3; n++) {\n    System.out.println(\"hej\");\n}\n// na ekranie 3 razy: hej"
+   },
+   {
+    "code": "c >= 'a' && c <= 'z'",
+    "kind": "czy to mała litera",
+    "desc": "Znaki porównujesz jak liczby. Warunek jest prawdziwy tylko dla liter od a do z. Spacja, cyfry i wielkie litery go nie spełniają.",
+    "ex": "char c = '7';\nif (c >= '0' && c <= '9') {\n    System.out.println(\"cyfra\");\n}"
+   },
+   {
+    "code": "c - 'a'",
+    "kind": "numer litery",
+    "desc": "Znak to w środku liczba (kod). Odejmując 'a', dostajesz numer litery w alfabecie: 'a' daje 0, 'b' daje 1, 'z' daje 25. Wielkie litery liczysz od 'A'.",
+    "ex": "char c = 'e';\nint nr = c - 'a';\nSystem.out.println(nr);   // na ekranie: 4"
+   },
+   {
+    "code": "% 26",
+    "kind": "zawijanie alfabetu",
+    "desc": "% daje resztę z dzielenia. Liczby od 0 do 25 zostają bez zmian, a 26 robi się 0, 27 robi się 1 - jak doba: po 23 jest 0.",
+    "ex": "int godz = 22 + 5;\nSystem.out.println(godz % 24);   // 3 - doba zawija po 24"
+   },
+   {
+    "code": "(char) liczba",
+    "kind": "liczba z powrotem na znak",
+    "desc": "Rzutowanie (char) zamienia kod z powrotem na znak. 'a' + 2 to liczba 99, a (char) ('a' + 2) to litera c. Bez dodania 'a' dostaniesz znak o kodzie 2, czyli nie literę.",
+    "ex": "char c = (char) ('a' + 4);\nSystem.out.println(c);   // na ekranie: e"
+   },
+   {
+    "code": "new String(znaki)",
+    "kind": "szuflady z powrotem w napis",
+    "desc": "Skleja wszystkie szuflady tablicy char[] w jeden napis String. Robisz to na końcu metody, przy return.",
+    "ex": "char[] t = {'k', 'o', 't'};\nt[0] = 'r';\nSystem.out.println(new String(t));   // rot"
+   },
+   {
+    "code": "(liczba + 26) % 26",
+    "kind": "cofanie bez minusa",
+    "desc": "W Javie reszta z liczby ujemnej jest ujemna: -3 % 26 daje -3. Dodanie 26 (pełne okrążenie alfabetu) przed % robi z -3 liczbę 23, a 23 % 26 to dalej 23. Liczby od 0 do 25 po + 26 i % 26 wracają takie same.",
+    "ex": "int dzien = -2;                         // 2 dni przed poniedziałkiem\nSystem.out.println(dzien % 7);          // -2\nSystem.out.println((dzien + 7) % 7);    // 5, czyli sobota"
+   },
+   {
     "code": "lista.add(metoda(x))",
     "kind": "wynik metody prosto do listy",
     "desc": "Najpierw liczy się metoda w nawiasie, dopiero jej wynik trafia do listy. Do listy idzie wersja już zmieniona.",
     "ex": "ArrayList<Integer> kwadraty = new ArrayList<>();\nkwadraty.add(kwadrat(4));   // do listy trafia 16, nie 4"
+   },
+   {
+    "code": "( parametry )",
+    "kind": "co wchodzi do metody",
+    "desc": "W nawiasie po nazwie wypisujesz, co metoda dostaje. Każdy parametr ma typ i nazwę. Przy wywołaniu wartości wchodzą w tej samej kolejności.",
+    "ex": "public static int dodaj(int x, int y) {\n    return x + y;\n}\n// dodaj(2, 3): x = 2, y = 3, oddaje 5"
    }
   ],
   "quiz": [
@@ -612,8 +810,26 @@
    "Policz, ile razy treść przechodzi przez szyfruj, zanim wejdzie do listy.",
    "Ostatnia podpowiedź: wystarczy jedna linijka tresci.add(szyfruj(tresc, szyfr));"
   ],
-  "tools": [],
-  "tools_note": "Nic nowego.",
+  "tools": [
+   {
+    "code": "wywołanie metody",
+    "kind": "użycie w main",
+    "desc": "Piszesz nazwę metody i w nawiasie wartości. Wynik możesz od razu wypisać albo zapisać do zmiennej.",
+    "ex": "System.out.println(dodaj(2, 3));   // na ekranie: 5\nint s = dodaj(10, 1);              // s = 11"
+   },
+   {
+    "code": "lista.add(metoda(x))",
+    "kind": "wynik metody prosto do listy",
+    "desc": "Najpierw liczy się metoda w nawiasie, dopiero jej wynik trafia do listy. Do listy idzie wersja już zmieniona.",
+    "ex": "ArrayList<Integer> kwadraty = new ArrayList<>();\nkwadraty.add(kwadrat(4));   // do listy trafia 16, nie 4"
+   },
+   {
+    "code": "(liczba + 26) % 26",
+    "kind": "cofanie bez minusa",
+    "desc": "W Javie reszta z liczby ujemnej jest ujemna: -3 % 26 daje -3. Dodanie 26 (pełne okrążenie alfabetu) przed % robi z -3 liczbę 23, a 23 % 26 to dalej 23. Liczby od 0 do 25 po + 26 i % 26 wracają takie same.",
+    "ex": "int dzien = -2;                         // 2 dni przed poniedziałkiem\nSystem.out.println(dzien % 7);          // -2\nSystem.out.println((dzien + 7) % 7);    // 5, czyli sobota"
+   }
+  ],
   "quiz": [
    {
     "q": "Treść Ala zaszyfrowana dwa razy z szyfr = 3. Co pokaże wyswietl po jednym deszyfruj?",
@@ -681,8 +897,20 @@
    "Szukaj System.out.println z napisem RAW w case 1.",
    "Ostatnia podpowiedź: skasuj całą linijkę System.out.println(\"RAW tresci: \" + tresci);"
   ],
-  "tools": [],
-  "tools_note": "Nic nowego. Linia debugująca to pomoc na chwilę - po kontroli znika.",
+  "tools": [
+   {
+    "code": "System.out.println",
+    "desc": "Wypisuje w konsoli to, co dostanie w nawiasie, i przechodzi do nowej linii.",
+    "kind": "wypisanie",
+    "ex": "System.out.println(\"Ala\");\nSystem.out.println(42);\n// na ekranie:\n// Ala\n// 42"
+   },
+   {
+    "code": "+ (sklejanie tekstu)",
+    "desc": "Gdy po jednej stronie + stoi tekst w cudzysłowie, + skleja wszystko w jeden napis, także liczby.",
+    "kind": "tekst",
+    "ex": "int wiek = 19;\nSystem.out.println(\"Mam \" + wiek + \" lat\");\n// na ekranie: Mam 19 lat"
+   }
+  ],
   "quiz": [
    {
     "q": "Co wypisze System.out.println(tresci); dla listy z jednym tekstem Dod?",
@@ -819,10 +1047,58 @@
   ],
   "tools": [
    {
+    "code": "int (typ wyniku)",
+    "kind": "co metoda oddaje",
+    "desc": "Słowo przed nazwą metody mówi, jaki wynik metoda oddaje. int to liczba całkowita.",
+    "ex": "public static int zawszePiec() {\n    return 5;\n}"
+   },
+   {
+    "code": "lista w parametrze",
+    "kind": "lista wchodzi do metody",
+    "desc": "Metoda może dostać listę w parametrze. Dostaje TĘ SAMĄ listę, nie kopię. Gdy metoda coś doda albo zmieni, main to zobaczy. Z tablicą jest tak samo.",
+    "ex": "public static void dodajZero(ArrayList<Integer> l) {\n    l.add(0);\n}\n// po dodajZero(wzrost) w main wzrost ma o jeden element więcej"
+   },
+   {
+    "code": "i < lista.size()",
+    "kind": "pętla po numerach listy",
+    "desc": "Pętla po i od 0 do ostatniego numeru. Warunek to i < lista.size(), a nie <=. Przy 3 elementach i dostaje 0, 1, 2.",
+    "ex": "for (int i = 0; i < miasta.size(); i++) {\n    System.out.println(miasta.get(i));\n}"
+   },
+   {
+    "code": "lista.get(i).equals(x)",
+    "kind": "czy w pudełku i leży ten tekst?",
+    "desc": "get(i) wyjmuje tekst z pudełka nr i, a equals sprawdza, czy ma te same litery co x. Razem dają true albo false.",
+    "ex": "ArrayList<String> kolory = new ArrayList<>();\nkolory.add(\"czerwony\");\nkolory.add(\"zielony\");\nSystem.out.println(kolory.get(1).equals(\"zielony\"));  // true"
+   },
+   {
+    "code": "return w środku pętli",
+    "kind": "koniec metody od razu",
+    "desc": "return nie czeka, aż pętla dojdzie do końca. Kończy całą metodę i od razu oddaje wynik. Dlatego szukanie oddaje PIERWSZE trafienie.",
+    "ex": "public static int pierwszaUjemna(int t[]) {\n    for (int k = 0; k < t.length; k++) {\n        if (t[k] < 0) {\n            return t[k];   // oddaje liczbe i konczy metode\n        }\n    }\n    return 0;\n}"
+   },
+   {
+    "code": "return po pętli",
+    "kind": "wynik „nic nie trafiło”",
+    "desc": "Linijka za klamrą } pętli wykona się tylko wtedy, gdy pętla przeszła wszystko i żaden return w środku nie zadziałał. To miejsce na wynik „nie ma”.",
+    "ex": "public static boolean czyJestZero(int t[]) {\n    for (int k = 0; k < t.length; k++) {\n        if (t[k] == 0) {\n            return true;\n        }\n    }\n    return false;   // tu tylko, gdy zera nie bylo\n}"
+   },
+   {
+    "code": "String x = skan.nextLine();",
+    "kind": "cała linijka tekstu z klawiatury",
+    "desc": "nextLine() czeka, aż ktoś wpisze linijkę i wciśnie Enter, i oddaje ją jako tekst - razem ze spacjami (Haslo WiFi to jeden tytuł).",
+    "ex": "Scanner s = new Scanner(System.in);\nSystem.out.println(\"Miasto:\");\nString miasto = s.nextLine();  // wpisujesz: Nowy Targ\nSystem.out.println(miasto);      // Nowy Targ"
+   },
+   {
     "code": "int poz = metoda(...); if (poz == -1)",
     "kind": "sprawdź, czy znaleziono",
     "desc": "Metoda szukająca oddaje numer albo -1, gdy nic nie znalazła. -1 nie jest żadnym numerem pudełka, więc zawsze najpierw sprawdzasz -1, a dopiero potem używasz numeru.",
     "ex": "int gdzie = znajdzZero(liczby);\nif (gdzie == -1) {\n    System.out.println(\"brak zera\");\n} else {\n    System.out.println(\"zero pod numerem \" + gdzie);\n}"
+   },
+   {
+    "code": "lista.get(i)",
+    "kind": "weź element nr i",
+    "desc": "Oddaje to, co leży w pudełku nr i. Numery zaczynają się od 0. To jak t[i] w tablicy, tylko innym zapisem.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\nmiasta.add(\"Opole\");\nSystem.out.println(miasta.get(1));   // Opole"
    }
   ],
   "quiz": [
@@ -965,8 +1241,26 @@
    "== na tekstach pyta, czy to ta sama kartka w pamięci. Tytuł wczytany przez nextLine() to zawsze nowa kartka.",
    "Ostatnia podpowiedź: if (tytuly.get(i).equals(szukam))"
   ],
-  "tools": [],
-  "tools_note": "Nic nowego. equals znasz z rozdziału 7.",
+  "tools": [
+   {
+    "code": "a == b (na tekstach)",
+    "kind": "czy to ta sama kartka?",
+    "desc": "Dla tekstów == NIE porównuje liter. Pyta, czy a i b to ta sama kartka w pamięci. Dwa teksty wczytane z klawiatury to dwie różne kartki, nawet z tym samym napisem.",
+    "ex": "String x = \"kot\";\nString y = x;           // y wskazuje TĘ SAMĄ kartkę co x\nSystem.out.println(x == y);   // true"
+   },
+   {
+    "code": "a.equals(b)",
+    "kind": "czy napisy są takie same",
+    "desc": "Porównuje dwa napisy litera po literze i daje true albo false. Do napisów używaj equals, nie ==.",
+    "ex": "String a = \"kot\";\nString b = \"ko\";\nb = b + \"t\";\nSystem.out.println(a.equals(b));   // true"
+   },
+   {
+    "code": "lista.get(i).equals(x)",
+    "kind": "czy w pudełku i leży ten tekst?",
+    "desc": "get(i) wyjmuje tekst z pudełka nr i, a equals sprawdza, czy ma te same litery co x. Razem dają true albo false.",
+    "ex": "ArrayList<String> kolory = new ArrayList<>();\nkolory.add(\"czerwony\");\nkolory.add(\"zielony\");\nSystem.out.println(kolory.get(1).equals(\"zielony\"));  // true"
+   }
+  ],
   "quiz": [
    {
     "q": "Dlaczego == nie znajduje Haslo WiFi, choć napis jest identyczny?",
@@ -1223,8 +1517,56 @@
    "W tym samym if dwie zamiany przez tmp, jedna pod drugą: najpierw w tytuly, potem w tresci, na tych samych numerach.",
    "Ostatnia podpowiedź: String tmp2 = tresci.get(j - 1); tresci.set(j - 1, tresci.get(j)); tresci.set(j, tmp2);"
   ],
-  "tools": [],
-  "tools_note": "Nic nowego: compareTo (rozdział 7), zamiana przez tmp i set (rozdziały 6 i 9).",
+  "tools": [
+   {
+    "code": "void",
+    "kind": "metoda nic nie oddaje",
+    "desc": "void zamiast int znaczy: metoda coś robi (np. wypisuje), ale nie oddaje żadnej wartości. Nie ma w niej return z liczbą.",
+    "ex": "public static void przywitaj() {\n    System.out.println(\"czesc\");\n}"
+   },
+   {
+    "code": "lista w parametrze",
+    "kind": "lista wchodzi do metody",
+    "desc": "Metoda może dostać listę w parametrze. Dostaje TĘ SAMĄ listę, nie kopię. Gdy metoda coś doda albo zmieni, main to zobaczy. Z tablicą jest tak samo.",
+    "ex": "public static void dodajZero(ArrayList<Integer> l) {\n    l.add(0);\n}\n// po dodajZero(wzrost) w main wzrost ma o jeden element więcej"
+   },
+   {
+    "code": "for w for",
+    "kind": "pętla w pętli",
+    "desc": "Pętla wewnątrz pętli. Dla każdego obrotu zewnętrznej wewnętrzna przechodzi całą swoją drogę od nowa.",
+    "ex": "for (int w = 1; w <= 2; w++) {\n    for (int k = 1; k <= 3; k++) {\n        System.out.print(w * k + \" \");\n    }\n    System.out.println();\n}\n// 1 2 3\n// 2 4 6"
+   },
+   {
+    "code": "j < n - i",
+    "kind": "coraz krótsze przejście",
+    "desc": "Granica wewnętrznej pętli maleje z każdym przejściem. Po przejściu i ostatnie i liczb stoi już na swoim miejscu, więc nie ma po co ich sprawdzać.",
+    "ex": "int n = 4;\nfor (int i = 0; i < n; i++) {\n    System.out.println(\"i = \" + i + \", granica = \" + (n - i));\n}"
+   },
+   {
+    "code": "lista.get(a).compareTo(lista.get(b)) > 0",
+    "kind": "czy stoją w złej kolejności",
+    "desc": "compareTo wprost na elementach listy. Wynik większy od zera: lewy tekst jest PO prawym. Znak wyniku decyduje, liczba nie ma znaczenia.",
+    "ex": "ArrayList<String> s = new ArrayList<>();\ns.add(\"kot\");\ns.add(\"Ala\");\nif (s.get(0).compareTo(s.get(1)) > 0) {\n    System.out.println(\"kot jest po Ala\");\n}"
+   },
+   {
+    "code": "String tmp = lista.get(a)",
+    "kind": "kubek na element",
+    "desc": "Jak przy tablicy: zanim nadpiszesz element, odłóż go do zmiennej. Tu zmienna jest typu String, bo lista trzyma tekst.",
+    "ex": "String tmp = kolory.get(0);\nkolory.set(0, kolory.get(1));\nkolory.set(1, tmp);"
+   },
+   {
+    "code": "lista.set(i, x)",
+    "kind": "podmień element nr i",
+    "desc": "Wkłada x do pudełka nr i. To, co tam było, wypada. Rozmiar się nie zmienia. To jak t[i] = x w tablicy. Pudełko nr i musi już istnieć.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\nwzrost.add(150);\nwzrost.set(0, 151);   // [151], size() nadal 1"
+   },
+   {
+    "code": "wywołanie metody void",
+    "kind": "osobna linijka",
+    "desc": "Metodę void wołasz w osobnej linijce, bez println i bez int ... =, bo nic nie oddaje.",
+    "ex": "przywitaj();   // na ekranie: czesc"
+   }
+  ],
   "quiz": [
    {
     "q": "Po sortowaniu wypis pokazuje Alfa | Tresc: z1. Co jest źle?",
@@ -1364,8 +1706,26 @@
    "Zamiana w tytuly jest dobra. Brakuje drugiej, takiej samej zamiany w tresci, na tych samych numerach j - 1 i j.",
    "Ostatnia podpowiedź: pod zamianą tytułów dopisz String tmp2 = tresci.get(j - 1); tresci.set(j - 1, tresci.get(j)); tresci.set(j, tmp2);"
   ],
-  "tools": [],
-  "tools_note": "Nic nowego. To ćwiczenie „zobacz, co się stanie” z rozdziału 6, tym razem w projekcie.",
+  "tools": [
+   {
+    "code": "String tmp = lista.get(a)",
+    "kind": "kubek na element",
+    "desc": "Jak przy tablicy: zanim nadpiszesz element, odłóż go do zmiennej. Tu zmienna jest typu String, bo lista trzyma tekst.",
+    "ex": "String tmp = kolory.get(0);\nkolory.set(0, kolory.get(1));\nkolory.set(1, tmp);"
+   },
+   {
+    "code": "lista.set(i, x)",
+    "kind": "podmień element nr i",
+    "desc": "Wkłada x do pudełka nr i. To, co tam było, wypada. Rozmiar się nie zmienia. To jak t[i] = x w tablicy. Pudełko nr i musi już istnieć.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\nwzrost.add(150);\nwzrost.set(0, 151);   // [151], size() nadal 1"
+   },
+   {
+    "code": "a.get(i) + b.get(i)",
+    "kind": "jeden wiersz z dwóch list",
+    "desc": "Dwie listy to dwie kolumny jednej tabeli. Ten sam numer i w obu listach to ten sam wiersz, czyli ta sama rzecz.",
+    "ex": "// produkty: chleb, mleko   ceny: 4, 3\nSystem.out.println(produkty.get(0) + \" kosztuje \" + ceny.get(0)); // chleb kosztuje 4"
+   }
+  ],
   "quiz": [
    {
     "q": "Czemu ten błąd jest groźny, choć program się nie wywraca?",
@@ -1617,6 +1977,24 @@
     "kind": "szukanie zakazanych metod",
     "desc": "grep przeszukuje plik i wypisuje każdą linię z numerem, w której pasuje wzór. Pusty wynik = nie ma zakazanych metod. Gra robi to samo za Ciebie (bez komentarzy i napisów).",
     "ex": "grep -n 'println' Notatki.java\n# 12:    System.out.println(\"Hej\");"
+   },
+   {
+    "code": "lista.get(i).equals(x)",
+    "kind": "czy w pudełku i leży ten tekst?",
+    "desc": "get(i) wyjmuje tekst z pudełka nr i, a equals sprawdza, czy ma te same litery co x. Razem dają true albo false.",
+    "ex": "ArrayList<String> kolory = new ArrayList<>();\nkolory.add(\"czerwony\");\nkolory.add(\"zielony\");\nSystem.out.println(kolory.get(1).equals(\"zielony\"));  // true"
+   },
+   {
+    "code": "lista.get(a).compareTo(lista.get(b)) > 0",
+    "kind": "czy stoją w złej kolejności",
+    "desc": "compareTo wprost na elementach listy. Wynik większy od zera: lewy tekst jest PO prawym. Znak wyniku decyduje, liczba nie ma znaczenia.",
+    "ex": "ArrayList<String> s = new ArrayList<>();\ns.add(\"kot\");\ns.add(\"Ala\");\nif (s.get(0).compareTo(s.get(1)) > 0) {\n    System.out.println(\"kot jest po Ala\");\n}"
+   },
+   {
+    "code": "text.toCharArray()",
+    "kind": "napis na szuflady",
+    "desc": "Robi z napisu tablicę char[]: każda litera dostaje swoją szufladę. Szuflady możesz zmieniać, napisu nie.",
+    "ex": "String s = \"kot\";\nchar t[] = s.toCharArray();\nSystem.out.println(t[1]);   // o"
    }
   ],
   "quiz": [
@@ -2068,8 +2446,146 @@
    "Czerwony punkt pod wynikiem mówi, który krok jeszcze nie działa - wróć do jego poziomu i karty, nie do gotowego kodu.",
    "Ostatnia podpowiedź (bez kodu, to sprawdzian): lekarstwo po nextInt, szyfr przed add, equals w szukaniu, zamiana w obu listach."
   ],
-  "tools": [],
-  "tools_note": "Wszystko już znasz. Teraz składasz to sam.",
+  "tools": [
+   {
+    "code": "new Scanner(System.in)",
+    "kind": "czyta z klawiatury",
+    "desc": "Tworzy Scanner o nazwie skan. System.in to klawiatura. To, co wpiszesz razem z Enterem, trafia najpierw do bufora Scannera (ramka „Bufor Scannera” pokazuje go na żywo), a nextInt() i nextLine() zabierają z niego po kawałku. Jeden Scanner na cały program, tworzony w main przed pętlą. W IntelliJ nad klasą potrzebny jest import java.util.Scanner; - tu gra dopisuje go sama.",
+    "ex": "Scanner skan = new Scanner(System.in);\nint wiek = skan.nextInt();  // 20\nskan.nextLine();            // zjada Enter\nString imie = skan.nextLine();  // Ola"
+   },
+   {
+    "code": "skan.nextInt()",
+    "kind": "czyta liczbę z klawiatury",
+    "desc": "Czeka, aż ktoś wpisze liczbę i wciśnie Enter, i oddaje tę liczbę jako int. Bierze TYLKO cyfry - Enter zostaje w buforze Scannera.",
+    "ex": "Scanner sc = new Scanner(System.in);\nint lata = sc.nextInt();   // wpisano 15 i Enter\nSystem.out.println(lata + 1);  // 16"
+   },
+   {
+    "code": "skan.nextLine(); // lekarstwo",
+    "kind": "zjada Enter po liczbie",
+    "desc": "Puste skan.nextLine(); zaraz po nextInt() zabiera z bufora Enter, który został po liczbie. Wynik wyrzucamy - chodzi tylko o to, żeby bufor był pusty.",
+    "ex": "int wiek = sc.nextInt();\nsc.nextLine();             // zjada Enter po liczbie\nString miasto = sc.nextLine(); // teraz naprawdę czeka na tekst"
+   },
+   {
+    "code": "do { ... } while (warunek);",
+    "kind": "pętla: najpierw robi, potem pyta",
+    "desc": "Ciało pętli wykona się zawsze przynajmniej raz, bo warunek jest sprawdzany NA KOŃCU. Gdy warunek daje true, pętla wraca na górę. Na końcu stoi średnik.",
+    "ex": "int n = 3;\ndo {\n    System.out.println(n);\n    n--;\n} while (n > 0);\n// 3, 2, 1"
+   },
+   {
+    "code": "switch (x) { case 1: ... break; }",
+    "kind": "skok do pasującego case",
+    "desc": "switch patrzy na wartość x i skacze do case z tą samą liczbą. Od tego miejsca wykonuje kod w dół, aż trafi na break.",
+    "ex": "int dzien = 2;\nswitch (dzien) {\n    case 1:\n        System.out.println(\"pon\");\n        break;\n    case 2:\n        System.out.println(\"wt\");\n        break;\n}\n// wt"
+   },
+   {
+    "code": "default:",
+    "kind": "gdy żaden case nie pasuje",
+    "desc": "Kod pod default wykona się, gdy wartość nie pasuje do żadnego case. Stoi zwykle na końcu switch, więc nie potrzebuje break.",
+    "ex": "int ocena = 9;\nswitch (ocena) {\n    case 5:\n        System.out.println(\"super\");\n        break;\n    default:\n        System.out.println(\"nie znam takiej oceny\");\n}"
+   },
+   {
+    "code": "ArrayList<String>",
+    "kind": "lista tekstów",
+    "desc": "Taka sama lista, ale w pudełkach leżą teksty (String). Tak będziesz trzymać notatki w projekcie.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\n// miasta: [\"Gdynia\"], size() = 1"
+   },
+   {
+    "code": "String x = skan.nextLine();",
+    "kind": "cała linijka tekstu z klawiatury",
+    "desc": "nextLine() czeka, aż ktoś wpisze linijkę i wciśnie Enter, i oddaje ją jako tekst - razem ze spacjami (Haslo WiFi to jeden tytuł).",
+    "ex": "Scanner s = new Scanner(System.in);\nSystem.out.println(\"Miasto:\");\nString miasto = s.nextLine();  // wpisujesz: Nowy Targ\nSystem.out.println(miasto);      // Nowy Targ"
+   },
+   {
+    "code": "lista.add(metoda(x))",
+    "kind": "wynik metody prosto do listy",
+    "desc": "Najpierw liczy się metoda w nawiasie, dopiero jej wynik trafia do listy. Do listy idzie wersja już zmieniona.",
+    "ex": "ArrayList<Integer> kwadraty = new ArrayList<>();\nkwadraty.add(kwadrat(4));   // do listy trafia 16, nie 4"
+   },
+   {
+    "code": "public static String",
+    "kind": "metoda oddaje napis",
+    "desc": "Słowo String przed nazwą metody mówi, że metoda oddaje napis. return musi wtedy oddać String.",
+    "ex": "public static String powitanie(String imie) {\n    return \"hej \" + imie;\n}"
+   },
+   {
+    "code": "text.toCharArray()",
+    "kind": "napis na szuflady",
+    "desc": "Robi z napisu tablicę char[]: każda litera dostaje swoją szufladę. Szuflady możesz zmieniać, napisu nie.",
+    "ex": "String s = \"kot\";\nchar t[] = s.toCharArray();\nSystem.out.println(t[1]);   // o"
+   },
+   {
+    "code": "c - 'a'",
+    "kind": "numer litery",
+    "desc": "Znak to w środku liczba (kod). Odejmując 'a', dostajesz numer litery w alfabecie: 'a' daje 0, 'b' daje 1, 'z' daje 25. Wielkie litery liczysz od 'A'.",
+    "ex": "char c = 'e';\nint nr = c - 'a';\nSystem.out.println(nr);   // na ekranie: 4"
+   },
+   {
+    "code": "% 26",
+    "kind": "zawijanie alfabetu",
+    "desc": "% daje resztę z dzielenia. Liczby od 0 do 25 zostają bez zmian, a 26 robi się 0, 27 robi się 1 - jak doba: po 23 jest 0.",
+    "ex": "int godz = 22 + 5;\nSystem.out.println(godz % 24);   // 3 - doba zawija po 24"
+   },
+   {
+    "code": "(liczba + 26) % 26",
+    "kind": "cofanie bez minusa",
+    "desc": "W Javie reszta z liczby ujemnej jest ujemna: -3 % 26 daje -3. Dodanie 26 (pełne okrążenie alfabetu) przed % robi z -3 liczbę 23, a 23 % 26 to dalej 23. Liczby od 0 do 25 po + 26 i % 26 wracają takie same.",
+    "ex": "int dzien = -2;                         // 2 dni przed poniedziałkiem\nSystem.out.println(dzien % 7);          // -2\nSystem.out.println((dzien + 7) % 7);    // 5, czyli sobota"
+   },
+   {
+    "code": "new String(znaki)",
+    "kind": "szuflady z powrotem w napis",
+    "desc": "Skleja wszystkie szuflady tablicy char[] w jeden napis String. Robisz to na końcu metody, przy return.",
+    "ex": "char[] t = {'k', 'o', 't'};\nt[0] = 'r';\nSystem.out.println(new String(t));   // rot"
+   },
+   {
+    "code": "i < lista.size()",
+    "kind": "pętla po numerach listy",
+    "desc": "Pętla po i od 0 do ostatniego numeru. Warunek to i < lista.size(), a nie <=. Przy 3 elementach i dostaje 0, 1, 2.",
+    "ex": "for (int i = 0; i < miasta.size(); i++) {\n    System.out.println(miasta.get(i));\n}"
+   },
+   {
+    "code": "lista.get(i)",
+    "kind": "weź element nr i",
+    "desc": "Oddaje to, co leży w pudełku nr i. Numery zaczynają się od 0. To jak t[i] w tablicy, tylko innym zapisem.",
+    "ex": "ArrayList<String> miasta = new ArrayList<>();\nmiasta.add(\"Gdynia\");\nmiasta.add(\"Opole\");\nSystem.out.println(miasta.get(1));   // Opole"
+   },
+   {
+    "code": "lista.get(i).equals(x)",
+    "kind": "czy w pudełku i leży ten tekst?",
+    "desc": "get(i) wyjmuje tekst z pudełka nr i, a equals sprawdza, czy ma te same litery co x. Razem dają true albo false.",
+    "ex": "ArrayList<String> kolory = new ArrayList<>();\nkolory.add(\"czerwony\");\nkolory.add(\"zielony\");\nSystem.out.println(kolory.get(1).equals(\"zielony\"));  // true"
+   },
+   {
+    "code": "int poz = metoda(...); if (poz == -1)",
+    "kind": "sprawdź, czy znaleziono",
+    "desc": "Metoda szukająca oddaje numer albo -1, gdy nic nie znalazła. -1 nie jest żadnym numerem pudełka, więc zawsze najpierw sprawdzasz -1, a dopiero potem używasz numeru.",
+    "ex": "int gdzie = znajdzZero(liczby);\nif (gdzie == -1) {\n    System.out.println(\"brak zera\");\n} else {\n    System.out.println(\"zero pod numerem \" + gdzie);\n}"
+   },
+   {
+    "code": "for w for",
+    "kind": "pętla w pętli",
+    "desc": "Pętla wewnątrz pętli. Dla każdego obrotu zewnętrznej wewnętrzna przechodzi całą swoją drogę od nowa.",
+    "ex": "for (int w = 1; w <= 2; w++) {\n    for (int k = 1; k <= 3; k++) {\n        System.out.print(w * k + \" \");\n    }\n    System.out.println();\n}\n// 1 2 3\n// 2 4 6"
+   },
+   {
+    "code": "lista.get(a).compareTo(lista.get(b)) > 0",
+    "kind": "czy stoją w złej kolejności",
+    "desc": "compareTo wprost na elementach listy. Wynik większy od zera: lewy tekst jest PO prawym. Znak wyniku decyduje, liczba nie ma znaczenia.",
+    "ex": "ArrayList<String> s = new ArrayList<>();\ns.add(\"kot\");\ns.add(\"Ala\");\nif (s.get(0).compareTo(s.get(1)) > 0) {\n    System.out.println(\"kot jest po Ala\");\n}"
+   },
+   {
+    "code": "String tmp = lista.get(a)",
+    "kind": "kubek na element",
+    "desc": "Jak przy tablicy: zanim nadpiszesz element, odłóż go do zmiennej. Tu zmienna jest typu String, bo lista trzyma tekst.",
+    "ex": "String tmp = kolory.get(0);\nkolory.set(0, kolory.get(1));\nkolory.set(1, tmp);"
+   },
+   {
+    "code": "lista.set(i, x)",
+    "kind": "podmień element nr i",
+    "desc": "Wkłada x do pudełka nr i. To, co tam było, wypada. Rozmiar się nie zmienia. To jak t[i] = x w tablicy. Pudełko nr i musi już istnieć.",
+    "ex": "ArrayList<Integer> wzrost = new ArrayList<>();\nwzrost.add(150);\nwzrost.set(0, 151);   // [151], size() nadal 1"
+   }
+  ],
   "quiz": [
    {
     "q": "Prowadzący pyta: czemu tytuły nie są szyfrowane?",

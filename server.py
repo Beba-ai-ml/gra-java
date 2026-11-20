@@ -68,6 +68,17 @@ CHAPTERS = [
     {"id": 10, "title": "Menu w pętli i Scanner", "file": "levels-r10.json", "card": "R10-menu-i-scanner.md", "mode": "class", "menu": True},
     {"id": 11, "title": "Składamy projekt", "file": "levels-r11.json", "card": "R11-skladamy-projekt.md", "mode": "class", "menu": True},
     {"id": 12, "title": "Obrona przed prowadzącym", "file": "levels-r12.json", "card": "R12-obrona.md", "mode": "class"},
+    # "bin": every int comparison is reported (binary search: t[mid] < x), the page shows mid, the thrown-away half and the step count
+    {"id": 13, "title": "Wyszukiwanie binarne", "file": "levels-r13.json", "card": "R13-wyszukiwanie-binarne.md", "mode": "class", "bin": True},
+    # chapter 14: char == char comparisons are animated (icmp) as the pattern window sliding under the text
+    {"id": 14, "title": "Naiwne wyszukiwanie wzorca", "file": "levels-r14.json", "card": "R14-naiwne-wyszukiwanie-wzorca.md", "mode": "class", "icmp": True},
+    {"id": 15, "title": "Szyfr Vigenère'a", "file": "levels-r15.json", "card": "R15-szyfr-vigenerea.md", "mode": "class"},
+    # "files": every test runs in its own empty sandbox directory (test keys "files" = files put there first,
+    # "files_end" = the files that must be there afterwards); file and catch events are reported
+    {"id": 16, "title": "Pliki i wyjątki", "file": "levels-r16.json", "card": "R16-pliki-i-wyjatki.md", "mode": "class", "files": True},
+    # chapter 17: the whole 4.0/5.0 project = the menu view (ch 10-11) + the sandbox with files (ch 16); a level may also switch on
+    # "bin" (binary search panel) and "icmp"/"sort" (pattern window, compared pairs) for itself - the chapter flags stay additive
+    {"id": 17, "title": "Składamy projekt na 4.0 i 5.0 + obrona", "file": "levels-r17.json", "card": "R17-skladamy-projekt-4-5.md", "mode": "class", "menu": True, "files": True},
 ]
 CH = {c["id"]: c for c in CHAPTERS}
 LEVELS = {}
@@ -153,6 +164,17 @@ DETAIL_HINTS = [
     (r"bad operand types for binary operator '(<|>|<=|>=)'[\s\S]*first type:\s+String", "Tekstów nie porównasz przez < albo >. Użyj a.compareTo(b) i sprawdź znak wyniku: a.compareTo(b) < 0."),
     # chapter 9: the second swap (oceny) declares the cup again
     (r"variable (tmp\w*) is already defined", "Kubek o tej nazwie już jest zadeklarowany wyżej w tej samej klamrze. Drugi kubek nazwij inaczej, np. tmp2, albo użyj starego bez typu przed nazwą (tmp = ...)."),
+]
+
+# chapter 16 (exceptions and files) - the messages only appear when the code uses checked exceptions
+DETAIL_HINTS += [
+    (r"unreported exception", "Ta operacja może rzucić wyjątek, który Java każe obsłużyć (to tzw. wyjątek sprawdzany). "
+     "Otocz ją try { ... } catch (IOException e) { ... } - albo dopisz throws IOException do nagłówka metody, ale na tym poziomie ćwiczysz try-catch."),
+    (r"exception \w+ is never thrown in body of corresponding try statement", "Ten catch łapie wyjątek, którego nic w bloku try nie rzuca. "
+     "Sprawdź, czy w try jest operacja na pliku (FileWriter, FileReader, Scanner z File) i czy nazwa wyjątku jest ta sama."),
+    (r"exception \w+ has already been caught", "Ten wyjątek łapie już wcześniejszy catch. Zostaw jeden catch dla jednego typu wyjątku."),
+    (r"cannot find symbol[\s\S]*symbol:\s+class (IOException|FileWriter|FileReader|File|BufferedReader|PrintWriter|FileNotFoundException|BufferedWriter)\b",
+     "Java nie zna tej klasy. Gra sama dopisuje import java.io.* i java.util.*, więc to pewnie literówka w nazwie klasy (wielkość liter!)."),
 ]
 
 ERR_RE = re.compile(r"^Main\.java:(\d+): (error|warning): (.*)$")
@@ -272,7 +294,7 @@ def judge(level, results, ch=1):
             elif res["exc"] == "OutputCap":
                 why.append("Program wypisał za dużo tekstu - pewnie pętla bez końca z println.")
             elif res["exc"] == "TooManySteps":
-                why.append("Program wykonał za dużo kroków - pewnie pętla bez końca.")
+                why.append(test.get("loop_msg", "Program wykonał za dużo kroków - pewnie pętla bez końca."))
             else:
                 # chapters 10-11 explain Scanner exceptions in their own words, chapter 12 keeps its nextInt note
                 if ch in (10, 11):
@@ -306,6 +328,11 @@ def judge(level, results, ch=1):
                 g = raw_g[diff] if diff < len(got) else "(nic więcej)"
                 why.append(f"Ekran różni się w wierszu {diff + 1}: oczekiwano «{w}», jest «{g}»."
                            + (ALMOST if almost(w, g) else ""))
+        # chapter 13: a correct answer reached by too many steps is not a binary search (linear search also "works")
+        if "max_steps" in test and not res["exc"] and res.get("steps", 0) > test["max_steps"]:
+            ok = False
+            why.append(test.get("steps_msg", "Wynik jest dobry, ale program zrobił za dużo kroków: to nie jest wyszukiwanie binarne. "
+                       "Binarne w każdym obiegu wyrzuca połowę - dla 1000 elementów to około 10 obiegów, nie setki."))
         if "list_ops" in test and not res["exc"]:
             unused = [u for u in test["list_ops"] if u not in res.get("ops", [])]
             if unused:
@@ -335,6 +362,11 @@ def judge(level, results, ch=1):
                 elif got_named[nm] != want_l:
                     ok = False
                     why.append(f"Lista {nm} na końcu programu: oczekiwano {show_list(want_l)}, jest {show_list(got_named[nm])}.")
+        if "files_end" in test and not res["exc"]:
+            ok_f, why_f = judge_files(test["files_end"], res.get("files") or {})
+            if not ok_f:
+                ok = False
+                why.extend(why_f)
         if "arr_end" in test and not res["exc"]:
             if res["end"] != test["arr_end"]:
                 ok = False
@@ -356,6 +388,24 @@ def judge(level, results, ch=1):
     return verdicts
 
 
+def show_file(text):
+    return "«" + text.replace("\n", "⏎") + "»" if text else "(pusty)"
+
+
+def judge_files(want, got):
+    """Files left in the test's sandbox directory vs the expected ones (a missing final Enter does not matter)."""
+    why = []
+    for name, text in want.items():
+        if name not in got:
+            why.append(f"Po programie nie ma pliku {name} (a powinien być).")
+        elif got[name].rstrip("\n") != text.rstrip("\n"):
+            why.append(f"Plik {name} wygląda inaczej. Oczekiwano {show_file(text)}, jest {show_file(got[name])}.")
+    for name in got:
+        if name not in want:
+            why.append(f"Program zostawił plik {name}, którego nie powinno być.")
+    return not why, why
+
+
 def show_list(vals):
     return "[" + ", ".join('"' + v + '"' if isinstance(v, str) else str(v) for v in vals) + "]"
 def code_checks(level, code):
@@ -372,6 +422,14 @@ def code_checks(level, code):
 
 
 def test_label(test):
+    lab = test_label0(test)
+    if lab and "files" in test:
+        names = [n for n, v in test["files"].items()]
+        lab += " - w katalogu: " + (", ".join(names) if names else "pusto (brak plików)")
+    return lab
+
+
+def test_label0(test):
     if "call" not in test and not test.get("main"):
         return None
     if test.get("main"):
@@ -380,7 +438,12 @@ def test_label(test):
         return "Twój program (main)"
     shown = []
     for t, a in zip(test["types"], test["args"]):
-        if t == "int[]":
+        if t == "int[]" and len(a) > 20:
+            # chapter 13: a thousand numbers must not fill the verdict line
+            shown.append("{" + ", ".join(str(x) for x in a[:4]) + f", ... ({len(a)} liczb, do {a[-1]})" + "}")
+        elif t.startswith("ArrayList<") and len(a) > 20:
+            shown.append("[" + ", ".join(str(x) for x in a[:3]) + f", ... ({len(a)} elementów, do {a[-1]})" + "]")
+        elif t == "int[]":
             shown.append("{" + ", ".join(str(x) for x in a) + "}")
         elif t == "char":
             shown.append("'" + a + "'")
@@ -404,6 +467,9 @@ def spec(test):
     for t, a in zip(test["types"], test["args"]):
         if t.startswith("ArrayList<"):
             vals.append(",".join(urllib.parse.quote(str(x), safe="") for x in a))
+        elif t in ("String", "char"):
+            # percent-encoded: a text with | or ; must not break the spec line (Runner decodes it)
+            vals.append(urllib.parse.quote(str(a), safe=""))
         else:
             vals.append(",".join(str(x) for x in a) if t == "int[]" else str(a))
     return f"call|{test['call']}|{','.join(test['types'])}|{';'.join(vals)}"
@@ -418,10 +484,11 @@ def run_code(level, code, mode="body", icmp=False, sort=False, ch=1):
             head = m.group(1).split()[0]
             return {"stage": "compile", "ok": False, "raw": "", "errors": [{
                 "line": line, "javaLine": line + 1, "msg": f"{head} ...", "note": "", "detail": "",
-                "pl": "Tu nie wklejaj całego pliku z IntelliJ. Gra sama dopisuje public class Main { } i import java.util.* (Random, Scanner, ArrayList). "
-                      "Wklej tylko metody (public static ...) i main, bez package, import i class."}]}
+                "pl": "Gra sama dopisuje public class Main { } i import java.util.* (Random, Scanner, ArrayList)" + (" oraz java.io.* (pliki)" if CH.get(ch, {}).get("files") else "") + ". "
+                      "Cały plik z IntelliJ wklej przez Ctrl+V - gra sama zdejmie package, import i class. Wpisując ręcznie, zostaw tylko metody i main."}]}
         offset = 1
-        src = "import java.util.*; public class Main {\n" + code + "\n}\n"
+        imports = "import java.util.*; import java.io.*;" if CH.get(ch, {}).get("files") else "import java.util.*;"
+        src = imports + " public class Main {\n" + code + "\n}\n"
     else:
         offset = LINE_OFFSET
         # import shares line 1 with the class header, so LINE_OFFSET stays 2
@@ -432,6 +499,8 @@ def run_code(level, code, mode="body", icmp=False, sort=False, ch=1):
                "}\n")
     os.makedirs(TMP, exist_ok=True)
     work = tempfile.mkdtemp(prefix="run-", dir=TMP)
+    files = bool(CH.get(ch, {}).get("files")) and mode == "class"
+    sandbox = os.path.join(work, "s")
     try:
         with open(os.path.join(work, "Main.java"), "w", encoding="utf-8") as f:
             f.write(src)
@@ -447,9 +516,26 @@ def run_code(level, code, mode="body", icmp=False, sort=False, ch=1):
             tests = ["--class", *[spec(t) for t in level["tests"]]]
         else:
             tests = [",".join(str(x) for x in t["arr"]) or "-" for t in level["tests"]]
+        if files:
+            # one fresh sandbox directory per run (the working directory of the student's program); the files of each
+            # test are prepared in work/seed/<k> and copied in by Runner, the leftovers come back in work/end/<k>
+            os.makedirs(sandbox)
+            for k, t in enumerate(level["tests"]):
+                seed = os.path.join(work, "seed", str(k))
+                os.makedirs(seed)
+                for name, text in (t.get("files") or {}).items():
+                    path = os.path.join(seed, name)
+                    if text is None:
+                        os.makedirs(path)
+                    else:
+                        os.makedirs(os.path.dirname(path), exist_ok=True)
+                        with open(path, "w", encoding="utf-8") as f:
+                            f.write(text)
         cmd = [JAVA, "-Xmx128m", "-Dstdout.encoding=UTF-8", "-Dstderr.encoding=UTF-8", "-XX:TieredStopAtLevel=1", "-XX:+UseSerialGC",
-               "-Duser.language=en", *(["-Dgra.icmp=true"] if icmp else []), *(["-Dgra.sort=true"] if sort else []), *(["-Dgra.menu=true"] if CH.get(ch, {}).get("menu") else []), *EXPORTS, "-cp", LIB, "Runner", work, str(offset), *tests]
-        rc, out, to = run_proc(cmd, RUN_TIMEOUT, work)
+               "-Duser.language=en", *(["-Dgra.icmp=true"] if icmp or level.get("icmp") else []), *(["-Dgra.sort=true"] if sort or level.get("sort") else []), *(["-Dgra.bin=true"] if CH.get(ch, {}).get("bin") or level.get("bin") else []), *(["-Dgra.menu=true"] if CH.get(ch, {}).get("menu") else []),
+               *(["-Dgra.files=true", "-Djava.security.manager=allow"] if files else []),
+               *([f"-Dgra.quiet={','.join(level['quiet'])}"] if level.get("quiet") else []), *EXPORTS, "-cp", LIB, "Runner", work, str(offset), *tests]
+        rc, out, to = run_proc(cmd, RUN_TIMEOUT, sandbox if files else work)
         res_path = os.path.join(work, "wynik.json")
         if to:
             return {"stage": "run", "ok": False, "timeout": True,
@@ -461,11 +547,25 @@ def run_code(level, code, mode="body", icmp=False, sort=False, ch=1):
                     "message": "Program skończył się bez wyniku. Jeśli masz System.exit, usuń je - gra musi dojść do końca programu.", "raw": out}
         with open(res_path, encoding="utf-8") as f:
             data = json.load(f)
+        if files:
+            for k, tr in enumerate(data["tests"]):
+                tr["files"] = read_tree(os.path.join(work, "end", str(k)))
         verdicts = judge(level, data["tests"], ch) + code_checks(level, code)
         return {"stage": "run", "ok": all(v["ok"] for v in verdicts), "verdicts": verdicts,
                 "tests": data["tests"], "events": data["events"], "raw": out}
     finally:
         shutil.rmtree(work, ignore_errors=True)
+
+
+def read_tree(root):
+    """Regular files under root as {relative path: text} (directories are not files)."""
+    out = {}
+    for d, _, names in os.walk(root):
+        for n in names:
+            p = os.path.join(d, n)
+            with open(p, encoding="utf-8", errors="replace") as f:
+                out[os.path.relpath(p, root)] = f.read()
+    return out
 
 
 def material(ch):
@@ -515,6 +615,15 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path != "/run":
             return self.send(404, "nie ma", "text/plain; charset=utf-8")
+        # /run executes code, so only this game's own page may call it: another website open in the same
+        # browser could otherwise POST Java here (a JSON content type forces a CORS preflight we never allow,
+        # Origin stops cross-site pages, Host stops DNS rebinding)
+        own = {f"127.0.0.1:{PORT}", f"localhost:{PORT}"}
+        origin = self.headers.get("Origin")
+        if (self.headers.get("Host") not in own
+                or (origin is not None and origin not in {f"http://{h}" for h in own})
+                or not self.headers.get("Content-Type", "").startswith("application/json")):
+            return self.send(403, json.dumps({"error": "Kod uruchamia tylko strona gry."}), "application/json")
         try:
             n = int(self.headers.get("Content-Length", "0"))
             if n > CODE_CAP * 2:

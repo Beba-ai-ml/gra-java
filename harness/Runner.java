@@ -31,6 +31,8 @@ public final class Runner {
     static final boolean ICMP = Boolean.getBoolean("gra.icmp");
     /** Chapters 10-11 (server passes -Dgra.menu=true): switch cases and do-while conditions become events. */
     static final boolean MENU = Boolean.getBoolean("gra.menu");
+    /** Chapter 16 (server passes -Dgra.files=true): own sandbox directory per test, file and exception events. */
+    static final boolean FILES = Boolean.getBoolean("gra.files");
 
     public static void main(String[] args) throws Exception {
         Path dir = Paths.get(args[0]);
@@ -124,8 +126,10 @@ public final class Runner {
      */
     static void runClass(Class<?> gra, Path dir, String[] args, PrintStream realOut) throws Exception {
         System.setIn(KEYBOARD);
+        if (FILES) Sandbox.install(dir);
         StringBuilder json = new StringBuilder("{\"tests\":[");
         for (int t = 3; t < args.length; t++) {
+            if (FILES) Sandbox.begin(dir, t - 3);
             String spec = args[t];
             if (t > 3) gra = load(dir);
             int[] arrArg = null;
@@ -157,7 +161,7 @@ public final class Runner {
                     switch (types[k]) {
                         case "int" -> { cls[k] = int.class; callArgs[k] = Integer.parseInt(vals[k]); }
                         case "double" -> { cls[k] = double.class; callArgs[k] = Double.parseDouble(vals[k]); }
-                        case "String" -> { cls[k] = String.class; callArgs[k] = vals[k]; }
+                        case "String" -> { cls[k] = String.class; callArgs[k] = dec(vals[k]); }
                         case "ArrayList<String>", "ArrayList<Integer>" -> {
                             cls[k] = java.util.ArrayList.class;
                             java.util.ArrayList<Object> l = parseList(vals[k], types[k].equals("ArrayList<Integer>"));
@@ -165,7 +169,7 @@ public final class Runner {
                             if (listArg == null) listArg = l;
                             listArgs.add(l);
                         }
-                        case "char" -> { cls[k] = char.class; callArgs[k] = vals[k].charAt(0); }
+                        case "char" -> { cls[k] = char.class; callArgs[k] = dec(vals[k]).charAt(0); }
                         case "char[]" -> { cls[k] = char[].class; callArgs[k] = vals[k].toCharArray(); }
                         default -> { cls[k] = int[].class; int[] a = parse(vals[k]); callArgs[k] = a; if (arrArg == null) arrArg = a; }
                     }
@@ -189,6 +193,7 @@ public final class Runner {
                     exc = "NoSuchMethod";
                     excMsg = missing;
                 } else {
+                    Sandbox.guard = FILES;
                     Object r = m.invoke(null, callArgs);
                     if (r != null) ret = String.valueOf(r);
                 }
@@ -212,6 +217,8 @@ public final class Runner {
                     }
                 }
             } finally {
+                Sandbox.guard = false;
+                if (FILES) Sandbox.end(dir, t - 3);
                 ps.flush();
                 cap.flushRest();
                 System.setOut(realOut);
@@ -231,6 +238,7 @@ public final class Runner {
                 .append(",\"ops\":[").append(String.join(",", Tracker.ops.stream().map(Runner::q).toList())).append("]")
                 .append(",\"listEnd\":").append(listArg == null ? "null" : Tracker.vals(listArg))
                 .append(",\"lists\":[").append(String.join(",", listArgs.stream().map(Tracker::vals).toList())).append("]")
+                .append(",\"steps\":").append(Tracker.steps)
                 .append(",\"tracked\":").append(Tracker.trackedJson())
                 .append(",\"used\":[").append(String.join(",", Tracker.used.stream().map(Runner::q).toList())).append("]")
                 .append('}');
@@ -238,6 +246,98 @@ public final class Runner {
         json.append("],\"events\":[").append(String.join(",", Tracker.events)).append("]}");
         Files.writeString(dir.resolve("wynik.json"), json.toString(), StandardCharsets.UTF_8);
         System.exit(0);
+    }
+
+
+    /**
+     * Chapter 16: the student's file operations only ever touch one directory (the JVM working directory, a fresh
+     * temp dir per run; the files of every single test are wiped and re-seeded). A SecurityManager that is switched on
+     * only while the student's code runs refuses everything else: reading the game and other runs, writing or
+     * deleting outside, starting processes, the network. It also tells Tracker which file the code opens.
+     * It guards against MISTAKES, not attacks: code written on purpose to escape can (/proc/self/root, symlinks,
+     * reflection on `guard`). That is fine only because the game runs the student's own code on their own machine,
+     * like IntelliJ does; /run accepts requests from the game page only (see server.py do_POST).
+     */
+    static final class Sandbox extends SecurityManager {
+        static volatile boolean guard;
+        static Path root, work, lib;
+        static String javaHome;
+
+        static void install(Path dir) throws java.io.IOException {
+            work = dir.toAbsolutePath().normalize();
+            root = Paths.get(System.getProperty("user.dir")).toAbsolutePath().normalize();
+            javaHome = Paths.get(System.getProperty("java.home")).toAbsolutePath().normalize().toString();
+            lib = Paths.get(System.getProperty("java.class.path").split(java.io.File.pathSeparator)[0]).toAbsolutePath().normalize();
+            System.setSecurityManager(new Sandbox());
+        }
+
+        /** Empty the sandbox, then copy the files prepared for this test (work/seed/<k>) into it. */
+        static void begin(Path dir, int k) throws java.io.IOException {
+            wipe(root);
+            Path seed = work.resolve("seed").resolve(String.valueOf(k));
+            if (Files.isDirectory(seed)) copyTree(seed, root);
+        }
+
+        /** After the test: the files it left behind are copied to work/end/<k> for the server to read. */
+        static void end(Path dir, int k) throws java.io.IOException {
+            Path out = work.resolve("end").resolve(String.valueOf(k));
+            copyTree(root, out);
+        }
+
+        static void wipe(Path r) throws java.io.IOException {
+            try (var w = Files.walk(r)) {
+                for (Path p : (Iterable<Path>) w.sorted(java.util.Comparator.reverseOrder())::iterator)
+                    if (!p.equals(r)) Files.deleteIfExists(p);
+            }
+        }
+
+        static void copyTree(Path from, Path to) throws java.io.IOException {
+            Files.createDirectories(to);
+            try (var w = Files.walk(from)) {
+                for (Path p : (Iterable<Path>) w::iterator) {
+                    Path t = to.resolve(from.relativize(p).toString());
+                    if (Files.isDirectory(p)) Files.createDirectories(t);
+                    else Files.copy(p, t, StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+        }
+
+        static Path abs(String f) { return Paths.get(f).toAbsolutePath().normalize(); }
+
+        static boolean inRoot(Path p) { return p.startsWith(root); }
+
+        static boolean readable(Path p) {
+            String s = p.toString();
+            return inRoot(p) || s.startsWith(javaHome) || p.startsWith(lib)
+                    || (p.startsWith(work) && s.endsWith(".class"))
+                    || s.startsWith("/proc/") || s.startsWith("/sys/") || s.equals("/etc/localtime") || s.startsWith("/usr/share/zoneinfo");
+        }
+
+        @Override public void checkRead(String f) {
+            if (!guard) return;
+            Path p = abs(f);
+            if (!readable(p)) throw new SecurityException("Program moze czytac tylko pliki w swoim katalogu: " + f);
+            if (inRoot(p)) Tracker.touch(p, root, false);
+        }
+        @Override public void checkRead(String f, Object ctx) { checkRead(f); }
+        @Override public void checkWrite(String f) {
+            if (!guard) return;
+            Path p = abs(f);
+            if (!inRoot(p)) throw new SecurityException("Program moze zapisywac tylko pliki w swoim katalogu: " + f);
+            Tracker.touch(p, root, true);
+        }
+        @Override public void checkDelete(String f) {
+            if (guard && !inRoot(abs(f))) throw new SecurityException("Program moze kasowac tylko pliki w swoim katalogu: " + f);
+        }
+        @Override public void checkExec(String cmd) { if (guard) throw new SecurityException("Program nie moze uruchamiac innych programow."); }
+        @Override public void checkConnect(String host, int port) { if (guard) throw new SecurityException("Program nie moze laczyc sie z siecia."); }
+        @Override public void checkConnect(String host, int port, Object ctx) { checkConnect(host, port); }
+        @Override public void checkListen(int port) { if (guard) throw new SecurityException("Program nie moze otwierac portow."); }
+        @Override public void checkPermission(java.security.Permission perm) {
+            if (guard && perm instanceof RuntimePermission && perm.getName().equals("setSecurityManager"))
+                throw new SecurityException("Nie wolno zmieniac zabezpieczen.");
+        }
+        @Override public void checkPermission(java.security.Permission perm, Object ctx) { checkPermission(perm); }
     }
 
     static Method find(Class<?> c, String name, Class<?>[] params) {
@@ -342,6 +442,9 @@ public final class Runner {
         }
     }
 
+    /** String and char arguments of a call spec arrive percent-encoded (so | and ; inside a text are safe). */
+    static String dec(String v) { return java.net.URLDecoder.decode(v.replace("+", "%2B"), StandardCharsets.UTF_8); }
+
     static int[] parse(String s) {
         if (s.equals("-") || s.isEmpty()) return new int[0];
         String[] p = s.split(",");
@@ -396,6 +499,7 @@ public final class Runner {
             skipSwitch = 0;
             for (AbstractInsnNode n : all) {
                 int op = n.getOpcode();
+                if (FILES && n instanceof MethodInsnNode fm && fileHook(il, fm)) continue;
                 if (MENU && (op == Opcodes.TABLESWITCH || op == Opcodes.LOOKUPSWITCH)) {
                     // chapter 10: which case the switch jumps to, and every case whose code starts (fall-through too)
                     if (stringSwitch(n)) { skipSwitch = 1; continue; }
@@ -448,6 +552,10 @@ public final class Runner {
                     il.set(n, new MethodInsnNode(Opcodes.INVOKESTATIC, "Tracker", "cload", "([CI)C", false));
                 } else if (op == Opcodes.CASTORE) {
                     il.set(n, new MethodInsnNode(Opcodes.INVOKESTATIC, "Tracker", "cstore", "([CIC)V", false));
+                } else if (FILES && n instanceof MethodInsnNode mi && mi.owner.equals("java/lang/String") && op == Opcodes.INVOKEVIRTUAL
+                        && FILE_STRING_HOOKS.containsKey(mi.name + mi.desc)) {
+                    String[] h = FILE_STRING_HOOKS.get(mi.name + mi.desc);
+                    il.set(n, new MethodInsnNode(Opcodes.INVOKESTATIC, "Tracker", h[0], h[1], false));
                 } else if (n instanceof MethodInsnNode mi && mi.owner.equals("java/lang/String") && op == Opcodes.INVOKEVIRTUAL
                         && STRING_HOOKS.containsKey(mi.name + mi.desc)) {
                     String[] h = STRING_HOOKS.get(mi.name + mi.desc);
@@ -465,7 +573,7 @@ public final class Runner {
                     il.set(n, new MethodInsnNode(Opcodes.INVOKESTATIC, "Tracker", "mod", "(II)I", false));
                 } else if (chars && op == Opcodes.I2C) {
                     il.set(n, new MethodInsnNode(Opcodes.INVOKESTATIC, "Tracker", "i2c", "(I)C", false));
-                } else if (SORT && op >= Opcodes.IF_ICMPEQ && op <= Opcodes.IF_ICMPLE && afterArrayRead(n)) {
+                } else if (((SORT && afterArrayRead(n)) || BIN) && op >= Opcodes.IF_ICMPEQ && op <= Opcodes.IF_ICMPLE) {
                     // chapter 9+: tab[j - 1] > tab[j] - report both numbers, the operator and the answer, then jump as before
                     JumpInsnNode j = (JumpInsnNode) n;
                     InsnList add = new InsnList();
@@ -474,7 +582,7 @@ public final class Runner {
                     add.add(new JumpInsnNode(Opcodes.IFNE, j.label));
                     il.insertBefore(n, add);
                     il.remove(n);
-                } else if (SORT && op >= Opcodes.IFEQ && op <= Opcodes.IFLE && prevReal(n.getPrevious()) instanceof MethodInsnNode pm
+                } else if ((SORT || BIN) && op >= Opcodes.IFEQ && op <= Opcodes.IFLE && prevReal(n.getPrevious()) instanceof MethodInsnNode pm
                         && pm.owner.equals("Tracker") && pm.name.equals("strCmp")) {
                     // chapter 9+: a.compareTo(b) > 0 - report the result checked against zero
                     JumpInsnNode j = (JumpInsnNode) n;
@@ -565,6 +673,7 @@ public final class Runner {
                 }
             }
         }
+        if (FILES) for (MethodNode mn : cn.methods) catchHooks(mn);
         for (MethodNode mn : cn.methods) if (traced(mn)) il0(mn);
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES) {
             @Override
@@ -576,8 +685,81 @@ public final class Runner {
         return cw.toByteArray();
     }
 
+
+    // ---------- chapter 16: files and exceptions ----------
+
+    static final java.util.Set<String> WRITER_OWNERS = java.util.Set.of(
+            "java/io/FileWriter", "java/io/BufferedWriter", "java/io/Writer", "java/io/OutputStreamWriter", "java/io/PrintWriter");
+    static final java.util.Set<String> CLOSE_OWNERS = java.util.Set.of(
+            "java/io/FileWriter", "java/io/BufferedWriter", "java/io/Writer", "java/io/PrintWriter",
+            "java/io/FileReader", "java/io/BufferedReader", "java/io/Reader", "java/util/Scanner");
+
+    static InsnList call(String name, String desc, Object... ldc) {
+        InsnList l = new InsnList();
+        for (Object o : ldc) l.add(new LdcInsnNode(o));
+        l.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "Tracker", name, desc, false));
+        return l;
+    }
+
+    /** File and writer/reader calls are rewritten to Tracker calls that do the same thing and report it. */
+    static boolean fileHook(InsnList il, MethodInsnNode mi) {
+        String o = mi.owner, d = mi.desc, nm = mi.name;
+        if (mi.getOpcode() == Opcodes.INVOKESPECIAL && nm.equals("<init>")) {
+            boolean strOrFile = d.equals("(Ljava/lang/String;)V") || d.equals("(Ljava/io/File;)V");
+            if (o.equals("java/io/FileWriter") && d.endsWith("Z)V")) {
+                il.insertBefore(mi, new InsnNode(Opcodes.DUP));
+                il.insertBefore(mi, call("intentA", "(Z)V"));
+            } else if ((o.equals("java/io/FileWriter") || o.equals("java/io/PrintWriter")) && strOrFile) {
+                il.insertBefore(mi, call("intent", "(Ljava/lang/String;)V", "w"));
+            } else if (o.equals("java/io/FileReader") && strOrFile) {
+                il.insertBefore(mi, call("intent", "(Ljava/lang/String;)V", "r"));
+            } else if (o.equals("java/util/Scanner") && d.equals("(Ljava/io/File;)V")) {
+                il.insertBefore(mi, call("intent", "(Ljava/lang/String;)V", "r"));
+                InsnList after = new InsnList();
+                after.add(new InsnNode(Opcodes.DUP));
+                after.add(call("fileScanner", "(Ljava/util/Scanner;)V"));
+                il.insert(mi, after);
+            }
+            return false;
+        }
+        if (mi.getOpcode() != Opcodes.INVOKEVIRTUAL) return false;
+        String[] to = null;
+        if (WRITER_OWNERS.contains(o) && nm.equals("write") && d.equals("(Ljava/lang/String;)V")) to = new String[]{"wWrite", "(Ljava/io/Writer;Ljava/lang/String;)V"};
+        else if (o.equals("java/io/PrintWriter") && nm.equals("println") && d.equals("(Ljava/lang/String;)V")) to = new String[]{"pwPrintln", "(Ljava/io/PrintWriter;Ljava/lang/String;)V"};
+        else if (o.equals("java/io/PrintWriter") && nm.equals("print") && d.equals("(Ljava/lang/String;)V")) to = new String[]{"pwPrint", "(Ljava/io/PrintWriter;Ljava/lang/String;)V"};
+        else if (o.equals("java/io/BufferedWriter") && nm.equals("newLine") && d.equals("()V")) to = new String[]{"wNewLine", "(Ljava/io/BufferedWriter;)V"};
+        else if (o.equals("java/io/BufferedReader") && nm.equals("readLine") && d.equals("()Ljava/lang/String;")) to = new String[]{"readLine", "(Ljava/io/BufferedReader;)Ljava/lang/String;"};
+        else if (CLOSE_OWNERS.contains(o) && nm.equals("close") && d.equals("()V")) to = new String[]{"fclose", "(Ljava/lang/Object;)V"};
+        else if (o.equals("java/io/File") && nm.equals("exists") && d.equals("()Z")) to = new String[]{"fexists", "(Ljava/io/File;)Z"};
+        if (to == null) return false;
+        il.set(mi, new MethodInsnNode(Opcodes.INVOKESTATIC, "Tracker", to[0], to[1], false));
+        return true;
+    }
+
+    /** Start of every catch block: Tracker.caught(exception) shows the jump from the failing line to the catch. */
+    static void catchHooks(MethodNode mn) {
+        java.util.Set<LabelNode> done = new java.util.HashSet<>();
+        for (TryCatchBlockNode tc : mn.tryCatchBlocks) {
+            if (tc.type == null || !done.add(tc.handler)) continue;
+            AbstractInsnNode first = tc.handler;
+            while (first != null && first.getOpcode() < 0) first = first.getNext();
+            if (first == null || first.getOpcode() != Opcodes.ASTORE) continue;
+            boolean synthetic = false;
+            AbstractInsnNode x = first;
+            for (int k = 0; x != null && k < 16; k++, x = x.getNext())
+                if (x instanceof MethodInsnNode m && m.name.equals("addSuppressed")) synthetic = true;
+            if (synthetic) continue;
+            InsnList add = new InsnList();
+            add.add(new InsnNode(Opcodes.DUP));
+            add.add(call("caught", "(Ljava/lang/Throwable;)V"));
+            mn.instructions.insertBefore(first, add);
+        }
+    }
+
     /** Chapter 9+ (server passes -Dgra.sort=1): int comparisons of array/list elements and compareTo signs become events. */
     static final boolean SORT = Boolean.getBoolean("gra.sort");
+    /** Chapter 13 (server passes -Dgra.bin=true): EVERY int comparison (t[mid] < x, p <= k) becomes an icmp event; the page picks the ones that follow an element read. */
+    static final boolean BIN = Boolean.getBoolean("gra.bin");
 
     /** The second operand of the comparison was just read from an int[] (already rewritten to Tracker.load) or unboxed from a list. */
     static boolean afterArrayRead(AbstractInsnNode n) {
@@ -665,6 +847,12 @@ public final class Runner {
             "charAt(I)C", new String[]{"charAt", "(Ljava/lang/String;I)C"},
             "length()I", new String[]{"slen", "(Ljava/lang/String;)I"},
             "toCharArray()[C", new String[]{"toChars", "(Ljava/lang/String;)[C"});
+
+    /** Chapter 16 only: split and substring show the line being cut. */
+    static final java.util.Map<String, String[]> FILE_STRING_HOOKS = java.util.Map.of(
+            "split(Ljava/lang/String;)[Ljava/lang/String;", new String[]{"split", "(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;"},
+            "substring(II)Ljava/lang/String;", new String[]{"sub2", "(Ljava/lang/String;II)Ljava/lang/String;"},
+            "substring(I)Ljava/lang/String;", new String[]{"sub1", "(Ljava/lang/String;I)Ljava/lang/String;"});
 
     /** True when the student's code works with chars: then c - 'A', % and (char) are animated too. */
     static boolean usesChars(ClassNode cn) {

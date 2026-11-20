@@ -1,0 +1,1149 @@
+[
+ {
+  "id": 1,
+  "title": "Ala na kartce z kluczem",
+  "ref": "Ćwiczenie 1 (na kartce)",
+  "view": "szyfr",
+  "goal": "Najpierw na kartce zaszyfruj „Ala” kluczem bc: A z literą klucza b, l z literą c, a znów z b (klucz się skończył, więc wraca na początek). Program robi to już dla pierwszej litery. Dopisz dwie następne, każdą z własną literą klucza. Małe litery liczysz od 'a'.",
+  "starter": "public static void main(String[] args) {\n    char c = 'A';\n    char k = 'b';                            // litera klucza\n    int szyfr = k - 'a';                     // b to 1\n    int numer = (c - 'A' + szyfr) % 26;      // 0 + 1 = 1\n    char nowa = (char) ('A' + numer);        // 1 to B\n    System.out.println(c + \" + \" + k + \" -> \" + nowa);\n\n    // to samo dla 'l' z literą klucza 'c', potem dla 'a' z literą klucza 'b'\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "A + b -> B\nl + c -> n\na + b -> b"
+   }
+  ],
+  "hints": [
+   "Zmienne c, k, szyfr, numer i nowa już istnieją - tylko nadaj im nowe wartości, bez pisania znowu char i int.",
+   "Dla małej litery baza to 'a': c - 'a' i na końcu 'a' + numer. Litera klucza zawsze odejmuje 'a', bo klucz piszemy małymi literami.",
+   "Ostatnia podpowiedź: c = 'l'; k = 'c'; szyfr = k - 'a'; numer = (c - 'a' + szyfr) % 26; nowa = (char) ('a' + numer); i ten sam println."
+  ],
+  "roles": {
+   "szyfr": "numer litery klucza = o ile przesuwamy",
+   "numer": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [
+   {
+    "code": "klucz.charAt(x) - 'a'",
+    "kind": "litera klucza to liczba",
+    "desc": "Litera klucza odjęta od 'a' daje numer przesunięcia: 'a' to 0, 'b' to 1, 'k' to 10. To ta sama sztuczka co numer litery w Cezarze.",
+    "ex": "String haslo = \"dom\";\nint ile = haslo.charAt(0) - 'a';\nSystem.out.println(ile);   // 3"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Policz na kartce: „Ala” zaszyfrowana kluczem bc to...",
+    "options": [
+     "Bnb",
+     "Dod",
+     "Bmb"
+    ],
+    "answer": 0,
+    "why": "A (0) + b (1) = B, l (11) + c (2) = n (13), trzecia litera dostaje znów b: a (0) + 1 = b. Dod to Cezar z jedną liczbą 3."
+   },
+   {
+    "q": "Co robi litera klucza w Vigenèrze?",
+    "options": [
+     "jej numer mówi, o ile przesunąć literę tekstu",
+     "zastępuje literę tekstu",
+     "zamienia tekst na liczby"
+    ],
+    "answer": 0,
+    "why": "'b' - 'a' = 1, więc litera tekstu jedzie o 1 miejsce. Każda litera klucza to inne przesunięcie."
+   }
+  ],
+  "lesson": "Vigenère to Cezar, w którym przesunięcie bierzesz z litery klucza: klucz.charAt(...) - 'a'."
+ },
+ {
+  "id": 2,
+  "title": "Klucz w kółko",
+  "ref": "Ćwiczenie 2",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "Tekst ma 7 liter, klucz 3, więc klucz trzeba czytać w kółko. Dla każdego numeru litery tekstu i wypisz: i, spację i literę klucza, która do niej pasuje. Użyj i % klucz.length(). Patrz na rząd pod tekstem: litery klucza wskakują pod kolejne litery tekstu i co trzecią wraca pierwsza.",
+  "starter": "public static void main(String[] args) {\n    String text = \"abcdefg\";\n    String klucz = \"xyz\";\n    // dla każdego numeru i wypisz: i, spacja, litera klucza (użyj % klucz.length())\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "0 x\n1 y\n2 z\n3 x\n4 y\n5 z\n6 x"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "%\\s*klucz\\.length\\s*\\(\\s*\\)",
+    "label": "numer klucza zawijany przez % klucz.length()",
+    "msg": "Numer litery klucza zawiń w kółko: % klucz.length()."
+   },
+   {
+    "re": "\\.charAt\\s*\\(",
+    "label": "litera klucza przez klucz.charAt(...)",
+    "msg": "Literę klucza czytasz przez klucz.charAt(numer)."
+   }
+  ],
+  "hints": [
+   "Pętla for po numerach liter tekstu: i od 0 do text.length() - 1.",
+   "Numer litery klucza to nie i, tylko i % klucz.length() - reszta z dzielenia zawija się: 0 1 2 0 1 2 0.",
+   "Ostatnia podpowiedź: for (int i = 0; i < text.length(); i++) { System.out.println(i + \" \" + klucz.charAt(i % klucz.length())); }"
+  ],
+  "roles": {
+   "i": "numer litery tekstu"
+  },
+  "tools": [
+   {
+    "code": "s.charAt(k % s.length())",
+    "kind": "litery w kółko",
+    "desc": "k % s.length() zawija numer k z powrotem na 0, gdy dojdzie do długości napisu. Dzięki temu krótki napis (klucz) można czytać w kółko, bez wychodzenia poza niego.",
+    "ex": "String znaki = \"xo\";\nfor (int k = 0; k < 5; k++) {\n    System.out.print(znaki.charAt(k % znaki.length()));\n}\n// na ekranie: xoxox"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Klucz ma 3 litery. Jaki numer litery klucza dostanie litera tekstu o numerze 7?",
+    "options": [
+     "1",
+     "7",
+     "2"
+    ],
+    "answer": 0,
+    "why": "7 % 3 = 1, bo 7 = 2 * 3 + 1. Numery klucza lecą 0 1 2 0 1 2 0 1, więc dla 7 wychodzi 1."
+   }
+  ],
+  "lesson": "Krótki klucz czytasz w kółko przez i % klucz.length(): numery zawijają się 0 1 2 0 1 2..."
+ },
+ {
+  "id": 3,
+  "title": "szyfrujV: małe litery",
+  "ref": "Ćwiczenie 3",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "Napisz metodę public static String szyfrujV(String text, String klucz). Na razie tekst i klucz mają same małe litery, bez spacji. Każda litera tekstu jedzie o inną liczbę miejsc: o numer litery klucza (klucz.charAt(i % klucz.length()) - 'a'). W main wypisz szyfrujV dla \"ala\" i \"kot\", dla \"xyz\" i \"b\" oraz dla \"abc\" i \"abc\".",
+  "starter": "// napisz tu metodę szyfrujV(String text, String klucz)\n\n\npublic static void main(String[] args) {\n    // wypisz szyfrujV(\"ala\", \"kot\"), szyfrujV(\"xyz\", \"b\") i szyfrujV(\"abc\", \"abc\")\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "kzt\nyza\nace",
+    "calls": [
+     "szyfrujV"
+    ]
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "hello",
+     "abc"
+    ],
+    "ret": "hfnlp"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "zzz",
+     "b"
+    ],
+    "ret": "aaa"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kot",
+     "kot"
+    ],
+    "ret": "ucm"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "",
+     "kot"
+    ],
+    "ret": ""
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abcdefghij",
+     "z"
+    ],
+    "ret": "zabcdefghi"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   },
+   {
+    "re": "%\\s*klucz\\.length\\s*\\(\\s*\\)",
+    "label": "numer klucza zawijany przez % klucz.length()",
+    "msg": "Numer litery klucza zawiń w kółko: % klucz.length()."
+   }
+  ],
+  "hints": [
+   "Zacznij jak w Cezarze: char[] znaki = text.toCharArray(), pętla po i, na końcu new String(znaki).",
+   "W pętli najpierw przesunięcie z klucza: int szyfr = klucz.charAt(i % klucz.length()) - 'a'; reszta jak w Cezarze (numer litery, + szyfr, % 26, z powrotem na literę).",
+   "Ostatnia podpowiedź: int szyfr = klucz.charAt(i % klucz.length()) - 'a'; int tmp = znaki[i] - 'a'; tmp = (tmp + szyfr) % 26; znaki[i] = (char) ('a' + tmp);"
+  ],
+  "roles": {
+   "i": "numer litery tekstu",
+   "szyfr": "o ile przesuwamy TĘ literę (z klucza)",
+   "tmp": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [
+   {
+    "code": "s.charAt(k % s.length())",
+    "kind": "litery w kółko",
+    "desc": "k % s.length() zawija numer k z powrotem na 0, gdy dojdzie do długości napisu. Dzięki temu krótki napis (klucz) można czytać w kółko, bez wychodzenia poza niego.",
+    "ex": "String znaki = \"xo\";\nfor (int k = 0; k < 5; k++) {\n    System.out.print(znaki.charAt(k % znaki.length()));\n}\n// na ekranie: xoxox"
+   },
+   {
+    "code": "klucz.charAt(x) - 'a'",
+    "kind": "litera klucza to liczba",
+    "desc": "Litera klucza odjęta od 'a' daje numer przesunięcia: 'a' to 0, 'b' to 1, 'k' to 10. To ta sama sztuczka co numer litery w Cezarze.",
+    "ex": "String haslo = \"dom\";\nint ile = haslo.charAt(0) - 'a';\nSystem.out.println(ile);   // 3"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Tekst „ala”, klucz „kot”. O ile przesunie się trzecia litera tekstu?",
+    "options": [
+     "o 19 (litera t)",
+     "o 10 (litera k)",
+     "o 3"
+    ],
+    "answer": 0,
+    "why": "Trzecia litera ma numer 2, a 2 % 3 = 2, czyli litera klucza t. 't' - 'a' = 19. Wynik: a + 19 = t."
+   }
+  ],
+  "lesson": "Vigenère to Cezar z przesunięciem pobieranym z klucza: za każdym razem inna litera klucza, a numer klucza zawijasz przez % klucz.length()."
+ },
+ {
+  "id": 4,
+  "title": "Wielkie litery i spacje",
+  "ref": "Ćwiczenie 4",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "Rozszerz szyfrujV: wielkie litery liczysz od 'A', a znaki spoza liter (spacja, cyfry) zostają bez zmian i NIE zjadają klucza. Do numeru klucza użyj osobnego licznika j, który rośnie tylko po zaszyfrowanej literze. Wypisz szyfrujV dla \"Ala ma kota\" z kluczem \"pieski\" i dla \"Ala ma kota xyz XYZ 123\" z kluczem \"kot\". Patrz: pod spacją klucz stoi w miejscu.",
+  "starter": "// skopiuj tu swoją metodę szyfrujV z poziomu 3\n// i dopisz: wielkie litery, znaki spoza liter oraz licznik j\n\n\npublic static void main(String[] args) {\n    // wypisz szyfrujV(\"Ala ma kota\", \"pieski\") i szyfrujV(\"Ala ma kota xyz XYZ 123\", \"kot\")\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Pte ek sdbe\nKzt wo dyht hms HMS 123",
+    "calls": [
+     "szyfrujV"
+    ]
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Zebra",
+     "z"
+    ],
+    "ret": "Ydaqz"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ab cd",
+     "xy"
+    ],
+    "ret": "xz zb"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Java 21!",
+     "klucz"
+    ],
+    "ret": "Tlpc 21!"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "",
+     "kot"
+    ],
+    "ret": ""
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "123 !?",
+     "kot"
+    ],
+    "ret": "123 !?"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   },
+   {
+    "re": "%\\s*klucz\\.length\\s*\\(\\s*\\)",
+    "label": "numer klucza zawijany przez % klucz.length()",
+    "msg": "Numer litery klucza zawiń w kółko: % klucz.length()."
+   },
+   {
+    "re": "\\bj\\s*(\\+\\+|\\+=)|\\+\\+\\s*j\\b",
+    "label": "licznik j rośnie po zaszyfrowanej literze (j++)",
+    "msg": "Numer klucza ma być osobnym licznikiem j: int j = 0; przed pętlą i j++ po każdej zaszyfrowanej literze."
+   }
+  ],
+  "hints": [
+   "Przed pętlą dodaj int j = 0;. Klucz czytaj przez j, nie przez i. Dwa bloki jak w Cezarze: małe litery od 'a', wielkie od 'A'.",
+   "j++ wstaw na końcu każdego z dwóch bloków (po zaszyfrowanej literze). W gałęzi dla spacji i cyfr nic nie robisz, więc j stoi w miejscu.",
+   "Ostatnia podpowiedź: int j = 0; ... if (znaki[i] >= 'a' && znaki[i] <= 'z') { int szyfr = klucz.charAt(j % klucz.length()) - 'a'; ... znaki[i] = (char) ('a' + tmp); j++; } i taki sam else if dla 'A'."
+  ],
+  "roles": {
+   "i": "numer znaku w tekście",
+   "j": "numer litery klucza (rośnie tylko po literze)",
+   "szyfr": "o ile miejsc przesuwamy TĘ literę",
+   "tmp": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [
+   {
+    "code": "int j = 0; ... j++",
+    "kind": "osobny licznik",
+    "desc": "Zmienna j liczy tylko to, co chcesz, a nie wszystkie obiegi pętli. j++ robisz tylko wtedy, gdy warunek zaszedł (tu: znak był literą).",
+    "ex": "String s = \"a1b22c\";\nint cyfry = 0;\nfor (int i = 0; i < s.length(); i++) {\n    if (s.charAt(i) >= '0' && s.charAt(i) <= '9') {\n        cyfry++;\n    }\n}\nSystem.out.println(cyfry);   // 3"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Tekst „Ala ma”, klucz „kot”. Jaką literę klucza dostanie pierwsze „m” (po spacji)?",
+    "options": [
+     "k - klucz zaczyna się od nowa po trzech literach",
+     "o - bo m jest czwartym znakiem po spacji",
+     "żadną, m się nie szyfruje"
+    ],
+    "answer": 0,
+    "why": "Spacja nie bierze litery klucza. Litery A, l, a biorą k, o, t. Czwarta LITERA (m) wraca do k. Gdyby klucz liczyć przez i, spacja zjadłaby k i m dostałoby o."
+   }
+  ],
+  "lesson": "Osobny licznik j rośnie tylko po literach, więc spacje i cyfry nie zjadają klucza."
+ },
+ {
+  "id": 5,
+  "title": "deszyfrujV: w lewo",
+  "ref": "Ćwiczenie 5",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "Napisz deszyfrujV(String text, String klucz): wszystko jak w szyfrujV (klucz, licznik j, wielkie litery, spacje), ale przesuwasz w lewo: - szyfr + 26. W main wypisz deszyfrujV dla \"Pte ek sdbe\" z kluczem \"pieski\" i dla \"Kzt wo dyht hms HMS 123\" z kluczem \"kot\".",
+  "starter": "// skopiuj tu szyfrujV z poziomu 4 i zrób z niej deszyfrujV:\n// w obu blokach zamień + szyfr na - szyfr + 26\n\n\npublic static void main(String[] args) {\n    // wypisz deszyfrujV(\"Pte ek sdbe\", \"pieski\") i deszyfrujV(\"Kzt wo dyht hms HMS 123\", \"kot\")\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ala ma kota\nAla ma kota xyz XYZ 123",
+    "calls": [
+     "deszyfrujV"
+    ]
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ydaqz",
+     "z"
+    ],
+    "ret": "Zebra"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "xz zb",
+     "xy"
+    ],
+    "ret": "ab cd"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Tlpc 21!",
+     "klucz"
+    ],
+    "ret": "Java 21!"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "",
+     "kot"
+    ],
+    "ret": ""
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kzt",
+     "kot"
+    ],
+    "ret": "ala"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   },
+   {
+    "re": "%\\s*klucz\\.length\\s*\\(\\s*\\)",
+    "label": "numer klucza zawijany przez % klucz.length()",
+    "msg": "Numer litery klucza zawiń w kółko: % klucz.length()."
+   },
+   {
+    "re": "\\bj\\s*(\\+\\+|\\+=)|\\+\\+\\s*j\\b",
+    "label": "licznik j rośnie po zaszyfrowanej literze (j++)",
+    "msg": "Numer klucza ma być osobnym licznikiem j: int j = 0; przed pętlą i j++ po każdej zaszyfrowanej literze."
+   },
+   {
+    "re": "\\+\\s*26",
+    "label": "+ 26 przed % 26",
+    "msg": "Przy odejmowaniu dodaj 26 przed % 26: (tmp - szyfr + 26) % 26, inaczej wyjdzie minus."
+   }
+  ],
+  "hints": [
+   "deszyfrujV to kopia szyfrujV: ten sam licznik j, te same dwa bloki. Zmienia się tylko jedna linijka w każdym bloku.",
+   "Zamiast tmp + szyfr piszesz tmp - szyfr + 26. Plus 26, żeby reszta z dzielenia nie wyszła ujemna (jak w rozdziale 4).",
+   "Ostatnia podpowiedź: tmp = (tmp - szyfr + 26) % 26; w bloku małych i w bloku wielkich liter."
+  ],
+  "roles": {
+   "i": "numer znaku w tekście",
+   "j": "numer litery klucza (rośnie tylko po literze)",
+   "szyfr": "o ile miejsc przesuwamy TĘ literę",
+   "tmp": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego - klucz, licznik j i + 26 znasz z poprzednich poziomów.",
+  "quiz": [
+   {
+    "q": "Dlaczego w deszyfrujV nadal jest licznik j, tak samo jak w szyfrujV?",
+    "options": [
+     "bo każda litera ma dostać TĘ SAMĄ literę klucza co przy szyfrowaniu",
+     "bo bez j pętla się nie skończy",
+     "bo j zastępuje + 26"
+    ],
+    "answer": 0,
+    "why": "Odszyfrować literę można tylko tym samym przesunięciem, którym ją zaszyfrowano. Klucz musi więc iść w tej samej kolejności, a spacje go nie ruszają."
+   }
+  ],
+  "lesson": "deszyfrujV to szyfrujV w drugą stronę: ten sam klucz w tej samej kolejności, ale - szyfr + 26."
+ },
+ {
+  "id": 6,
+  "title": "Tam i z powrotem z kluczem",
+  "ref": "Ćwiczenie 6: test w obie strony z kluczem od użytkownika",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "W main wczytaj ze Scannera dwie linie: tekst i klucz (nextLine dwa razy). Zaszyfruj tekst, odszyfruj wynik i wypisz: zaszyfrowany tekst, odszyfrowany tekst i true albo false z equals. Gra sama wpisze na klawiaturze: Ala ma kota i pieski. Obie metody masz w starterze.",
+  "starter": "public static String szyfrujV(String text, String klucz) {\n    char[] znaki = text.toCharArray();\n    int j = 0;\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int szyfr = klucz.charAt(j % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n            j++;\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int szyfr = klucz.charAt(j % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n            j++;\n        }\n    }\n    return new String(znaki);\n}\n\npublic static String deszyfrujV(String text, String klucz) {\n    char[] znaki = text.toCharArray();\n    int j = 0;\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int szyfr = klucz.charAt(j % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('a' + tmp);\n            j++;\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int szyfr = klucz.charAt(j % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr + 26) % 26;\n            znaki[i] = (char) ('A' + tmp);\n            j++;\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    Scanner sc = new Scanner(System.in);\n    // wczytaj tekst i klucz, zaszyfruj, odszyfruj, wypisz trzy linie\n\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "Ala ma kota\npieski\n",
+    "out": "Pte ek sdbe\nAla ma kota\ntrue",
+    "calls": [
+     "szyfrujV",
+     "deszyfrujV"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Java 21!\nklucz\n",
+    "out": "Tlpc 21!\nJava 21!\ntrue",
+    "calls": [
+     "szyfrujV",
+     "deszyfrujV"
+    ]
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Kot ma Ale 2026",
+     "sejf"
+    ],
+    "ret": "Csc rs Euj 2026"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Csc rs Euj 2026",
+     "sejf"
+    ],
+    "ret": "Kot ma Ale 2026"
+   }
+  ],
+  "hints": [
+   "Dwa razy sc.nextLine(): pierwsze wczytanie to tekst, drugie to klucz. Zapisz je w zmiennych text i klucz.",
+   "Zmienna zaszyfrowany = szyfrujV(text, klucz), potem odszyfrowany = deszyfrujV(zaszyfrowany, klucz).",
+   "Ostatnia podpowiedź: System.out.println(zaszyfrowany); System.out.println(odszyfrowany); System.out.println(text.equals(odszyfrowany));"
+  ],
+  "roles": {
+   "text": "tekst od użytkownika",
+   "klucz": "klucz od użytkownika"
+  },
+  "tools": [
+   {
+    "code": "sc.nextLine()",
+    "kind": "wczytanie linii",
+    "desc": "Wczytuje całą linię wpisaną na klawiaturze (do Entera), razem ze spacjami.",
+    "ex": "Scanner sc = new Scanner(System.in);\nString imie = sc.nextLine();\nSystem.out.println(\"Czesc \" + imie);"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Dlaczego test w obie strony ma sens?",
+    "options": [
+     "jeśli obie metody są dobre, odszyfrowany tekst jest taki sam jak oryginał",
+     "bo szyfrowanie zawsze zmienia długość tekstu",
+     "bo equals szyfruje tekst"
+    ],
+    "answer": 0,
+    "why": "deszyfrujV(szyfrujV(x, k), k) musi dać x. Jeśli nie daje, któraś metoda ma błąd (albo każda liczy klucz inaczej)."
+   }
+  ],
+  "lesson": "Test w obie strony z kluczem z klawiatury: deszyfrujV(szyfrujV(x, k), k) musi być równe x."
+ },
+ {
+  "id": 7,
+  "title": "Stary kod vigenere",
+  "ref": "Ćwiczenie 7: czytanie starego kodu",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "To Twój stary plik vigenere.java (bez package i class). Uruchom go wolno i patrz na klucz pod tekstem: litera klucza jest czytana przy każdym znaku, ale k rośnie tylko po literach. Pod spacją klucz stoi w miejscu. Dopisz pod każdą linijką komentarz // co robi i odpowiedz na pytania.",
+  "starter": "public static void main(String[] args) {\n    String text = \"Ala ma kota\";\n    String key = \"pieski\";\n    int k = 0, len = key.length();\n    String coded = \"\";\n\n    for (int i = 0; i < text.length(); i++) {\n        int szyfr = Character.toLowerCase(key.charAt(k)) - 'a';\n        if (text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') {\n            int tmp = text.charAt(i) - 'A';\n            tmp = (tmp + szyfr) % 26 + 'A';\n            coded += (char) tmp;\n            k = (k + 1) % len;\n        } else if (text.charAt(i) >= 'a' && text.charAt(i) <= 'z') {\n            int tmp = text.charAt(i) - 'a';\n            tmp = (tmp + szyfr) % 26 + 'a';\n            coded += (char) tmp;\n            k = (k + 1) % len;\n        }\n        else {\n            coded += text.charAt(i);\n        }\n    }\n    System.out.println(text);\n    System.out.println(coded);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ala ma kota\nPte ek sdbe"
+   }
+  ],
+  "hints": [
+   "Patrz na zmienną k: rośnie tylko w dwóch pierwszych blokach (przy literach), a w else (spacja) stoi w miejscu.",
+   "k = (k + 1) % len to to samo co j++ i % klucz.length() razem: numer klucza, który sam zawija się na początek.",
+   "Różnica z Twoją nową wersją: tu nie ma char[], wynik jest sklejany przez coded += ..., a przesunięcie jest liczone przed sprawdzeniem, czy znak jest literą."
+  ],
+  "roles": {
+   "i": "numer znaku w tekście",
+   "k": "numer litery klucza (to samo co j)",
+   "szyfr": "przesunięcie z litery klucza",
+   "tmp": "najpierw numer 0-25, potem od razu kod znaku"
+  },
+  "tools": [
+   {
+    "code": "Character.toLowerCase(c)",
+    "kind": "mała litera",
+    "desc": "Zamienia wielką literę na małą (K na k). Dzięki temu klucz KOT i kot dają to samo przesunięcie.",
+    "ex": "char c = 'M';\nSystem.out.println(Character.toLowerCase(c));   // m"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Po co w starym kodzie jest zmienna k obok i?",
+    "options": [
+     "k liczy litery klucza i rośnie tylko po literach, a i liczy wszystkie znaki",
+     "k to kopia i",
+     "k przechowuje długość klucza"
+    ],
+    "answer": 0,
+    "why": "i idzie po każdym znaku (też po spacji). k to numer litery klucza: rośnie po literach i zawija się przez % len. W nowej wersji to samo robi licznik j."
+   },
+   {
+    "q": "Co zmienia się w kluczu pod spacją?",
+    "options": [
+     "nic - k nie rośnie, więc następna litera bierze tę samą literę klucza",
+     "klucz przeskakuje o jedną literę",
+     "program się zatrzymuje"
+    ],
+    "answer": 0,
+    "why": "else nie ma k = (k + 1) % len. Spacja jest przepisana bez zmian i klucz czeka na następną literę."
+   }
+  ],
+  "lesson": "Stary vigenere ma to samo co nowa wersja: licznik klucza k rośnie tylko po literach i zawija się przez % len. Różni się tym, że skleja wynik przez += zamiast char[]."
+ },
+ {
+  "id": 8,
+  "title": "Napraw: klucz przez i",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "Ta metoda bierze literę klucza przez i, więc spacja zjada jedną literę klucza i wynik jest inny niż poprawny. Dla \"Ala ma kota\" i klucza \"pieski\" ma wyjść Pte ek sdbe. Dodaj osobny licznik j i bierz klucz przez j. Patrz na rząd klucza: pod spacją litera klucza znika.",
+  "starter": "public static String szyfrujV(String text, String klucz) {\n    char[] znaki = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int szyfr = klucz.charAt(i % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int szyfr = klucz.charAt(i % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfrujV(\"Ala ma kota\", \"pieski\"));\n    System.out.println(szyfrujV(\"ab cd\", \"xy\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Pte ek sdbe\nxz zb",
+    "calls": [
+     "szyfrujV"
+    ]
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Kot ma Ale 2026",
+     "sejf"
+    ],
+    "ret": "Csc rs Euj 2026"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Java 21!",
+     "klucz"
+    ],
+    "ret": "Tlpc 21!"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "a b c d",
+     "bc"
+    ],
+    "ret": "b d d f"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\bj\\s*(\\+\\+|\\+=)|\\+\\+\\s*j\\b",
+    "label": "licznik j rośnie po zaszyfrowanej literze (j++)",
+    "msg": "Numer klucza ma być osobnym licznikiem j: int j = 0; przed pętlą i j++ po każdej zaszyfrowanej literze."
+   }
+  ],
+  "hints": [
+   "Spacja nie jest literą, a mimo to i przy niej rośnie. Klucz ma rosnąć tylko po literach, więc potrzebujesz drugiego licznika.",
+   "Przed pętlą dopisz int j = 0;. W obu blokach zamień klucz.charAt(i % klucz.length()) na klucz.charAt(j % klucz.length()) i dopisz j++ na końcu każdego bloku.",
+   "Ostatnia podpowiedź: int j = 0; ... int szyfr = klucz.charAt(j % klucz.length()) - 'a'; ... znaki[i] = (char) ('a' + tmp); j++;"
+  ],
+  "roles": {
+   "i": "numer znaku w tekście",
+   "j": "numer litery klucza (rośnie tylko po literze)",
+   "szyfr": "o ile miejsc przesuwamy TĘ literę",
+   "tmp": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego - licznik j znasz z poziomu 4.",
+  "quiz": [
+   {
+    "q": "Tekst „ab cd”, klucz „xy”. Którą literę klucza dostaje „c” przy POPRAWNEJ zasadzie?",
+    "options": [
+     "x - to trzecia litera, klucz zaczyna się od nowa",
+     "y - bo c ma numer 3 w tekście",
+     "żadną"
+    ],
+    "answer": 0,
+    "why": "Litery a, b, c biorą kolejno x, y, x (spacja klucza nie rusza). Przez i spacja zabrałaby y i c dostałoby y."
+   }
+  ],
+  "lesson": "Jeśli numer klucza liczysz przez i, spacje i cyfry zjadają klucz. Osobny licznik j rośnie tylko po literach."
+ },
+ {
+  "id": 9,
+  "title": "Napraw: klucz się kończy",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "Ta metoda czyta klucz przez klucz.charAt(j), bez zawijania. Gdy tekst jest dłuższy od klucza, klucz się kończy i Java rzuca wyjątek StringIndexOutOfBoundsException. Napraw to jednym znakiem: zawiń numer klucza przez %.",
+  "starter": "public static String szyfrujV(String text, String klucz) {\n    char[] znaki = text.toCharArray();\n    int j = 0;\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int szyfr = klucz.charAt(j) - 'a';\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n            j++;\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int szyfr = klucz.charAt(j) - 'a';\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n            j++;\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfrujV(\"Ala ma kota\", \"pieski\"));\n    System.out.println(szyfrujV(\"Kot ma Ale\", \"kot\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Pte ek sdbe\nUcm wo Tvs",
+    "calls": [
+     "szyfrujV"
+    ]
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ala ma kota xyz XYZ 123",
+     "kot"
+    ],
+    "ret": "Kzt wo dyht hms HMS 123"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abcdefghij",
+     "z"
+    ],
+    "ret": "zabcdefghi"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "%\\s*klucz\\.length\\s*\\(\\s*\\)",
+    "label": "numer klucza zawijany przez % klucz.length()",
+    "msg": "Numer litery klucza zawiń w kółko: % klucz.length()."
+   }
+  ],
+  "hints": [
+   "Przeczytaj komunikat wyjątku w konsoli: charAt z numerem poza napisem. Klucz ma tyle liter, ile ma, a numer j rośnie dalej.",
+   "Numer klucza trzeba zawinąć: reszta z dzielenia przez długość klucza daje zawsze numer od 0 do długość - 1.",
+   "Ostatnia podpowiedź: klucz.charAt(j % klucz.length()) - w obu blokach."
+  ],
+  "roles": {
+   "i": "numer znaku w tekście",
+   "j": "numer litery klucza (rośnie tylko po literze)",
+   "szyfr": "o ile miejsc przesuwamy TĘ literę",
+   "tmp": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego - % klucz.length() znasz z poziomu 2.",
+  "quiz": [
+   {
+    "q": "Klucz „kot”, tekst ma 8 liter. Co się stanie bez % klucz.length()?",
+    "options": [
+     "przy czwartej literze klucz.charAt(3) wyjdzie poza napis - wyjątek",
+     "tekst zaszyfruje się z błędnymi literami, ale program pójdzie dalej",
+     "klucz sam się powtórzy"
+    ],
+    "answer": 0,
+    "why": "Klucz „kot” ma numery 0, 1, 2. charAt(3) nie istnieje, więc Java kończy program wyjątkiem."
+   }
+  ],
+  "lesson": "Bez % klucz.length() klucz się kończy i program pada na charAt. Reszta z dzielenia zawija numer w kółko."
+ },
+ {
+  "id": 10,
+  "title": "Napraw: deszyfrowanie bez + 26",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "deszyfrujV odejmuje przesunięcie, ale nie dodaje 26. Dla liter, które po odjęciu schodzą poniżej zera, wychodzą dziwne znaki zamiast liter. Napraw to w obu blokach, żeby deszyfrujV(\"Pte ek sdbe\", \"pieski\") dawało z powrotem Ala ma kota.",
+  "starter": "public static String deszyfrujV(String text, String klucz) {\n    char[] znaki = text.toCharArray();\n    int j = 0;\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int szyfr = klucz.charAt(j % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp - szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n            j++;\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int szyfr = klucz.charAt(j % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp - szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n            j++;\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(deszyfrujV(\"Pte ek sdbe\", \"pieski\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ala ma kota",
+    "calls": [
+     "deszyfrujV"
+    ]
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Kzt wo dyht hms HMS 123",
+     "kot"
+    ],
+    "ret": "Ala ma kota xyz XYZ 123"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "yza",
+     "b"
+    ],
+    "ret": "xyz"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ydaqz",
+     "z"
+    ],
+    "ret": "Zebra"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\+\\s*26",
+    "label": "+ 26 przed % 26",
+    "msg": "Przy odejmowaniu dodaj 26 przed % 26."
+   }
+  ],
+  "hints": [
+   "Zobacz, jaki numer ma 'A' (0) po odjęciu np. 15: wychodzi -15, a -15 % 26 w Javie to nadal -15.",
+   "Dodaj 26 w nawiasie PRZED % 26, w obu blokach (małe i wielkie litery).",
+   "Ostatnia podpowiedź: tmp = (tmp - szyfr + 26) % 26;"
+  ],
+  "roles": {
+   "i": "numer znaku w tekście",
+   "j": "numer litery klucza (rośnie tylko po literze)",
+   "szyfr": "o ile miejsc przesuwamy TĘ literę",
+   "tmp": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego - pułapkę minusa znasz z rozdziału 4.",
+  "quiz": [
+   {
+    "q": "Litera A (numer 0), klucz p (15). Co wyjdzie z (0 - 15) % 26 w Javie?",
+    "options": [
+     "-15",
+     "11",
+     "15"
+    ],
+    "answer": 0,
+    "why": "Reszta z liczby ujemnej zostaje ujemna. Dopiero (0 - 15 + 26) % 26 daje 11."
+   }
+  ],
+  "lesson": "W deszyfrowaniu zawsze + 26 przed % 26, także w Vigenèrze: klucz robi duże przesunięcia, więc minus zdarza się często."
+ },
+ {
+  "id": 11,
+  "title": "Napraw: klucz wielkimi literami",
+  "ref": "Typowe błędy",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "Użytkownik wpisał klucz wielkimi literami: KOT. Dla 'K' wychodzi 'K' - 'a' = -22, więc przesunięcia są złe. Napraw: zamień literę klucza na małą (Character.toLowerCase) zanim odejmiesz 'a'. Ma wyjść kzt.",
+  "starter": "public static String szyfrujV(String text, String klucz) {\n    char[] znaki = text.toCharArray();\n    int j = 0;\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            int szyfr = klucz.charAt(j % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'a';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('a' + tmp);\n            j++;\n        }\n        else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            int szyfr = klucz.charAt(j % klucz.length()) - 'a';\n            int tmp = znaki[i] - 'A';\n            tmp = (tmp + szyfr) % 26;\n            znaki[i] = (char) ('A' + tmp);\n            j++;\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void main(String[] args) {\n    System.out.println(szyfrujV(\"ala\", \"KOT\"));\n    System.out.println(szyfrujV(\"Ala ma kota\", \"PiesKi\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "kzt\nPte ek sdbe",
+    "calls": [
+     "szyfrujV"
+    ]
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Kot ma Ale 2026",
+     "SEJF"
+    ],
+    "ret": "Csc rs Euj 2026"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Zebra",
+     "Z"
+    ],
+    "ret": "Ydaqz"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ala",
+     "kot"
+    ],
+    "ret": "kzt"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "Character\\.toLowerCase\\s*\\(",
+    "label": "litera klucza po Character.toLowerCase",
+    "msg": "Klucz może być wpisany wielkimi literami. Zamień jego literę na małą: Character.toLowerCase(klucz.charAt(...))."
+   }
+  ],
+  "hints": [
+   "Sprawdź na kartce: 'K' ma kod 75, a 'a' ma 97. 75 - 97 to -22. Małe litery klucza dają numery od 0 do 25, wielkie nie.",
+   "Zamień literę klucza na małą PRZED odejmowaniem 'a': Character.toLowerCase(...) wokół klucz.charAt(...).",
+   "Ostatnia podpowiedź: int szyfr = Character.toLowerCase(klucz.charAt(j % klucz.length())) - 'a'; (w obu blokach)."
+  ],
+  "roles": {
+   "i": "numer znaku w tekście",
+   "j": "numer litery klucza (rośnie tylko po literze)",
+   "szyfr": "o ile miejsc przesuwamy TĘ literę",
+   "tmp": "numer litery w alfabecie (0-25)"
+  },
+  "tools": [
+   {
+    "code": "Character.toLowerCase(c)",
+    "kind": "mała litera",
+    "desc": "Zamienia wielką literę na małą (K na k). Małą i znaki spoza liter zostawia bez zmian. Dzięki temu klucz KOT i kot działają tak samo.",
+    "ex": "char c = 'M';\nSystem.out.println(Character.toLowerCase(c));   // m"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Klucz „Z”. Ile wyjdzie z 'Z' - 'a' bez toLowerCase?",
+    "options": [
+     "-7 (90 - 97)",
+     "25",
+     "0"
+    ],
+    "answer": 0,
+    "why": "Kod 'Z' to 90, kod 'a' to 97, więc 90 - 97 = -7. Z toLowerCase: 'z' - 'a' = 25."
+   }
+  ],
+  "lesson": "Klucz wpisuje człowiek, więc może mieć wielkie litery. Character.toLowerCase przed odjęciem 'a' daje numery 0-25 w obu przypadkach."
+ },
+ {
+  "id": 12,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "view": "szyfr",
+  "vig": true,
+  "goal": "Z pamięci, bez podglądania: napisz szyfrujV i deszyfrujV (public static String, parametry String text i String klucz, tablica char[], licznik j, klucz zawijany przez % klucz.length(), klucz może być wielkimi literami). W main wczytaj ze Scannera tekst i klucz, zaszyfruj, odszyfruj i wypisz: zaszyfrowany, odszyfrowany i czy odszyfrowany equals oryginał. Gra wpisze: Kot ma Ale 2026 i sejf.",
+  "starter": "",
+  "tests": [
+   {
+    "main": true,
+    "in": "Kot ma Ale 2026\nsejf\n",
+    "out": "Csc rs Euj 2026\nKot ma Ale 2026\ntrue",
+    "calls": [
+     "szyfrujV",
+     "deszyfrujV"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Ala ma kota\npieski\n",
+    "out": "Pte ek sdbe\nAla ma kota\ntrue",
+    "calls": [
+     "szyfrujV",
+     "deszyfrujV"
+    ]
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ala ma kota",
+     "PIESKI"
+    ],
+    "ret": "Pte ek sdbe"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "xyz XYZ",
+     "b"
+    ],
+    "ret": "yza YZA"
+   },
+   {
+    "call": "szyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "@[`{ 9",
+     "kot"
+    ],
+    "ret": "@[`{ 9"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Pte ek sdbe",
+     "PIESKI"
+    ],
+    "ret": "Ala ma kota"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ydaqz",
+     "z"
+    ],
+    "ret": "Zebra"
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "",
+     "kot"
+    ],
+    "ret": ""
+   },
+   {
+    "call": "deszyfrujV",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Tlpc 21!",
+     "klucz"
+    ],
+    "ret": "Java 21!"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\.toCharArray\\s*\\(",
+    "label": "tablica znaków: text.toCharArray()",
+    "msg": "Wynik może się zgadzać, ale metoda ma pracować na tablicy znaków char[]: na początku char[] znaki = text.toCharArray()."
+   },
+   {
+    "re": "new\\s+String\\s*\\(",
+    "label": "napis z szuflad: new String(...)",
+    "msg": "Na końcu zrób napis z szuflad tablicy: return new String(znaki);"
+   },
+   {
+    "re": "%\\s*klucz\\.length\\s*\\(\\s*\\)",
+    "label": "numer klucza zawijany przez % klucz.length()",
+    "msg": "Numer litery klucza zawiń w kółko: % klucz.length()."
+   },
+   {
+    "re": "\\bj\\s*(\\+\\+|\\+=)|\\+\\+\\s*j\\b",
+    "label": "licznik j rośnie po zaszyfrowanej literze (j++)",
+    "msg": "Numer klucza ma być osobnym licznikiem j: int j = 0; przed pętlą i j++ po każdej zaszyfrowanej literze."
+   },
+   {
+    "re": "Character\\.toLowerCase\\s*\\(",
+    "label": "litera klucza po Character.toLowerCase",
+    "msg": "Klucz może być wpisany wielkimi literami. Zamień jego literę na małą: Character.toLowerCase(klucz.charAt(...))."
+   }
+  ],
+  "hints": [
+   "Zacznij od szyfrujV: char[], int j = 0, pętla po i, dwa bloki (małe od 'a', wielkie od 'A'), w każdym szyfr z klucza i j++, na końcu new String.",
+   "deszyfrujV to kopia szyfrujV z jedną zmianą w każdym bloku: - szyfr + 26 zamiast + szyfr. Klucz bierz przez Character.toLowerCase(klucz.charAt(j % klucz.length())) - 'a'.",
+   "W main: Scanner sc, dwa razy nextLine(); zaszyfrowany = szyfrujV(text, klucz); odszyfrowany = deszyfrujV(zaszyfrowany, klucz); trzecia linia to text.equals(odszyfrowany)."
+  ],
+  "tools": [],
+  "tools_note": "Nic nowego - wszystko było w poprzednich poziomach.",
+  "quiz": [
+   {
+    "q": "Po co w Vigenèrze licznik j obok i i czym różni się % klucz.length() od % 26?",
+    "options": [
+     "j rośnie tylko po literach, żeby spacje nie zjadały klucza; % klucz.length() zawija numer po kluczu, a % 26 literę po alfabecie",
+     "j i i to to samo; oba % robią to samo",
+     "j zastępuje % 26"
+    ],
+    "answer": 0,
+    "why": "i liczy wszystkie znaki, j tylko litery (numer litery klucza). % klucz.length() wraca na początek klucza, % 26 wraca na początek alfabetu."
+   }
+  ],
+  "lesson": "Vigenère jako dwie metody: litera klucza daje przesunięcie, numer klucza liczy osobny licznik j zawijany przez % klucz.length(), deszyfrujV odejmuje z + 26."
+ }
+]

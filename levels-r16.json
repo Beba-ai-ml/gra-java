@@ -1,0 +1,1539 @@
+[
+ {
+  "title": "Program pada",
+  "ref": "Co to jest wyjątek",
+  "goal": "Ten program dzieli 10 przez zero. Uruchom go bez zmian i patrz: gra pokazuje czerwony napis „PROGRAM PADŁ”, a linijki pod błędem już się nie wykonują. Tak wygląda wyjątek, którego nikt nie złapał. Na tym poziomie niczego nie naprawiasz - masz zobaczyć, jak program umiera.",
+  "starter": "public static void main(String[] args) {\n    int ile = 0;\n    System.out.println(\"start\");\n    System.out.println(10 / ile);\n    System.out.println(\"koniec\");\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "start",
+    "exc": "java.lang.ArithmeticException",
+    "exc_msg": "Na tym poziomie kod ma się wywrócić na dzieleniu przez zero. Kliknij „Wróć do kodu startowego”."
+   }
+  ],
+  "hints": [
+   "Nic nie zmieniaj. Kliknij Uruchom i patrz na prawą stronę: pojawi się czerwona ramka z nazwą wyjątku.",
+   "Jeśli coś zmieniłeś, kliknij „Wróć do kodu startowego”.",
+   "Ostatnia podpowiedź: kod ma zostać dokładnie taki, jaki jest. Program ma paść w linii z println(10 / ile)."
+  ],
+  "roles": {},
+  "tools": [
+   {
+    "code": "ArithmeticException",
+    "kind": "wyjątek: dzielenie przez zero",
+    "desc": "Dla liczb całkowitych (int) dzielenie przez 0 jest zabronione. Java przerywa program i wypisuje czerwony komunikat „/ by zero” z numerem linii.",
+    "ex": "int ludzie = 0;\nint kawalek = 12 / ludzie;   // tu program pada\nSystem.out.println(kawalek); // tej linii juz nie ma"
+   },
+   {
+    "code": "Integer.parseInt(\"abc\")",
+    "kind": "wyjątek: tekst nie jest liczbą",
+    "desc": "Zamienia tekst na liczbę. Gdy w tekście są litery, rzuca NumberFormatException.",
+    "ex": "int wiek = Integer.parseInt(\"dwa\");   // pada: NumberFormatException"
+   },
+   {
+    "code": "tab[5]",
+    "kind": "wyjątek: szuflady nie ma",
+    "desc": "Szuflada poza tablicą to ArrayIndexOutOfBoundsException (znasz z rozdziału 1).",
+    "ex": "int t[] = {1, 2};\nSystem.out.println(t[2]);   // numery to 0 i 1, pada"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co się stało z linijką System.out.println(\"koniec\") po linii z dzieleniem?",
+    "options": [
+     "Wypisała się normalnie",
+     "Nigdy się nie wykonała, bo program już padł",
+     "Wypisała się dwa razy"
+    ],
+    "answer": 1,
+    "why": "Wyjątek, którego nikt nie złapał, przerywa cały program w miejscu błędu. Linijki niżej nie dostają swojej kolejki."
+   }
+  ],
+  "lesson": "Wyjątek to „awaria w trakcie”. Bez łapania program umiera w miejscu błędu. W tym rozdziale uczysz się łapać wyjątki, żeby program żył dalej.",
+  "id": 1
+ },
+ {
+  "title": "Złap dzielenie przez zero",
+  "ref": "Ćwiczenie 1 (plik `R16_cw1.java`)",
+  "goal": "Metoda podziel dzieli a przez b. Jeśli b to zero, nie ma się wywalić: ma wypisać „Nie dziel przez zero” i oddać 0. Użyj try i catch (ArithmeticException), nie if. Oczekiwany wynik programu: 5, potem komunikat i 0, na końcu „koniec”. Patrz, jak gra przeskakuje z linii z błędem prosto do catch.",
+  "starter": "public static int podziel(int a, int b) {\n    return a / b;\n}\n\npublic static void main(String[] args) {\n    System.out.println(podziel(10, 2));\n    System.out.println(podziel(7, 0));\n    System.out.println(\"koniec\");\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "5\nNie dziel przez zero\n0\nkoniec",
+    "calls": [
+     "podziel"
+    ]
+   },
+   {
+    "call": "podziel",
+    "types": [
+     "int",
+     "int"
+    ],
+    "args": [
+     9,
+     3
+    ],
+    "ret": 3,
+    "out": ""
+   },
+   {
+    "call": "podziel",
+    "types": [
+     "int",
+     "int"
+    ],
+    "args": [
+     -8,
+     2
+    ],
+    "ret": -4,
+    "out": ""
+   },
+   {
+    "call": "podziel",
+    "types": [
+     "int",
+     "int"
+    ],
+    "args": [
+     5,
+     0
+    ],
+    "ret": 0,
+    "out": "Nie dziel przez zero"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\btry\\b[\\s\\S]*\\bcatch\\s*\\(",
+    "label": "Jest try i catch",
+    "msg": "Dzielenie ma być w bloku try, a pod nim catch (ArithmeticException e)."
+   },
+   {
+    "re": "[!=]=\\s*0\\b",
+    "want": false,
+    "label": "Bez if na zerze",
+    "msg": "Na tym poziomie nie sprawdzasz b == 0 przez if. Dzielisz normalnie, a zerem zajmuje się catch."
+   }
+  ],
+  "hints": [
+   "Dzielenie wsadź do bloku try { ... }. Zaraz pod nim stawiasz catch (ArithmeticException e) { ... }.",
+   "return a / b; może zostać w try. W catch wypisz komunikat i zrób return 0;.",
+   "Ostatnia podpowiedź: try { return a / b; } catch (ArithmeticException e) { System.out.println(\"Nie dziel przez zero\"); return 0; }"
+  ],
+  "roles": {},
+  "tools": [
+   {
+    "code": "try { ... } catch (Typ e) { ... }",
+    "kind": "łapanie wyjątku",
+    "desc": "Kod w try jest robiony normalnie. Gdy któraś linia rzuci wyjątek tego typu, Java przeskakuje od razu do catch (reszta try się pomija), a program idzie dalej.",
+    "ex": "try {\n    int x = 20 / liczba;   // jesli liczba to 0, skok do catch\n    System.out.println(x);\n} catch (ArithmeticException e) {\n    System.out.println(\"zero!\");\n}\nSystem.out.println(\"dalej\");   // wypisze sie zawsze"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co robi catch (ArithmeticException e), gdy w try nie ma żadnego błędu?",
+    "options": [
+     "Nic - jest pomijany",
+     "Wypisuje komunikat błędu",
+     "Zatrzymuje program"
+    ],
+    "answer": 0,
+    "why": "catch wykonuje się tylko wtedy, gdy w try poleci wyjątek tego typu. Bez błędu Java go po prostu omija."
+   }
+  ],
+  "lesson": "try = „spróbuj”, catch = „jeśli się nie uda, zrób to”. Program po catch żyje dalej.",
+  "id": 2
+ },
+ {
+  "title": "Tekst, który nie jest liczbą",
+  "ref": "Ćwiczenie 2 (plik `R16_cw2.java`)",
+  "goal": "Metoda naLiczbe zamienia tekst na liczbę przez Integer.parseInt. Dla „pies” parseInt rzuca NumberFormatException i program pada. Złap go: wypisz „To nie jest liczba” i oddaj -1. Dla dobrych liczb (np. „12”) nic nie wypisuj.",
+  "starter": "public static int naLiczbe(String s) {\n    return Integer.parseInt(s);\n}\n\npublic static void main(String[] args) {\n    System.out.println(naLiczbe(\"12\"));\n    System.out.println(naLiczbe(\"pies\"));\n    System.out.println(\"koniec\");\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "12\nTo nie jest liczba\n-1\nkoniec",
+    "calls": [
+     "naLiczbe"
+    ]
+   },
+   {
+    "call": "naLiczbe",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "42"
+    ],
+    "ret": 42,
+    "out": ""
+   },
+   {
+    "call": "naLiczbe",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "-7"
+    ],
+    "ret": -7,
+    "out": ""
+   },
+   {
+    "call": "naLiczbe",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "7x"
+    ],
+    "ret": -1,
+    "out": "To nie jest liczba"
+   },
+   {
+    "call": "naLiczbe",
+    "types": [
+     "String"
+    ],
+    "args": [
+     ""
+    ],
+    "ret": -1,
+    "out": "To nie jest liczba"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\bcatch\\s*\\(\\s*(NumberFormatException|Exception|RuntimeException|IllegalArgumentException)\\b",
+    "label": "catch na błąd liczby",
+    "msg": "Złap NumberFormatException: catch (NumberFormatException e)."
+   }
+  ],
+  "hints": [
+   "parseInt wsadź do try. Pod nim catch (NumberFormatException e).",
+   "W catch: println z komunikatem i return -1;.",
+   "Ostatnia podpowiedź: try { return Integer.parseInt(s); } catch (NumberFormatException e) { System.out.println(\"To nie jest liczba\"); return -1; }"
+  ],
+  "roles": {},
+  "tools": [
+   {
+    "code": "NumberFormatException",
+    "kind": "wyjątek: zły format liczby",
+    "desc": "Tak nazywa się wyjątek z parseInt, gdy tekst nie jest liczbą (litery, spacje, pusty napis).",
+    "ex": "try {\n    int cena = Integer.parseInt(\"12zl\");\n} catch (NumberFormatException e) {\n    System.out.println(\"zly format\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Które z tych wywołań rzuci NumberFormatException?",
+    "options": [
+     "Integer.parseInt(\"15\")",
+     "Integer.parseInt(\"-3\")",
+     "Integer.parseInt(\"3,5\")"
+    ],
+    "answer": 2,
+    "why": "„15” i „-3” to poprawne liczby całkowite. „3,5” ma przecinek, a int takich nie czyta."
+   }
+  ],
+  "lesson": "Wszystko, co wpisuje człowiek, może nie być liczbą. parseInt bez try-catch to bomba z opóźnionym zapłonem.",
+  "id": 3
+ },
+ {
+  "title": "Szuflada, której nie ma",
+  "ref": "Ćwiczenie 3 (plik `R16_cw3.java`)",
+  "goal": "Metoda bezpiecznie oddaje t[i]. Dla numeru spoza tablicy Java rzuca ArrayIndexOutOfBoundsException. Złap ją: wypisz „Nie ma takiej szuflady” i oddaj -1. Pamiętaj: zły numer to też ujemny (-1), nie tylko za duży. Sprawdź to try-catchem, nie ifem.",
+  "starter": "public static int bezpiecznie(int t[], int i) {\n    return t[i];\n}\n\npublic static void main(String[] args) {\n    int oceny[] = {4, 8, 2};\n    System.out.println(bezpiecznie(oceny, 1));\n    System.out.println(bezpiecznie(oceny, 3));\n    System.out.println(\"koniec\");\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "8\nNie ma takiej szuflady\n-1\nkoniec",
+    "calls": [
+     "bezpiecznie"
+    ]
+   },
+   {
+    "call": "bezpiecznie",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      4,
+      8,
+      2
+     ],
+     0
+    ],
+    "ret": 4,
+    "out": ""
+   },
+   {
+    "call": "bezpiecznie",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [
+      4,
+      8,
+      2
+     ],
+     -1
+    ],
+    "ret": -1,
+    "out": "Nie ma takiej szuflady"
+   },
+   {
+    "call": "bezpiecznie",
+    "types": [
+     "int[]",
+     "int"
+    ],
+    "args": [
+     [],
+     0
+    ],
+    "ret": -1,
+    "out": "Nie ma takiej szuflady"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\bcatch\\s*\\(\\s*(ArrayIndexOutOfBoundsException|IndexOutOfBoundsException|RuntimeException|Exception)\\b",
+    "label": "catch na szufladę",
+    "msg": "Złap ArrayIndexOutOfBoundsException."
+   }
+  ],
+  "hints": [
+   "return t[i]; wsadź do try, a pod nim złap ArrayIndexOutOfBoundsException.",
+   "W catch wypisz komunikat i zwróć -1.",
+   "Ostatnia podpowiedź: try { return t[i]; } catch (ArrayIndexOutOfBoundsException e) { System.out.println(\"Nie ma takiej szuflady\"); return -1; }"
+  ],
+  "roles": {
+   "i": "numer szuflady, o którą pytamy"
+  },
+  "tools": [
+   {
+    "code": "ArrayIndexOutOfBoundsException",
+    "kind": "wyjątek: szuflady nie ma",
+    "desc": "Ten wyjątek poleci, gdy numer jest mniejszy od 0 albo większy lub równy t.length.",
+    "ex": "int p[] = {7, 8};\ntry {\n    System.out.println(p[2]);\n} catch (ArrayIndexOutOfBoundsException e) {\n    System.out.println(\"poza tablica\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Tablica ma 3 szuflady. Które numery rzucą ArrayIndexOutOfBoundsException?",
+    "options": [
+     "tylko 3",
+     "3, 4, 5... oraz -1, -2...",
+     "tylko ujemne"
+    ],
+    "answer": 1,
+    "why": "Dobre numery to 0, 1, 2. Każdy inny, za duży albo ujemny, jest błędem."
+   }
+  ],
+  "lesson": "Szuflada poza tablicą to też wyjątek, który można złapać. Ale lepiej wiedzieć, czemu numer jest zły, niż tylko go łapać.",
+  "id": 4
+ },
+ {
+  "title": "Java każe obsłużyć",
+  "ref": "Wyjątki, które Java każe obsłużyć",
+  "goal": "Ten program zapisuje jedną linię do pliku notatki.txt. Uruchom go: kompilator się zatrzyma, bo przy pliku Java wymaga obsługi błędu jeszcze PRZED startem (to wyjątek „sprawdzany”). Otocz kod try i catch (FileNotFoundException). „zapisano” ma się wypisać tylko wtedy, gdy zapis się udał. Gdy się nie uda, wypisz „Nie mozna zapisac pliku”.",
+  "starter": "public static void main(String[] args) {\n    PrintWriter pw = new PrintWriter(\"notatki.txt\");\n    pw.println(\"pierwsza\");\n    pw.close();\n    System.out.println(\"zapisano\");\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "zapisano",
+    "files_end": {
+     "notatki.txt": "pierwsza\n"
+    }
+   },
+   {
+    "main": true,
+    "files": {
+     "notatki.txt": null
+    },
+    "out": "Nie mozna zapisac pliku",
+    "files_end": {}
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\bcatch\\s*\\(\\s*(FileNotFoundException|IOException|Exception)\\b",
+    "label": "catch na błąd pliku",
+    "msg": "Złap FileNotFoundException (albo szerzej IOException)."
+   }
+  ],
+  "hints": [
+   "Przeczytaj czerwony komunikat: „unreported exception FileNotFoundException”. Java chce, żebyś przewidział, że pliku nie da się otworzyć.",
+   "Cały kod z PrintWriter wsadź do try { ... }. Pod nim catch (FileNotFoundException e).",
+   "Ostatnia podpowiedź: try { PrintWriter pw = new PrintWriter(\"notatki.txt\"); pw.println(\"pierwsza\"); pw.close(); System.out.println(\"zapisano\"); } catch (FileNotFoundException e) { System.out.println(\"Nie mozna zapisac pliku\"); }"
+  ],
+  "roles": {},
+  "tools": [
+   {
+    "code": "PrintWriter",
+    "kind": "klasa do zapisu tekstu do pliku",
+    "desc": "new PrintWriter(\"nazwa.txt\") tworzy (albo czyści) plik i daje println do wpisywania linii. Może rzucić FileNotFoundException, więc Java każe to obsłużyć.",
+    "ex": "try {\n    PrintWriter p = new PrintWriter(\"lista.txt\");\n    p.println(\"mleko\");\n    p.close();\n} catch (FileNotFoundException e) {\n    System.out.println(\"blad\");\n}"
+   },
+   {
+    "code": "FileNotFoundException",
+    "kind": "wyjątek: nie da się otworzyć pliku",
+    "desc": "Poleci, gdy pliku nie ma (przy czytaniu) albo nie da się go utworzyć (przy zapisie, np. pod tą nazwą stoi folder). Trzeba go złapać, inaczej program się nie skompiluje.",
+    "ex": "try {\n    Scanner s = new Scanner(new File(\"dane.txt\"));\n} catch (FileNotFoundException e) {\n    System.out.println(\"nie ma dane.txt\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czym różni się wyjątek sprawdzany (FileNotFoundException) od ArithmeticException?",
+    "options": [
+     "Niczym",
+     "Sprawdzany musisz obsłużyć przed uruchomieniem, bo inaczej kompilator nie przepuści kodu",
+     "Sprawdzany nie da się złapać"
+    ],
+    "answer": 1,
+    "why": "Dla operacji na plikach Java z góry żąda try-catch (albo throws). Dzielenie przez zero kompilator zostawia w spokoju."
+   }
+  ],
+  "lesson": "Pliki bywają zawodne (nie ma ich, folder pod tą nazwą, brak miejsca), więc Java wymusza obsługę błędu już przy kompilacji.",
+  "id": 5
+ },
+ {
+  "title": "Zapis ocen do pliku",
+  "ref": "Ćwiczenie 4 (plik `R16_cw4.java`)",
+  "goal": "Napisz metodę zapiszOceny. Ma zapisać do pliku oceny.txt jedną linię na osobę w formacie imie|ocena (np. Ania|5). Użyj PrintWriter i println. Gdy pliku nie da się zapisać, wypisz „Nie mozna zapisac pliku”. Patrz na animację: linie pojawiają się w pomarańczowej ramce (jeszcze w pamięci), a na dysk trafiają przy zamknięciu pliku.",
+  "starter": "public static void zapiszOceny(ArrayList<String> imiona, ArrayList<String> oceny) {\n    // tu napisz zapis do pliku oceny.txt: w kazdej linii imie|ocena\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    ArrayList<String> oceny = new ArrayList<>();\n    imiona.add(\"Ania\");\n    oceny.add(\"5\");\n    imiona.add(\"Basia\");\n    oceny.add(\"4\");\n    imiona.add(\"Kasia\");\n    oceny.add(\"3\");\n    zapiszOceny(imiona, oceny);\n    System.out.println(\"koniec\");\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "koniec",
+    "calls": [
+     "zapiszOceny"
+    ],
+    "files_end": {
+     "oceny.txt": "Ania|5\nBasia|4\nKasia|3\n"
+    }
+   },
+   {
+    "call": "zapiszOceny",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola"
+     ],
+     [
+      "2"
+     ]
+    ],
+    "out": "",
+    "files_end": {
+     "oceny.txt": "Ola|2\n"
+    }
+   },
+   {
+    "call": "zapiszOceny",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [],
+     []
+    ],
+    "out": "",
+    "files_end": {
+     "oceny.txt": ""
+    }
+   },
+   {
+    "call": "zapiszOceny",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola"
+     ],
+     [
+      "2"
+     ]
+    ],
+    "files": {
+     "oceny.txt": null
+    },
+    "out": "Nie mozna zapisac pliku",
+    "files_end": {}
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\bcatch\\s*\\(",
+    "label": "Jest catch",
+    "msg": "Obsłuż błąd zapisu: catch (FileNotFoundException e)."
+   }
+  ],
+  "hints": [
+   "Otwórz plik przez try (PrintWriter pw = new PrintWriter(\"oceny.txt\")) { ... }. Pod spodem catch (FileNotFoundException e).",
+   "W pętli po numerach: pw.println(imiona.get(i) + \"|\" + oceny.get(i));",
+   "Ostatnia podpowiedź: try (PrintWriter pw = new PrintWriter(\"oceny.txt\")) { for (int i = 0; i < imiona.size(); i++) { pw.println(imiona.get(i) + \"|\" + oceny.get(i)); } } catch (FileNotFoundException e) { System.out.println(\"Nie mozna zapisac pliku\"); }"
+  ],
+  "roles": {
+   "i": "numer osoby (ten sam w obu listach)"
+  },
+  "tools": [
+   {
+    "code": "try (PrintWriter pw = new PrintWriter(\"x.txt\")) { ... }",
+    "kind": "try z zasobem",
+    "desc": "Nawias po try otwiera plik i sam go ZAMKNIE na końcu bloku, nawet gdy coś pójdzie źle. Dzięki temu nie zapomnisz o close() i dane trafią na dysk.",
+    "ex": "try (PrintWriter p = new PrintWriter(\"wynik.txt\")) {\n    p.println(\"gra: 10\");\n    p.println(\"nauka: 8\");\n} catch (FileNotFoundException e) {\n    System.out.println(\"blad\");\n}"
+   },
+   {
+    "code": "pw.println(tekst)",
+    "kind": "wpisanie linii do pliku",
+    "desc": "Dopisuje tekst i Enter na końcu. Znak | to zwykły znak: wpisujesz go w cudzysłowie, np. a + \"|\" + b.",
+    "ex": "String a = \"x\";\nString b = \"y\";\np.println(a + \":\" + b);   // w pliku linia  x:y"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Po wywołaniu pw.println(\"Ania|5\") tekst jest już na dysku?",
+    "options": [
+     "Tak, od razu",
+     "Nie, czeka w pamięci. Na dysk trafia po zamknięciu pliku",
+     "Tak, ale bez Entera"
+    ],
+    "answer": 1,
+    "why": "Zapis idzie przez pamięć (bufor). Dopiero close() (albo koniec bloku try z zasobem) wpisuje wszystko do pliku."
+   }
+  ],
+  "lesson": "Linie do pliku wpisujesz przez println. try z zasobem zamyka plik za Ciebie.",
+  "id": 6
+ },
+ {
+  "title": "Błąd: plik niezamknięty",
+  "ref": "Typowe błędy",
+  "goal": "Ta metoda zapisuje imiona do lista.txt i wygląda dobrze. Uruchom ją: plik na dysku wyjdzie PUSTY. Animacja pokaże, że linie zostały w pamięci (pomarańczowe) i przepadły. Popraw: plik trzeba zamknąć (close() albo try z zasobem).",
+  "starter": "public static void zapisz(ArrayList<String> imiona) {\n    try {\n        PrintWriter pw = new PrintWriter(\"lista.txt\");\n        for (int i = 0; i < imiona.size(); i++) {\n            pw.println(imiona.get(i));\n        }\n    } catch (FileNotFoundException e) {\n        System.out.println(\"Nie mozna zapisac pliku\");\n    }\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> imiona = new ArrayList<>();\n    imiona.add(\"Ania\");\n    imiona.add(\"Basia\");\n    zapisz(imiona);\n    System.out.println(\"koniec\");\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "koniec",
+    "calls": [
+     "zapisz"
+    ],
+    "files_end": {
+     "lista.txt": "Ania\nBasia\n"
+    }
+   },
+   {
+    "call": "zapisz",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Ola"
+     ]
+    ],
+    "out": "",
+    "files_end": {
+     "lista.txt": "Ola\n"
+    }
+   },
+   {
+    "call": "zapisz",
+    "types": [
+     "ArrayList<String>"
+    ],
+    "args": [
+     []
+    ],
+    "out": "",
+    "files_end": {
+     "lista.txt": ""
+    }
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\.close\\s*\\(\\s*\\)|\\btry\\s*\\(",
+    "label": "Plik jest zamykany",
+    "msg": "Dopisz pw.close(); po pętli albo otwórz plik w try (...)."
+   }
+  ],
+  "hints": [
+   "Patrz na animację: linie są pomarańczowe i na koniec przekreślone. Czego brakuje po pętli?",
+   "Plik trzeba zamknąć. Po pętli wywołaj close() na pw.",
+   "Ostatnia podpowiedź: po zamknięciu pętli for dopisz pw.close();"
+  ],
+  "roles": {
+   "i": "numer imienia"
+  },
+  "tools": [
+   {
+    "code": "pw.close()",
+    "kind": "zamknięcie pliku",
+    "desc": "Wpisuje resztę tekstu z pamięci do pliku i zwalnia go. Bez tego plik może zostać pusty albo urwany.",
+    "ex": "PrintWriter p = new PrintWriter(\"a.txt\");\np.println(\"x\");\np.close();   // dopiero teraz x jest w pliku"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co najpewniej znajdziesz w pliku, jeśli zapomnisz close() i program się skończy?",
+    "options": [
+     "Wszystkie linie",
+     "Pusty plik albo tylko część linii",
+     "Plik się nie utworzy"
+    ],
+    "answer": 1,
+    "why": "Plik powstaje od razu, ale tekst wisi w pamięci. Bez close() nie ma gwarancji, że do niego trafi."
+   }
+  ],
+  "lesson": "Zapis bez zamknięcia to częsty błąd: wszystko wygląda dobrze, a plik jest pusty. Zawsze close() albo try z zasobem.",
+  "id": 7
+ },
+ {
+  "title": "Czy plik istnieje",
+  "ref": "Ćwiczenie 5 (plik `R16_cw5.java`)",
+  "goal": "Napisz metodę czyJest(String nazwa): ma oddać true, gdy plik o tej nazwie leży w katalogu programu, i false, gdy go nie ma. Użyj new File(nazwa).exists(). Program na starcie dostaje plik oceny.txt, a nic.txt nie istnieje. Oczekiwany wynik: true i false.",
+  "starter": "public static boolean czyJest(String nazwa) {\n    return false;\n}\n\npublic static void main(String[] args) {\n    System.out.println(czyJest(\"oceny.txt\"));\n    System.out.println(czyJest(\"nic.txt\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "files": {
+     "oceny.txt": "Ania|5\n"
+    },
+    "out": "true\nfalse",
+    "calls": [
+     "czyJest"
+    ]
+   },
+   {
+    "call": "czyJest",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "dane.txt"
+    ],
+    "files": {
+     "dane.txt": "x"
+    },
+    "ret": "true"
+   },
+   {
+    "call": "czyJest",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "dane.txt"
+    ],
+    "files": {},
+    "ret": "false"
+   },
+   {
+    "call": "czyJest",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "oceny.txt"
+    ],
+    "files": {},
+    "ret": "false"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\.exists\\s*\\(\\s*\\)",
+    "label": "Używa exists()",
+    "msg": "Pytanie o plik to new File(nazwa).exists()."
+   }
+  ],
+  "hints": [
+   "Zrób obiekt pliku: File plik = new File(nazwa); To jeszcze niczego nie otwiera, to tylko „adres”.",
+   "Potem zapytaj plik: plik.exists() oddaje true albo false.",
+   "Ostatnia podpowiedź: File plik = new File(nazwa); return plik.exists();"
+  ],
+  "roles": {},
+  "tools": [
+   {
+    "code": "new File(nazwa).exists()",
+    "kind": "czy plik jest",
+    "desc": "File to „adres” pliku, jeszcze nie sam plik. exists() pyta system, czy coś pod tym adresem leży. Nie rzuca wyjątku, tylko oddaje true albo false.",
+    "ex": "File f = new File(\"notatki.txt\");\nif (f.exists()) {\n    System.out.println(\"jest\");\n} else {\n    System.out.println(\"brak\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co robi new File(\"a.txt\"), jeśli pliku a.txt nie ma?",
+    "options": [
+     "Rzuca wyjątek",
+     "Tworzy plik",
+     "Nic złego - to tylko adres, błąd dopiero przy otwarciu"
+    ],
+    "answer": 2,
+    "why": "File to tylko opis miejsca. Dopiero próba czytania albo zapisu może się nie udać. exists() pozwala sprawdzić wcześniej."
+   }
+  ],
+  "lesson": "Zanim czytasz plik, możesz zapytać exists(). Dzięki temu program wita nowego użytkownika zamiast się wywalać.",
+  "id": 8
+ },
+ {
+  "title": "Czytanie linia po linii",
+  "ref": "Ćwiczenie 6 (plik `R16_cw6.java`)",
+  "goal": "Napisz ileLinii(String nazwa): otwórz plik przez BufferedReader i czytaj linie readLine(), aż dostaniesz null (to znak końca pliku). Oddaj, ile linii było. Gdy pliku nie ma, wypisz „Brak pliku” i oddaj -1. Patrz na niebieską strzałkę: idzie w dół po liniach, a na końcu readLine() daje null.",
+  "starter": "public static int ileLinii(String nazwa) {\n    // tu otworz plik, czytaj linie az do null i je policz\n    return 0;\n}\n\npublic static void main(String[] args) {\n    System.out.println(ileLinii(\"dane.txt\"));\n    System.out.println(ileLinii(\"brak.txt\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "files": {
+     "dane.txt": "Ania\nBasia\nKasia\n"
+    },
+    "out": "3\nBrak pliku\n-1",
+    "calls": [
+     "ileLinii"
+    ]
+   },
+   {
+    "call": "ileLinii",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "dane.txt"
+    ],
+    "files": {
+     "dane.txt": "a\nb"
+    },
+    "ret": 2,
+    "out": ""
+   },
+   {
+    "call": "ileLinii",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "dane.txt"
+    ],
+    "files": {
+     "dane.txt": ""
+    },
+    "ret": 0,
+    "out": ""
+   },
+   {
+    "call": "ileLinii",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "dane.txt"
+    ],
+    "files": {},
+    "ret": -1,
+    "out": "Brak pliku"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\breadLine\\s*\\(",
+    "label": "Czyta przez readLine()",
+    "msg": "Linie czytasz przez readLine()."
+   }
+  ],
+  "hints": [
+   "Otwórz: BufferedReader czytnik = new BufferedReader(new FileReader(nazwa)); całość w try z catch (IOException e).",
+   "Pierwszą linię weź przed pętlą, potem while (linia != null) { ile++; linia = czytnik.readLine(); }.",
+   "Ostatnia podpowiedź: String linia = czytnik.readLine(); while (linia != null) { ile++; linia = czytnik.readLine(); } - na końcu czytnik.close(); return ile;"
+  ],
+  "roles": {
+   "ile": "licznik linii"
+  },
+  "tools": [
+   {
+    "code": "new BufferedReader(new FileReader(nazwa))",
+    "kind": "czytnik pliku",
+    "desc": "FileReader otwiera plik, BufferedReader dodaje readLine(). Obie klasy mogą rzucić wyjątek (IOException), więc wszystko idzie do try-catch.",
+    "ex": "BufferedReader r = new BufferedReader(new FileReader(\"plan.txt\"));\nString pierwsza = r.readLine();\nr.close();"
+   },
+   {
+    "code": "readLine()",
+    "kind": "jedna linia z pliku",
+    "desc": "Zwraca następną linię (bez Entera). Gdy linii już nie ma, zwraca null. Dlatego pętla sprawdza linia != null.",
+    "ex": "String x = r.readLine();\nwhile (x != null) {\n    System.out.println(\"linia: \" + x);\n    x = r.readLine();\n}"
+   },
+   {
+    "code": "IOException",
+    "kind": "wyjątek: błąd wejścia-wyjścia",
+    "desc": "Ogólny wyjątek dla plików. FileNotFoundException (brak pliku) jest jego szczególnym przypadkiem, więc jeden catch (IOException e) łapie oba.",
+    "ex": "try {\n    // czytanie pliku\n} catch (IOException e) {\n    System.out.println(\"cos z plikiem\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co zwraca readLine(), gdy plik się skończył?",
+    "options": [
+     "pusty tekst \"\"",
+     "null",
+     "-1"
+    ],
+    "answer": 1,
+    "why": "null to „nic”. Pusta linia w pliku daje \"\", ale koniec pliku daje null. Na tym opiera się pętla while (linia != null)."
+   }
+  ],
+  "lesson": "Czytanie pliku to pętla: weź linię, jeśli to nie null, zrób coś, weź następną.",
+  "id": 9
+ },
+ {
+  "title": "Scanner czyta plik",
+  "ref": "Ćwiczenie 7 (plik `R16_cw7.java`)",
+  "goal": "Scanner znasz z klawiatury. Tym razem czyta z pliku: new Scanner(new File(nazwa)). Napisz sumaLiczb: zsumuj wszystkie liczby z pliku (hasNextInt i nextInt). Gdy pliku nie ma, wypisz „Brak pliku” i oddaj 0. Oczekiwany wynik: 12 i potem komunikat z zerem.",
+  "starter": "public static int sumaLiczb(String nazwa) {\n    // tu przeczytaj wszystkie liczby z pliku Scannerem i je zsumuj\n    return 0;\n}\n\npublic static void main(String[] args) {\n    System.out.println(sumaLiczb(\"liczby.txt\"));\n    System.out.println(sumaLiczb(\"nie.txt\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "files": {
+     "liczby.txt": "3\n5\n4\n"
+    },
+    "out": "12\nBrak pliku\n0",
+    "calls": [
+     "sumaLiczb"
+    ]
+   },
+   {
+    "call": "sumaLiczb",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "liczby.txt"
+    ],
+    "files": {
+     "liczby.txt": "10 20 30"
+    },
+    "ret": 60,
+    "out": ""
+   },
+   {
+    "call": "sumaLiczb",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "liczby.txt"
+    ],
+    "files": {
+     "liczby.txt": ""
+    },
+    "ret": 0,
+    "out": ""
+   },
+   {
+    "call": "sumaLiczb",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "liczby.txt"
+    ],
+    "files": {
+     "liczby.txt": "-5\n2\n"
+    },
+    "ret": -3,
+    "out": ""
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "new\\s+Scanner\\s*\\(\\s*new\\s+File",
+    "label": "Scanner czyta z File",
+    "msg": "Użyj new Scanner(new File(nazwa))."
+   }
+  ],
+  "hints": [
+   "Scanner skan = new Scanner(new File(nazwa)); - to rzuca FileNotFoundException, więc w try-catch.",
+   "Pętla: while (skan.hasNextInt()) { suma = suma + skan.nextInt(); }",
+   "Ostatnia podpowiedź: try { Scanner skan = new Scanner(new File(nazwa)); int suma = 0; while (skan.hasNextInt()) { suma = suma + skan.nextInt(); } skan.close(); return suma; } catch (FileNotFoundException e) { ... return 0; }"
+  ],
+  "roles": {
+   "suma": "suma liczb z pliku"
+  },
+  "tools": [
+   {
+    "code": "new Scanner(new File(nazwa))",
+    "kind": "Scanner z pliku",
+    "desc": "Zamiast System.in podajesz plik. Reszta jest taka sama jak z klawiaturą: nextLine(), nextInt(), hasNextInt(). Rzuca FileNotFoundException.",
+    "ex": "Scanner s = new Scanner(new File(\"wiek.txt\"));\nint w = s.nextInt();\ns.close();"
+   },
+   {
+    "code": "hasNextInt()",
+    "kind": "czy jest jeszcze liczba",
+    "desc": "Oddaje true, gdy kolejny kawałek pliku to liczba. Dzięki temu pętla kończy się sama na końcu pliku.",
+    "ex": "while (s.hasNextInt()) {\n    int x = s.nextInt();\n    System.out.println(x * 2);\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu pętla pyta hasNextInt(), zamiast po prostu wołać nextInt() w kółko?",
+    "options": [
+     "Bo nextInt() jest wolne",
+     "Bo na końcu pliku nextInt() rzuciłby wyjątek, a hasNextInt() po prostu da false",
+     "Bo bez tego nie ma plików"
+    ],
+    "answer": 1,
+    "why": "Scanner nie wie z góry, ile liczb jest w pliku. hasNextInt() mówi, czy jest jeszcze coś do wzięcia."
+   }
+  ],
+  "lesson": "Scanner z pliku działa jak z klawiatury. Różni się tylko źródłem i tym, że trzeba obsłużyć brak pliku.",
+  "id": 10
+ },
+ {
+  "title": "Szukamy kreski",
+  "ref": "Ćwiczenie 8 (plik `R16_cw8.java`)",
+  "goal": "Linia w pliku ma kształt imie|ocena. Napisz przedKreska(String linia): znajdź własną pętlą (charAt) numer znaku |, potem substring(0, i) wytnij wszystko przed nim. Gdy w linii nie ma kreski, oddaj całą linię. Nie używaj split ani indexOf. Patrz: gra pokazuje napis z literami, a potem wycina kawałek.",
+  "starter": "public static String przedKreska(String linia) {\n    // tu znajdz numer znaku | petla z charAt i wytnij wszystko przed nim\n    return \"\";\n}\n\npublic static void main(String[] args) {\n    System.out.println(przedKreska(\"Ania|5\"));\n    System.out.println(przedKreska(\"Basia|4\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ania\nBasia",
+    "calls": [
+     "przedKreska"
+    ]
+   },
+   {
+    "call": "przedKreska",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "a|b|c"
+    ],
+    "ret": "a"
+   },
+   {
+    "call": "przedKreska",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "bez"
+    ],
+    "ret": "bez"
+   },
+   {
+    "call": "przedKreska",
+    "types": [
+     "String"
+    ],
+    "args": [
+     "|x"
+    ],
+    "ret": ""
+   },
+   {
+    "call": "przedKreska",
+    "types": [
+     "String"
+    ],
+    "args": [
+     ""
+    ],
+    "ret": ""
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\bcharAt\\s*\\(",
+    "label": "Szuka kreski przez charAt",
+    "msg": "Szukaj kreski własną pętlą z charAt(i)."
+   },
+   {
+    "re": "\\bsplit\\s*\\(|\\bindexOf\\s*\\(|\\bcontains\\s*\\(",
+    "want": false,
+    "label": "Bez split, indexOf i contains",
+    "msg": "Na tym poziomie szukasz kreski samą pętlą. split poznasz za dwa poziomy, a indexOf i contains są w projekcie zabronione."
+   }
+  ],
+  "hints": [
+   "Zacznij od i = 0 i idź w prawo, dopóki nie trafisz na | albo na koniec napisu.",
+   "Pętla: while (i < linia.length() && linia.charAt(i) != '|') { i++; } Potem i to numer kreski (albo długość napisu).",
+   "Ostatnia podpowiedź: po pętli return linia.substring(0, i);"
+  ],
+  "roles": {
+   "i": "numer sprawdzanego znaku"
+  },
+  "tools": [
+   {
+    "code": "linia.substring(0, i)",
+    "kind": "wycięcie kawałka napisu",
+    "desc": "Zwraca znaki od numeru 0 do numeru i (bez znaku o numerze i). Dla i = 0 zwraca pusty napis.",
+    "ex": "String s = \"kot,pies\";\nSystem.out.println(s.substring(0, 3));   // kot\nSystem.out.println(s.substring(4));      // pies"
+   },
+   {
+    "code": "while (i < s.length() && s.charAt(i) != ',')",
+    "kind": "szukanie znaku",
+    "desc": "Warunek z && sprawdza najpierw i < długość. Dzięki temu charAt nigdy nie wyjdzie poza napis. Pętla staje przy szukanym znaku albo na końcu.",
+    "ex": "int i = 0;\nwhile (i < s.length() && s.charAt(i) != ',') {\n    i++;\n}\n// i to numer przecinka"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Dla linii \"Ania|5\" jaką wartość ma i po pętli?",
+    "options": [
+     "3",
+     "4",
+     "5"
+    ],
+    "answer": 1,
+    "why": "A=0, n=1, i=2, a=3, |=4. Pętla staje na numerze 4, więc substring(0, 4) to „Ania”."
+   }
+  ],
+  "lesson": "Własna pętla znajdzie kreskę i bez split. To ten sam pomysł co szukanie po kolei z rozdziału 8.",
+  "id": 11
+ },
+ {
+  "title": "Błąd: split z samą kreską",
+  "ref": "Typowe błędy",
+  "goal": "Metoda czesc ma oddać część linii: czesc(\"Ania|5\", 0) to „Ania”, czesc(\"Ania|5\", 1) to „5”. Uruchom: dostaniesz „A” i „n”. Animacja pokaże, że split(\"|\") pocięło tekst po KAŻDEJ literze. W split znak | znaczy „albo” (to wzorzec), więc kreskę trzeba osłonić: split(\"\\\\|\"). Popraw.",
+  "starter": "public static String czesc(String linia, int nr) {\n    String[] kawalki = linia.split(\"|\");\n    return kawalki[nr];\n}\n\npublic static void main(String[] args) {\n    System.out.println(czesc(\"Ania|5\", 0));\n    System.out.println(czesc(\"Ania|5\", 1));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Ania\n5",
+    "calls": [
+     "czesc"
+    ]
+   },
+   {
+    "call": "czesc",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Basia|4",
+     0
+    ],
+    "ret": "Basia"
+   },
+   {
+    "call": "czesc",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Basia|4",
+     1
+    ],
+    "ret": "4"
+   },
+   {
+    "call": "czesc",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "a|b|c",
+     2
+    ],
+    "ret": "c"
+   },
+   {
+    "call": "czesc",
+    "types": [
+     "String",
+     "int"
+    ],
+    "args": [
+     "Ola|nowa notatka",
+     1
+    ],
+    "ret": "nowa notatka"
+   }
+  ],
+  "hints": [
+   "Patrz na animację: ile kawałków dostajesz z split(\"|\")? Powinny być dwa.",
+   "split bierze wzorzec (regex), a w nim | to „albo”. Znak specjalny osłaniasz ukośnikiem.",
+   "Ostatnia podpowiedź: linia.split(\"\\\\|\") - w kodzie Javy dwa ukośniki, bo jeden zjada sam cudzysłów."
+  ],
+  "roles": {},
+  "tools": [
+   {
+    "code": "tekst.split(\"\\\\|\")",
+    "kind": "podział napisu na kawałki",
+    "desc": "Zwraca tablicę napisów, rozciętą w miejscach, gdzie stoi kreska. Dwa ukośniki, bo w Javie jeden ukośnik w cudzysłowie to znak specjalny. Sama kreska bez ukośników tnie po każdej literze.",
+    "ex": "String s = \"kot;pies;ryba\";\nString[] k = s.split(\";\");\nSystem.out.println(k[1]);   // pies\n// k.length to 3"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Co zwraca \"a|b\".split(\"|\")?",
+    "options": [
+     "tablicę {\"a\", \"b\"}",
+     "tablicę {\"a\", \"|\", \"b\"}",
+     "błąd kompilacji"
+    ],
+    "answer": 1,
+    "why": "Pusty wzorzec „albo” pasuje wszędzie, więc tekst tnie się między każdymi znakami: a, |, b. Dla kreski użyj \"\\\\|\"."
+   }
+  ],
+  "lesson": "split przyjmuje wzorzec, nie zwykły tekst. Znaki | . ( ) osłaniasz przez dwa ukośniki.",
+  "id": 12
+ },
+ {
+  "title": "Do pliku idzie tylko szyfr",
+  "ref": "Ćwiczenie 9 (plik `R16_cw9.java`)",
+  "goal": "Gotowa metoda szyfruj (z rozdziału 4, szyfr 3) siedzi w kodzie. Napisz zapisz(tytuly, tresci): do pliku archiwum.txt idzie jedna linia na notatkę, w formacie tytul|zaszyfrowana tresc. Tytuł zapisujesz jawnie, a treść ZAWSZE po szyfrze - jawnej treści w pliku nie wolno. Wskazówka z animacji: dwie listy to dwie kolumny, a plik trzyma je w jednej linii.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    char znaki[] = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            znaki[i] = (char) ((znaki[i] - 'a' + szyfr) % 26 + 'a');\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            znaki[i] = (char) ((znaki[i] - 'A' + szyfr) % 26 + 'A');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void zapisz(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    // tu zapisz do archiwum.txt: w kazdej linii tytul|zaszyfrowana tresc\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    tytuly.add(\"Zakupy\");\n    tresci.add(\"mleko\");\n    tytuly.add(\"Dom\");\n    tresci.add(\"klucz\");\n    zapisz(tytuly, tresci);\n    System.out.println(\"koniec\");\n}\n",
+  "quiet": [
+   "szyfruj"
+  ],
+  "tests": [
+   {
+    "main": true,
+    "out": "koniec",
+    "calls": [
+     "zapisz"
+    ],
+    "files_end": {
+     "archiwum.txt": "Zakupy|pohnr\nDom|noxfc\n"
+    }
+   },
+   {
+    "call": "zapisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Nauka"
+     ],
+     [
+      "Java 21"
+     ]
+    ],
+    "out": "",
+    "files_end": {
+     "archiwum.txt": "Nauka|Mdyd 21\n"
+    }
+   },
+   {
+    "call": "zapisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "A",
+      "B",
+      "C"
+     ],
+     [
+      "xyz",
+      "XYZ",
+      "abc"
+     ]
+    ],
+    "out": "",
+    "files_end": {
+     "archiwum.txt": "A|abc\nB|ABC\nC|def\n"
+    }
+   },
+   {
+    "call": "zapisz",
+    "types": [
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     [
+      "Dom"
+     ],
+     [
+      "klucz"
+     ]
+    ],
+    "files": {
+     "archiwum.txt": null
+    },
+    "out": "Nie mozna zapisac pliku",
+    "files_end": {}
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\bszyfruj\\s*\\(",
+    "label": "Treść idzie przez szyfruj",
+    "msg": "Do pliku wpisuj szyfruj(tresci.get(i), 3), nie jawną treść."
+   }
+  ],
+  "hints": [
+   "Linia w pliku to tytul + \"|\" + zaszyfrowana treść. Pętla po numerach, tytuły i treści z tego samego numeru.",
+   "Treść wołasz przez szyfruj(tresci.get(i), 3) PRZED wpisaniem do pliku.",
+   "Ostatnia podpowiedź: pw.println(tytuly.get(i) + \"|\" + szyfruj(tresci.get(i), 3));"
+  ],
+  "roles": {
+   "i": "numer notatki (ten sam w obu listach)"
+  },
+  "tools": [
+   {
+    "code": "tytul + \"|\" + zaszyfrowane",
+    "kind": "jedna linia z dwóch list",
+    "desc": "Dwie listy równoległe zamieniasz na jedną linię: ten sam numer z obu list, a między nimi kreska |. Kreska to rozdzielacz, który przy wczytaniu pozwoli rozciąć linię z powrotem na dwie części.",
+    "ex": "// listy: imiona[1]=\"Ola\", wiek[1]=\"12\"\npw.println(imiona.get(1) + \";\" + wiek.get(1));   // linia: Ola;12"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu do pliku idzie zaszyfrowana treść, a nie jawna?",
+    "options": [
+     "Bo plik jest wtedy mniejszy",
+     "Bo wymaganie projektu: archiwum jest szyfrowane, plik nie może zdradzać treści",
+     "Bo println nie przyjmuje jawnego tekstu"
+    ],
+    "answer": 1,
+    "why": "Archiwum ma chronić notatki. Kto otworzy archiwum.txt w notatniku, zobaczy szyfr, nie treść."
+   }
+  ],
+  "lesson": "Zapisujesz tytuł jawnie i treść w szyfrze. Szyfrujesz tuż przed zapisem, a deszyfrujesz dopiero przy wyświetlaniu.",
+  "id": 13
+ },
+ {
+  "title": "Wczytanie archiwum",
+  "ref": "Ćwiczenie 10 (plik `R16_cw10.java`)",
+  "goal": "Napisz wczytaj(nazwa, tytuly, tresci). Gdy pliku nie ma: wypisz „Brak pliku archiwum.txt - zaczynamy od pustej listy” i wyjdź (return). Gdy jest: czytaj linie, każdą tnij na tytuł i treść (split z \\\\|, 2) i dodawaj do dwóch list. Treść zostaje zaszyfrowana. Patrz: kreska tnie linię na dwie komórki, tytuł wpada do jednej listy, treść do drugiej.",
+  "starter": "public static void wczytaj(String nazwa, ArrayList<String> tytuly, ArrayList<String> tresci) {\n    // tu: jesli pliku nie ma, wypisz komunikat i wyjdz; jesli jest, wczytaj linie i rozetnij je na tytul i tresc\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    wczytaj(\"archiwum.txt\", tytuly, tresci);\n    System.out.println(\"wczytano \" + tytuly.size());\n    for (int i = 0; i < tytuly.size(); i++) {\n        System.out.println(tytuly.get(i) + \": \" + tresci.get(i));\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "files": {
+     "archiwum.txt": "Zakupy|pohnr\nDom|noxfc\n"
+    },
+    "out": "wczytano 2\nZakupy: pohnr\nDom: noxfc",
+    "calls": [
+     "wczytaj"
+    ]
+   },
+   {
+    "main": true,
+    "files": {},
+    "out": "Brak pliku archiwum.txt - zaczynamy od pustej listy\nwczytano 0",
+    "calls": [
+     "wczytaj"
+    ]
+   },
+   {
+    "call": "wczytaj",
+    "types": [
+     "String",
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     "archiwum.txt",
+     [
+      "X"
+     ],
+     [
+      "y"
+     ]
+    ],
+    "files": {
+     "archiwum.txt": "Ola|abc\n"
+    },
+    "out": "",
+    "lists_end": [
+     [
+      "X",
+      "Ola"
+     ],
+     [
+      "y",
+      "abc"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "wczytaj",
+    "types": [
+     "String",
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     "archiwum.txt",
+     [],
+     []
+    ],
+    "files": {
+     "archiwum.txt": "A|b c\nB|d\nC|e\n"
+    },
+    "out": "",
+    "lists_end": [
+     [
+      "A",
+      "B",
+      "C"
+     ],
+     [
+      "b c",
+      "d",
+      "e"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "wczytaj",
+    "types": [
+     "String",
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     "archiwum.txt",
+     [],
+     []
+    ],
+    "files": {
+     "archiwum.txt": "Dom|\nPusta|\n"
+    },
+    "out": "",
+    "lists_end": [
+     [
+      "Dom",
+      "Pusta"
+     ],
+     [
+      "",
+      ""
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   },
+   {
+    "call": "wczytaj",
+    "types": [
+     "String",
+     "ArrayList<String>",
+     "ArrayList<String>"
+    ],
+    "args": [
+     "archiwum.txt",
+     [
+      "X"
+     ],
+     [
+      "y"
+     ]
+    ],
+    "files": {},
+    "out": "Brak pliku archiwum.txt - zaczynamy od pustej listy",
+    "lists_end": [
+     [
+      "X"
+     ],
+     [
+      "y"
+     ]
+    ],
+    "list_names": [
+     "tytuly",
+     "tresci"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\.exists\\s*\\(\\s*\\)",
+    "label": "Sprawdza, czy plik istnieje",
+    "msg": "Najpierw sprawdź new File(nazwa).exists(), żeby brak pliku nie był awarią."
+   },
+   {
+    "re": "\\bcatch\\s*\\(",
+    "label": "Jest catch",
+    "msg": "Czytanie pliku może rzucić IOException - obsłuż go w catch."
+   }
+  ],
+  "hints": [
+   "Najpierw: File plik = new File(nazwa); if (!plik.exists()) { komunikat; return; }",
+   "Potem otwórz BufferedReader i w pętli readLine(). Każdą linię tnij: String[] kawalki = linia.split(\"\\\\|\", 2); (dwójka na końcu: notatka z pustą treścią, np. \"Dom|\", nadal da dwa kawałki)",
+   "Ostatnia podpowiedź: tytuly.add(kawalki[0]); tresci.add(kawalki[1]); - a na końcu pętli linia = czytnik.readLine();"
+  ],
+  "roles": {
+   "linia": "aktualnie czytana linia pliku"
+  },
+  "tools": [
+   {
+    "code": "String[] kawalki = linia.split(\"\\\\|\", 2)",
+    "kind": "rozcięcie linii",
+    "desc": "kawalki[0] to wszystko przed kreską (tytuł), kawalki[1] wszystko po niej (zaszyfrowana treść). Dwa ukośniki osłaniają kreskę, bo | w split to znak specjalny. Dwójka na końcu to limit kawałków: bez niej \"Dom|\" dałoby tablicę z jednym elementem (puste końcówki split wyrzuca) i kawalki[1] rzuciłoby ArrayIndexOutOfBounds.",
+    "ex": "String[] k = \"stol;120\".split(\";\");\nString nazwa = k[0];\nString cena = k[1];"
+   },
+   {
+    "code": "if (!plik.exists()) { ...; return; }",
+    "kind": "wyjście, gdy pliku nie ma",
+    "desc": "Przy pierwszym uruchomieniu programu archiwum jeszcze nie istnieje. To normalna sytuacja, nie awaria: wypisz komunikat i zacznij z pustymi listami.",
+    "ex": "if (!new File(\"ustawienia.txt\").exists()) {\n    System.out.println(\"pierwszy start\");\n    return;\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Użytkownik odpala program pierwszy raz i archiwum.txt jeszcze nie ma. Co ma zrobić wczytaj?",
+    "options": [
+     "Rzucić wyjątek i paść",
+     "Wypisać komunikat i zostawić listy puste",
+     "Utworzyć pusty plik i go zamknąć"
+    ],
+    "answer": 1,
+    "why": "Brak pliku przy starcie to normalna sprawa. Program ma powiedzieć, co się dzieje, i działać dalej z pustą listą."
+   }
+  ],
+  "lesson": "Wczytywanie to trzy kroki: czy plik jest, czytaj linia po linii, tnij linię na kawałki i dodaj do list.",
+  "id": 14
+ },
+ {
+  "title": "Sprawdzian: archiwum od startu do końca",
+  "ref": "Sprawdzian",
+  "goal": "Z pamięci: napisz zapisz i wczytaj tak, żeby cały program działał. Na starcie main wczytuje archiwum (brak pliku = komunikat), potem pyta o tytuł i treść, szyfruje treść, dopisuje do list i zapisuje archiwum. Gotowe są tylko szyfruj i main. W pliku ma być tylko szyfr, a program bez archiwum.txt ma działać, nie padać.",
+  "starter": "public static String szyfruj(String text, int szyfr) {\n    char znaki[] = text.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        if (znaki[i] >= 'a' && znaki[i] <= 'z') {\n            znaki[i] = (char) ((znaki[i] - 'a' + szyfr) % 26 + 'a');\n        } else if (znaki[i] >= 'A' && znaki[i] <= 'Z') {\n            znaki[i] = (char) ((znaki[i] - 'A' + szyfr) % 26 + 'A');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static void zapisz(ArrayList<String> tytuly, ArrayList<String> tresci) {\n    // z pamieci: zapis obu list do archiwum.txt (tytul|zaszyfrowana tresc)\n}\n\npublic static void wczytaj(String nazwa, ArrayList<String> tytuly, ArrayList<String> tresci) {\n    // z pamieci: wczytanie archiwum (brak pliku = komunikat, nie awaria)\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    wczytaj(\"archiwum.txt\", tytuly, tresci);\n    System.out.println(\"Notatek: \" + tytuly.size());\n    Scanner skan = new Scanner(System.in);\n    String tytul = skan.nextLine();\n    String tresc = skan.nextLine();\n    tytuly.add(tytul);\n    tresci.add(szyfruj(tresc, 3));\n    zapisz(tytuly, tresci);\n    System.out.println(\"Zapisano\");\n}\n",
+  "quiet": [
+   "szyfruj"
+  ],
+  "tests": [
+   {
+    "main": true,
+    "in": "Dom\nklucz\n",
+    "files": {
+     "archiwum.txt": "Ala|pohnr\nOla|abc\n"
+    },
+    "out": "Notatek: 2\nZapisano",
+    "files_end": {
+     "archiwum.txt": "Ala|pohnr\nOla|abc\nDom|noxfc\n"
+    },
+    "calls": [
+     "zapisz",
+     "wczytaj"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Dom\nklucz\n",
+    "files": {},
+    "out": "Brak pliku archiwum.txt - zaczynamy od pustej listy\nNotatek: 0\nZapisano",
+    "files_end": {
+     "archiwum.txt": "Dom|noxfc\n"
+    },
+    "calls": [
+     "zapisz",
+     "wczytaj"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Nauka\nJava 21 jest fajna\n",
+    "files": {
+     "archiwum.txt": "Stary|def\n"
+    },
+    "out": "Notatek: 1\nZapisano",
+    "files_end": {
+     "archiwum.txt": "Stary|def\nNauka|Mdyd 21 mhvw idmqd\n"
+    },
+    "calls": [
+     "zapisz",
+     "wczytaj"
+    ]
+   },
+   {
+    "main": true,
+    "in": "Dom\nklucz\n",
+    "files": {
+     "archiwum.txt": "Pusta|\n"
+    },
+    "out": "Notatek: 1\nZapisano",
+    "files_end": {
+     "archiwum.txt": "Pusta|\nDom|noxfc\n"
+    },
+    "calls": [
+     "zapisz",
+     "wczytaj"
+    ]
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\.exists\\s*\\(\\s*\\)",
+    "label": "Sprawdza exists()",
+    "msg": "Brak pliku na starcie ma być obsłużony: new File(nazwa).exists()."
+   },
+   {
+    "re": "\\btry\\b[\\s\\S]*\\bcatch\\s*\\(",
+    "label": "Jest try-catch",
+    "msg": "Operacje na plikach otocz try-catch."
+   },
+   {
+    "re": "\\bsplit\\s*\\(|\\bcharAt\\s*\\(",
+    "label": "Linia jest cięta na dwie części",
+    "msg": "Rozetnij linię na tytuł i treść: split(\"\\\\|\") albo własna pętla z charAt."
+   },
+   {
+    "re": "\\bindexOf\\s*\\(|\\bcontains\\s*\\(",
+    "want": false,
+    "label": "Bez indexOf i contains",
+    "msg": "Prowadzący zabronił indexOf i contains."
+   }
+  ],
+  "hints": [
+   "Zapis: PrintWriter w try z zasobem, w pętli println(tytuly.get(i) + \"|\" + tresci.get(i)). Treść jest już zaszyfrowana, bo main szyfruje przed dodaniem do listy.",
+   "Wczytanie: exists() -> komunikat i return; inaczej BufferedReader, readLine() w pętli, split na kawałki, add do obu list.",
+   "Ostatnia podpowiedź: wzorzec z poziomów 13 i 14. Pamiętaj, że w zapisz treść już NIE przechodzi przez szyfruj, bo w tym programie szyfruje main."
+  ],
+  "roles": {
+   "i": "numer notatki"
+  },
+  "tools": [],
+  "tools_note": "Nic nowego. Składasz poziomy 6, 9, 13 i 14.",
+  "quiz": [
+   {
+    "q": "W programie archiwum.txt jest zapisywane przy każdym dodaniu notatki. Czemu wczytujesz je tylko na starcie?",
+    "options": [
+     "Bo wczytywanie jest wolne",
+     "Bo listy w pamięci mają już te same dane - plik jest tylko magazynem na czas, gdy program jest wyłączony",
+     "Bo plik nie da się czytać drugi raz"
+    ],
+    "answer": 1,
+    "why": "Listy są „żywą” kopią. Plik służy do tego, żeby dane przetrwały zamknięcie programu i wróciły przy następnym starcie."
+   }
+  ],
+  "lesson": "Cały obieg: start - wczytaj (albo pusta lista) - praca na listach - zapisz. Błędy plików łapie try-catch, żeby użytkownik dostał zrozumiały komunikat zamiast czerwonej ściany.",
+  "id": 15
+ }
+]

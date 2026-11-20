@@ -49,6 +49,11 @@ public final class Tracker {
         listNames.clear();
         scanBufs.clear();
         promptShown = 0;
+        intent = null;
+        curW = null;
+        curR = null;
+        openFiles.clear();
+        fileScanners.clear();
     }
 
     static StackWalker.StackFrame frame() {
@@ -57,6 +62,9 @@ public final class Tracker {
                 .findFirst()
                 .orElse(null));
     }
+
+    /** Methods whose events are not reported (-Dgra.quiet=a,b): a ready-made helper like szyfruj would only add noise. */
+    static final java.util.Set<String> QUIET = java.util.Set.of(System.getProperty("gra.quiet", "").split(","));
 
     static void ev(String json) {
         if (!recording) return;
@@ -67,6 +75,7 @@ public final class Tracker {
         StackWalker.StackFrame f = frame();
         int l = f == null ? -1 : f.getLineNumber() - lineOffset;
         String m = f == null ? "" : f.getMethodName();
+        if (!m.isEmpty() && QUIET.contains(m)) return;
         events.add(json.substring(0, json.length() - 1) + ",\"l\":" + l + ",\"m\":" + Runner.q(m) + "}");
     }
 
@@ -222,6 +231,7 @@ public final class Tracker {
      * leftover Enter after nextInt() can be drawn.
      */
     public static String nextLine(java.util.Scanner s) {
+        if (isFileScanner(s)) return (String) fileRead(s, "nextLine");
         int from = readStart();
         String line;
         try {
@@ -239,6 +249,7 @@ public final class Tracker {
     }
 
     public static int nextInt(java.util.Scanner s) {
+        if (isFileScanner(s)) return (Integer) fileRead(s, "nextInt");
         int from = readStart();
         int v;
         try {
@@ -265,6 +276,7 @@ public final class Tracker {
     }
 
     public static String next(java.util.Scanner s) {
+        if (isFileScanner(s)) return (String) fileRead(s, "next");
         int from = readStart();
         String v;
         try {
@@ -278,9 +290,9 @@ public final class Tracker {
     }
 
     /** hasNextInt / hasNext / hasNextLine only look into the buffer (they may wait for typing), nothing is taken. */
-    public static boolean hasNextInt(java.util.Scanner s) { int from = readStart(); boolean r = s.hasNextInt(); peek(s, "hasNextInt", r, from); return r; }
-    public static boolean hasNext(java.util.Scanner s) { int from = readStart(); boolean r = s.hasNext(); peek(s, "hasNext", r, from); return r; }
-    public static boolean hasNextLine(java.util.Scanner s) { int from = readStart(); boolean r = s.hasNextLine(); peek(s, "hasNextLine", r, from); return r; }
+    public static boolean hasNextInt(java.util.Scanner s) { if (isFileScanner(s)) return filePeek(s, "hasNextInt"); int from = readStart(); boolean r = s.hasNextInt(); peek(s, "hasNextInt", r, from); return r; }
+    public static boolean hasNext(java.util.Scanner s) { if (isFileScanner(s)) return filePeek(s, "hasNext"); int from = readStart(); boolean r = s.hasNext(); peek(s, "hasNext", r, from); return r; }
+    public static boolean hasNextLine(java.util.Scanner s) { if (isFileScanner(s)) return filePeek(s, "hasNextLine"); int from = readStart(); boolean r = s.hasNextLine(); peek(s, "hasNextLine", r, from); return r; }
 
     static int readStart() {
         tick();
@@ -814,5 +826,131 @@ public final class Tracker {
     /** The last line of the program had no Enter (print at the very end, or a crash after print). */
     static void outRest(String text) {
         ev("{\"t\":\"out\",\"s\":" + Runner.q(text) + ",\"nonl\":true}");
+    }
+
+    // ---------- chapter 16: files and exceptions ----------
+
+    /** What the next file open will be ("r", "w", "a"): set by Runner's hook right before the constructor. */
+    static String intent;
+    static String curW, curR;
+    static final List<String> openFiles = new ArrayList<>();
+    static final java.util.Set<Object> fileScanners = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+
+    public static void intent(String m) { intent = m; }
+    public static void intentA(boolean append) { intent = append ? "a" : "w"; }
+    public static void fileScanner(java.util.Scanner s) { fileScanners.add(s); }
+    static boolean isFileScanner(java.util.Scanner s) { return fileScanners.contains(s); }
+
+    /** The SecurityManager saw the student's code open a file inside the sandbox. */
+    static void touch(java.nio.file.Path p, java.nio.file.Path root, boolean write) {
+        String m = intent;
+        intent = null;
+        if (m == null) return;
+        boolean g = Runner.Sandbox.guard;
+        Runner.Sandbox.guard = false;
+        try {
+            String rel = root.relativize(p).toString();
+            boolean dir = java.nio.file.Files.isDirectory(p);
+            boolean ok;
+            String why = "";
+            if (write) {
+                java.nio.file.Path par = p.getParent();
+                ok = !dir && (par == null || java.nio.file.Files.isDirectory(par));
+                if (dir) why = "to jest katalog, nie plik";
+            } else {
+                ok = java.nio.file.Files.isRegularFile(p);
+                if (!ok) why = dir ? "to jest katalog, nie plik" : "nie ma takiego pliku";
+            }
+            if (ok) {
+                if (write) curW = rel; else curR = rel;
+                openFiles.add(rel);
+            }
+            ev("{\"t\":\"fopen\",\"f\":" + Runner.q(rel) + ",\"md\":\"" + m + "\",\"ok\":" + ok + ",\"why\":" + Runner.q(why) + "}");
+        } finally {
+            Runner.Sandbox.guard = g;
+        }
+    }
+
+    public static boolean fexists(java.io.File f) {
+        boolean v = f.exists();
+        ev("{\"t\":\"fexists\",\"f\":" + Runner.q(f.getPath()) + ",\"v\":" + v + "}");
+        return v;
+    }
+
+    static void fw(String s) { ev("{\"t\":\"fw\",\"f\":" + Runner.q(curW == null ? "" : curW) + ",\"s\":" + Runner.q(s) + "}"); }
+
+    public static void wWrite(java.io.Writer w, String s) throws java.io.IOException { tick(); w.write(s); fw(s); }
+    public static void pwPrintln(java.io.PrintWriter w, String s) { tick(); w.println(s); fw(s + "\n"); }
+    public static void pwPrint(java.io.PrintWriter w, String s) { tick(); w.print(s); fw(s); }
+    public static void wNewLine(java.io.BufferedWriter w) throws java.io.IOException { tick(); w.newLine(); fw("\n"); }
+
+    public static String readLine(java.io.BufferedReader r) throws java.io.IOException {
+        tick();
+        String l = r.readLine();
+        ev("{\"t\":\"fr\",\"f\":" + Runner.q(curR == null ? "" : curR) + ",\"k\":\"readLine\",\"s\":" + (l == null ? "null" : Runner.q(l)) + "}");
+        return l;
+    }
+
+    public static void fclose(Object o) throws Exception {
+        tick();
+        ((AutoCloseable) o).close();
+        if (o instanceof java.util.Scanner sc && !fileScanners.contains(sc)) return;
+        if (openFiles.isEmpty()) return;
+        String f = openFiles.remove(openFiles.size() - 1);
+        ev("{\"t\":\"fclose\",\"f\":" + Runner.q(f) + "}");
+    }
+
+    /** nextLine / nextInt / next on a Scanner that reads a file (not the keyboard). */
+    static Object fileRead(java.util.Scanner s, String k) {
+        tick();
+        Object v;
+        try {
+            v = switch (k) { case "nextLine" -> s.nextLine(); case "nextInt" -> (Object) s.nextInt(); default -> s.next(); };
+        } catch (RuntimeException e) {
+            ev("{\"t\":\"fr\",\"f\":" + Runner.q(curR == null ? "" : curR) + ",\"k\":" + Runner.q(k) + ",\"s\":null}");
+            throw e;
+        }
+        ev("{\"t\":\"fr\",\"f\":" + Runner.q(curR == null ? "" : curR) + ",\"k\":" + Runner.q(k) + ",\"s\":" + Runner.q(String.valueOf(v)) + "}");
+        return v;
+    }
+
+    static boolean filePeek(java.util.Scanner s, String k) {
+        tick();
+        boolean r = switch (k) { case "hasNextLine" -> s.hasNextLine(); case "hasNextInt" -> s.hasNextInt(); default -> s.hasNext(); };
+        ev("{\"t\":\"fhas\",\"f\":" + Runner.q(curR == null ? "" : curR) + ",\"k\":" + Runner.q(k) + ",\"v\":" + r + "}");
+        return r;
+    }
+
+    public static String[] split(String s, String re) {
+        String[] p = s.split(re);
+        StringBuilder b = new StringBuilder("[");
+        for (int i = 0; i < p.length; i++) { if (i > 0) b.append(','); b.append(Runner.q(p[i])); }
+        ev("{\"t\":\"fsplit\",\"s\":" + Runner.q(s) + ",\"re\":" + Runner.q(re) + ",\"p\":" + b.append(']') + "}");
+        return p;
+    }
+
+    public static String sub2(String s, int a, int b) {
+        String r = s.substring(a, b);
+        ev("{\"t\":\"fsub\",\"s\":" + Runner.q(s) + ",\"a\":" + a + ",\"b\":" + b + ",\"r\":" + Runner.q(r) + "}");
+        return r;
+    }
+
+    public static String sub1(String s, int a) {
+        String r = s.substring(a);
+        ev("{\"t\":\"fsub\",\"s\":" + Runner.q(s) + ",\"a\":" + a + ",\"b\":" + s.length() + ",\"r\":" + Runner.q(r) + "}");
+        return r;
+    }
+
+    /** First line of a catch block: the exception is on the stack. "from" = the line of the student's code where it was thrown. */
+    public static void caught(Throwable e) {
+        int from = -1;
+        for (StackTraceElement el : e.getStackTrace()) {
+            if (el.getClassName().equals("Main") || el.getClassName().startsWith("Main$")) {
+                from = el.getLineNumber() - lineOffset;
+                break;
+            }
+        }
+        String msg = e.getMessage();
+        ev("{\"t\":\"caught\",\"c\":" + Runner.q(e.getClass().getName()) + ",\"msg\":" + (msg == null ? "null" : Runner.q(msg)) + ",\"from\":" + from + "}");
     }
 }

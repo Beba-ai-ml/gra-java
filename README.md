@@ -1,6 +1,13 @@
 # Gra do nauki Javy
 
-Gra w przeglądarce, która krok po kroku uczy Javy potrzebnej do projektu „Kryptograficzne Archiwum”. Ma 12 rozdziałów: od tablic, przez metody, znaki, szyfr Cezara, `ArrayList`, wyszukiwanie i sortowanie bąbelkowe, aż po menu ze `Scanner` i złożenie całego projektu.
+Gra w przeglądarce, która krok po kroku uczy Javy potrzebnej do projektu „Kryptograficzne Archiwum”. Ma 17 rozdziałów:
+
+- **1-12, ocena 3.0:** od tablic, przez metody, znaki, szyfr Cezara, `ArrayList`, wyszukiwanie i sortowanie bąbelkowe, aż po menu ze `Scanner`, złożenie całego projektu i obronę.
+- **13-15, ocena 4.0:** wyszukiwanie binarne z pilnowaniem posortowania, naiwne wyszukiwanie wzorca (bez `contains` i `indexOf`), szyfr Vigenère'a.
+- **16, ocena 5.0:** wyjątki i `try-catch`, zapis i odczyt `archiwum.txt`.
+- **17:** złożenie projektu na 4.0 i 5.0 oraz pytania z obrony.
+
+W rozdziale 16 i 17 Twój program dostaje przy każdym uruchomieniu własny, pusty folder na pliki, więc nie popsuje plików gry.
 
 Piszesz kod, gra go kompiluje i uruchamia, pokazuje krok po kroku, co dzieje się w tablicy, i mówi, który test nie przeszedł. Błędy kompilatora tłumaczy po polsku.
 

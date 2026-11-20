@@ -1,0 +1,1515 @@
+[
+ {
+  "id": 1,
+  "title": "Okno pod tekstem",
+  "ref": "Okno pod tekstem",
+  "goal": "To przykład z teorii: wzór tek szuka się w tekście kotek. Uruchom i patrz: mały pasek (wzór) stoi pod dużym (tekst), litery porównują się jedna po drugiej (zielona = zgadza się, czerwona = nie). Gdy któraś litera się nie zgadza, okno przesuwa się o jedno miejsce w prawo. Potem zmień kod tak, żeby szukał wzoru nas w tekście ananas. Na ekranie ma być 3.",
+  "starter": "public static void main(String[] args) {\n    String text = \"kotek\";\n    String wzor = \"tek\";\n    int n = text.length();\n    int m = wzor.length();\n    int wynik = -1;                       // na start: nie znaleziono\n    for (int i = 0; i <= n - m; i++) {\n        boolean pasuje = true;\n        for (int j = 0; j < m; j++) {\n            if (text.charAt(i + j) != wzor.charAt(j)) {\n                pasuje = false;\n                break;                    // jedna zla litera - to okno odpada\n            }\n        }\n        if (pasuje) {\n            wynik = i;\n            break;\n        }\n    }\n    System.out.println(wynik);\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "3"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\"ananas\"",
+    "raw": true,
+    "label": "Tekst to \"ananas\"",
+    "msg": "Tekst ma być ananas: String text = \"ananas\";"
+   },
+   {
+    "re": "\"nas\"",
+    "raw": true,
+    "label": "Wzór to \"nas\"",
+    "msg": "Wzór ma być nas: String wzor = \"nas\";"
+   },
+   {
+    "re": "charAt\\s*\\(\\s*(i\\s*\\+\\s*j|j\\s*\\+\\s*i)\\s*\\)",
+    "label": "Litera tekstu pod literą j wzoru to charAt(i + j)",
+    "msg": "Literę tekstu pod literą j wzoru czytasz przez text.charAt(i + j): i to początek okna, j to miejsce we wzorze."
+   },
+   {
+    "re": "\\.\\s*(contains|indexOf|lastIndexOf|matches|regionMatches|startsWith|substring|equals)\\s*\\(",
+    "want": false,
+    "label": "Szukanie jest własne (bez contains, indexOf, substring...)",
+    "msg": "Na tym poziomie szukasz SAM, dwiema pętlami. Nie wolno contains, indexOf, lastIndexOf, matches, regionMatches, startsWith ani substring/equals na kawałku tekstu."
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Zmień tylko dwa napisy w cudzysłowach na górze: text i wzor.",
+   "Tekst ma być ananas, a wzór nas. Pętle zostają bez zmian.",
+   "Ostatnia podpowiedź: String text = \"ananas\"; i String wzor = \"nas\";"
+  ],
+  "tools": [
+   {
+    "code": "text.charAt(i + j)",
+    "kind": "litera tekstu pod literą wzoru",
+    "desc": "i to miejsce, w którym zaczyna się okno, a j to numer litery wzoru. Litera tekstu stojąca dokładnie nad j-tą literą wzoru ma numer i + j.",
+    "ex": "String zdanie = \"mama\";\nint start = 1;\nint k = 2;\nchar c = zdanie.charAt(start + k);   // litera nr 3: 'a'\nSystem.out.println(c);"
+   },
+   {
+    "code": "boolean pasuje = true",
+    "kind": "flaga „całe okno pasuje”",
+    "desc": "Na początku każdego okna zakładasz, że pasuje (true). Pierwsza zła litera zmienia ją na false. Po pętli j sprawdzasz flagę: true znaczy, że wszystkie litery się zgodziły.",
+    "ex": "String slowo = \"abca\";\nboolean takieSame = true;\nfor (int k = 1; k < slowo.length(); k++) {\n    if (slowo.charAt(k) != slowo.charAt(0)) {\n        takieSame = false;\n    }\n}\nSystem.out.println(takieSame);   // false"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Szukasz tek w kotek. Okno 0 to kot. Gdzie okno staje potem?",
+    "options": [
+     "Na literze nr 1",
+     "Na literze nr 3",
+     "Na literze nr 0 jeszcze raz"
+    ],
+    "answer": 0,
+    "why": "Przy złej literze okno przesuwa się o JEDNO miejsce. Okno 1 to ote, okno 2 to tek i pasuje."
+   },
+   {
+    "q": "Dla ananas i nas program wypisuje 3. Co to za liczba?",
+    "options": [
+     "Ile liter ma wzór",
+     "Numer litery tekstu, od której zaczyna się wzór",
+     "Ile okien sprawdzono"
+    ],
+    "answer": 1,
+    "why": "Wynik to początek okna i: nas zaczyna się na literze nr 3 (a n a n a s - numery od 0)."
+   }
+  ],
+  "lesson": "Naiwne szukanie wzorca: okno o długości wzoru przesuwa się po tekście o jedno miejsce. W każdym oknie porównujesz litery po kolei i przy pierwszej złej odpuszczasz okno."
+ },
+ {
+  "id": 2,
+  "title": "Metoda szukajWzorca",
+  "ref": "Ćwiczenie 1 (plik `R14_cw1.java`)",
+  "goal": "Napisz metodę szukajWzorca(String text, String wzor). Zwraca numer, od którego wzór stoi w tekście (pierwsze trafienie). Gdy wzoru nie ma, zwraca -1. Masz dwie pętle jedna w drugiej. contains, indexOf i substring są zabronione. W main użyj tekstu ananas i wypisz trzy linie dla wzorów nas, ana i xyz. Gra sprawdzi metodę też na brzegach: pusty wzór, wzór dłuższy od tekstu, trafienie na samym końcu, powtarzające się litery.",
+  "starter": "public static int szukajWzorca(String text, String wzor) {\n    // n i m: dlugosc tekstu i wzoru\n    // petla i: poczatek okna, od 0 do n - m\n    //   petla j: porownuj litere text.charAt(i + j) z wzor.charAt(j)\n    //   przy zlej literze: to okno odpada\n    //   gdy wszystkie litery wzoru pasuja: oddaj i\n    // po petli i: oddaj -1\n}\n\npublic static void main(String[] args) {\n    String text = \"ananas\";\n    System.out.println(\"szukam nas: pozycja \" + szukajWzorca(text, \"nas\"));\n    // wypisz tak samo dla ana i dla xyz\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam nas: pozycja 3\nszukam ana: pozycja 0\nszukam xyz: pozycja -1",
+    "calls": [
+     "szukajWzorca"
+    ]
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "aaab",
+     "aab"
+    ],
+    "ret": 1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "xyzab",
+     "ab"
+    ],
+    "ret": 3
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ab",
+     "abc"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     ""
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "",
+     "a"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "",
+     ""
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ala",
+     "ala"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "aaaa",
+     "aa"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kot",
+     "kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abab",
+     "bab"
+    ],
+    "ret": 1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "xaxb",
+     "ab"
+    ],
+    "ret": -1
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\b(for|while)\\b[\\s\\S]*\\b(for|while)\\b",
+    "label": "Dwie pętle: po oknach i po literach wzoru",
+    "msg": "Potrzebne są dwie pętle jedna w drugiej: zewnętrzna przesuwa okno (i), wewnętrzna porównuje litery wzoru (j)."
+   },
+   {
+    "re": "charAt\\s*\\(\\s*(i\\s*\\+\\s*j|j\\s*\\+\\s*i)\\s*\\)",
+    "label": "Litera tekstu pod literą j wzoru to charAt(i + j)",
+    "msg": "Literę tekstu pod literą j wzoru czytasz przez text.charAt(i + j): i to początek okna, j to miejsce we wzorze."
+   },
+   {
+    "re": "\\.\\s*(contains|indexOf|lastIndexOf|matches|regionMatches|startsWith|substring|equals)\\s*\\(",
+    "want": false,
+    "label": "Szukanie jest własne (bez contains, indexOf, substring...)",
+    "msg": "Na tym poziomie szukasz SAM, dwiema pętlami. Nie wolno contains, indexOf, lastIndexOf, matches, regionMatches, startsWith ani substring/equals na kawałku tekstu."
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Dwie pętle for: zewnętrzna i od 0 dopóki i <= n - m, wewnętrzna j od 0 dopóki j < m. Najpierw policz n i m przez length().",
+   "W pętli j porównuj text.charAt(i + j) z wzor.charAt(j). Przy różnicy ustaw pasuje = false i zrób break. Po pętli j: gdy pasuje, oddaj i. Wynik -1 stawiasz PO pętli i.",
+   "Ostatnia podpowiedź: if (text.charAt(i + j) != wzor.charAt(j)) { pasuje = false; break; } a niżej if (pasuje) { return i; }"
+  ],
+  "tools": [
+   {
+    "code": "text.charAt(i + j)",
+    "kind": "litera tekstu pod literą wzoru",
+    "desc": "i to miejsce, w którym zaczyna się okno, a j to numer litery wzoru. Litera tekstu stojąca dokładnie nad j-tą literą wzoru ma numer i + j.",
+    "ex": "String zdanie = \"mama\";\nint start = 1;\nint k = 2;\nchar c = zdanie.charAt(start + k);   // litera nr 3: 'a'\nSystem.out.println(c);"
+   },
+   {
+    "code": "i <= n - m",
+    "kind": "ostatnie okno, które mieści się w tekście",
+    "desc": "Tekst ma n liter, wzór m liter. Okno wystaje na m liter w prawo, więc ostatni sensowny początek to n - m. Dalej okno wystawałoby za tekst.",
+    "ex": "String pudelko = \"abcdef\";   // n = 6\nString klocek = \"xyz\";      // m = 3\nint ostatni = pudelko.length() - klocek.length();\nSystem.out.println(ostatni);   // 3: litery 3, 4, 5 jeszcze sa"
+   },
+   {
+    "code": "break w pętli j",
+    "kind": "jedna zła litera - okno odpada",
+    "desc": "Gdy litera wzoru nie zgadza się z literą pod oknem, nie sprawdzasz reszty. break kończy tylko wewnętrzną pętlę j. Pętla i przechodzi do następnego okna.",
+    "ex": "boolean sameDodatnie = true;\nint[] liczby = {4, 7, -2, 9};\nfor (int k = 0; k < liczby.length; k++) {\n    if (liczby[k] < 0) {\n        sameDodatnie = false;\n        break;      // dalej nie ma sensu patrzec\n    }\n}\nSystem.out.println(sameDodatnie);   // false"
+   },
+   {
+    "code": "boolean pasuje = true",
+    "kind": "flaga „całe okno pasuje”",
+    "desc": "Na początku każdego okna zakładasz, że pasuje (true). Pierwsza zła litera zmienia ją na false. Po pętli j sprawdzasz flagę: true znaczy, że wszystkie litery się zgodziły.",
+    "ex": "String slowo = \"abca\";\nboolean takieSame = true;\nfor (int k = 1; k < slowo.length(); k++) {\n    if (slowo.charAt(k) != slowo.charAt(0)) {\n        takieSame = false;\n    }\n}\nSystem.out.println(takieSame);   // false"
+   },
+   {
+    "code": "return -1 po pętli i",
+    "kind": "wynik „nie ma wzoru”",
+    "desc": "Ta linijka stoi PO obu pętlach. Dojdziesz do niej tylko wtedy, gdy żadne okno nie pasowało i żaden return w środku nie zadziałał.",
+    "ex": "public static int pierwszaParzysta(int t[]) {\n    for (int k = 0; k < t.length; k++) {\n        if (t[k] % 2 == 0) {\n            return k;\n        }\n    }\n    return -1;   // po petli: parzystej nie bylo\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Tekst ma 6 liter, wzór ma 3. Od jakiego numeru okno jeszcze mieści się w tekście?",
+    "options": [
+     "Do numeru 3",
+     "Do numeru 5",
+     "Do numeru 6"
+    ],
+    "answer": 0,
+    "why": "n - m = 6 - 3 = 3. Okno zaczynające się na 3 ma litery 3, 4, 5, czyli mieści się. Okno na 4 wystawałoby za koniec."
+   },
+   {
+    "q": "Czemu return -1 stoi PO pętli i, a nie w jej środku?",
+    "options": [
+     "Bo Java tak każe",
+     "Bo pierwsze złe okno kończyłoby szukanie, a dalsze okna mogą jeszcze pasować",
+     "Bo -1 jest szybsze"
+    ],
+    "answer": 1,
+    "why": "W środku pętli return -1 zadziałałby już po pierwszym oknie, które nie pasuje. Wynik „nie ma” wolno dać dopiero, gdy sprawdzisz WSZYSTKIE okna."
+   }
+  ],
+  "lesson": "Wzorzec w tekście: i po początkach okna (0..n-m), j po literach wzoru, litera tekstu to charAt(i + j). return i przy pierwszym całym trafieniu, return -1 po pętli."
+ },
+ {
+  "id": 3,
+  "title": "Błąd: i < n - m",
+  "ref": "Typowe błędy",
+  "goal": "Ta metoda ma pętlę i < n - m. Uruchom: szukam ab w xyzab daje -1, choć ab stoi na samym końcu. Ostatnie okno nigdy nie zostaje sprawdzone. Popraw warunek pętli.",
+  "starter": "public static int szukajWzorca(String text, String wzor) {\n    int n = text.length();\n    int m = wzor.length();\n    for (int i = 0; i < n - m; i++) {\n        boolean pasuje = true;\n        for (int j = 0; j < m; j++) {\n            if (text.charAt(i + j) != wzor.charAt(j)) {\n                pasuje = false;\n                break;\n            }\n        }\n        if (pasuje) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    System.out.println(\"szukam ab w xyzab: \" + szukajWzorca(\"xyzab\", \"ab\"));\n    System.out.println(\"szukam xy w xyzab: \" + szukajWzorca(\"xyzab\", \"xy\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam ab w xyzab: 3\nszukam xy w xyzab: 0",
+    "calls": [
+     "szukajWzorca"
+    ]
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kotek",
+     "tek"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     "abc"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abcd",
+     "cd"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ab",
+     "abc"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abcd",
+     "ab"
+    ],
+    "ret": 0
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Patrz na warunek pętli i. Ostatnie okno zaczyna się dokładnie na numerze n - m. Czy warunek je wpuszcza?",
+   "Z < okno o numerze n - m odpada. Potrzebujesz warunku, który to okno jeszcze wpuszcza.",
+   "Ostatnia podpowiedź: zamień i < n - m na i <= n - m"
+  ],
+  "tools": [
+   {
+    "code": "i <= n - m",
+    "kind": "ostatnie okno, które mieści się w tekście",
+    "desc": "Tekst ma n liter, wzór m liter. Okno wystaje na m liter w prawo, więc ostatni sensowny początek to n - m. Dalej okno wystawałoby za tekst.",
+    "ex": "String pudelko = \"abcdef\";   // n = 6\nString klocek = \"xyz\";      // m = 3\nint ostatni = pudelko.length() - klocek.length();\nSystem.out.println(ostatni);   // 3: litery 3, 4, 5 jeszcze sa"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Szukasz ab w xyzab (n = 5, m = 2). Które okno pomija i < n - m?",
+    "options": [
+     "Okno na numerze 0",
+     "Okno na numerze 3",
+     "Okno na numerze 5"
+    ],
+    "answer": 1,
+    "why": "n - m = 3. Z i < 3 pętla robi okna 0, 1, 2. Okno 3 (litery a b) nie zostaje sprawdzone, a tam właśnie stoi wzór."
+   }
+  ],
+  "lesson": "Ostatnie okno zaczyna się na n - m. Warunek ma je wpuszczać, więc i <= n - m."
+ },
+ {
+  "id": 4,
+  "title": "Błąd: i <= n",
+  "ref": "Typowe błędy",
+  "goal": "Ta metoda ma pętlę i <= n. Uruchom: okno wystaje za koniec tekstu, charAt wywala StringIndexOutOfBoundsException i program pada. Zamień granicę pętli i na taką, przy której okno zawsze mieści się w tekście.",
+  "starter": "public static int szukajWzorca(String text, String wzor) {\n    int n = text.length();\n    int m = wzor.length();\n    for (int i = 0; i <= n; i++) {\n        boolean pasuje = true;\n        for (int j = 0; j < m; j++) {\n            if (text.charAt(i + j) != wzor.charAt(j)) {\n                pasuje = false;\n                break;\n            }\n        }\n        if (pasuje) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    System.out.println(\"szukam xy w abc: \" + szukajWzorca(\"abc\", \"xy\"));\n    System.out.println(\"szukam bc w abc: \" + szukajWzorca(\"abc\", \"bc\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam xy w abc: -1\nszukam bc w abc: 1",
+    "calls": [
+     "szukajWzorca"
+    ]
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     "xy"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kotek",
+     "tek"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ab",
+     "abc"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "a",
+     "a"
+    ],
+    "ret": 0
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Okno o numerze i bierze litery od i do i + m - 1. Kiedy ostatnia z nich wychodzi poza tekst?",
+   "Za duże i = n wpuszcza okno, które w ogóle nie leży w tekście. Ostatnie dobre okno to n - m.",
+   "Ostatnia podpowiedź: zamień i <= n na i <= n - m"
+  ],
+  "tools": [
+   {
+    "code": "i <= n - m",
+    "kind": "ostatnie okno, które mieści się w tekście",
+    "desc": "Tekst ma n liter, wzór m liter. Okno wystaje na m liter w prawo, więc ostatni sensowny początek to n - m. Dalej okno wystawałoby za tekst.",
+    "ex": "String pudelko = \"abcdef\";   // n = 6\nString klocek = \"xyz\";      // m = 3\nint ostatni = pudelko.length() - klocek.length();\nSystem.out.println(ostatni);   // 3: litery 3, 4, 5 jeszcze sa"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Tekst abc (n = 3), wzór xy (m = 2), pętla i <= n. Przy którym i wywala się charAt?",
+    "options": [
+     "i = 0",
+     "i = 2",
+     "i = 3"
+    ],
+    "answer": 2,
+    "why": "Przy i = 0, 1 i 2 pierwsza litera wzoru już się nie zgadza i break chroni przed dalszym czytaniem. Przy i = 3 okno leży całkiem poza tekstem i charAt(3) wywala wyjątek."
+   }
+  ],
+  "lesson": "Granica pętli i to n - m, nie n. Okno musi się mieścić w tekście."
+ },
+ {
+  "id": 5,
+  "title": "Błąd: j nie wraca na 0",
+  "ref": "Typowe błędy",
+  "goal": "Ta metoda ma int j = 0; przed pętlą i, więc j nie wraca na 0 w nowym oknie. Uruchom: szukam ab w xaxb daje 2, choć ab w ogóle tam nie stoi. Przenieś j tam, gdzie zaczyna się każde okno.",
+  "starter": "public static int szukajWzorca(String text, String wzor) {\n    int n = text.length();\n    int m = wzor.length();\n    int j = 0;\n    for (int i = 0; i <= n - m; i++) {\n        while (j < m && text.charAt(i + j) == wzor.charAt(j)) {\n            j++;\n        }\n        if (j == m) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    System.out.println(\"szukam ab w xaxb: \" + szukajWzorca(\"xaxb\", \"ab\"));\n    System.out.println(\"szukam ab w xaxab: \" + szukajWzorca(\"xaxab\", \"ab\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam ab w xaxb: -1\nszukam ab w xaxab: 3",
+    "calls": [
+     "szukajWzorca"
+    ]
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "xaxb",
+     "ab"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "aaab",
+     "aab"
+    ],
+    "ret": 1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kotek",
+     "tek"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abcabd",
+     "abd"
+    ],
+    "ret": 3
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abca",
+     "ac"
+    ],
+    "ret": -1
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Po nieudanym oknie j stoi tam, gdzie się zatrzymało. Nowe okno zaczyna porównywanie od zera, a j tego nie wie.",
+   "Zmienna j ma być nowa w każdym oknie. Gdzie powinna powstawać, żeby zaczynać od 0 przy każdym i?",
+   "Ostatnia podpowiedź: przenieś int j = 0; do środka pętli i, nad while"
+  ],
+  "tools": [
+   {
+    "code": "int j = 0 w środku pętli i",
+    "kind": "licznik od zera w każdym oknie",
+    "desc": "Zmienna zadeklarowana w środku pętli powstaje od nowa przy każdym obiegu. Dzięki temu każde okno zaczyna porównywanie od pierwszej litery wzoru.",
+    "ex": "for (int dzien = 0; dzien < 3; dzien++) {\n    int kroki = 0;        // znow od zera kazdego dnia\n    kroki = kroki + 10;\n    System.out.println(kroki);   // 10, 10, 10\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Tekst xaxb, wzór ab. W oknie 1 pasuje a (j = 1), ale następna litera x nie pasuje do b. Co robi zły kod w oknie 2?",
+    "options": [
+     "Zaczyna od j = 1: porównuje b z b, pomija a i zgłasza trafienie",
+     "Zaczyna od j = 0 i dobrze odrzuca okno",
+     "Przeskakuje do końca tekstu"
+    ],
+    "answer": 0,
+    "why": "Okno 2 powinno zacząć od pierwszej litery wzoru (a). Ale j wciąż wynosi 1, więc porównuje b z b, j rośnie do 2 i metoda zgłasza trafienie, którego nie ma."
+   }
+  ],
+  "lesson": "Każde okno zaczyna od pierwszej litery wzoru. Licznik j musi być zerowany w każdym oknie, czyli deklarowany w środku pętli i."
+ },
+ {
+  "id": 6,
+  "title": "Błąd: return -1 w pętli",
+  "ref": "Typowe błędy",
+  "goal": "Ta metoda oddaje -1 zaraz po pierwszym oknie, które nie pasuje. Uruchom: szukam nas w ananas daje -1, choć nas tam stoi. Przenieś wynik „nie ma” tam, gdzie wolno go dać dopiero po sprawdzeniu wszystkich okien.",
+  "starter": "public static int szukajWzorca(String text, String wzor) {\n    int n = text.length();\n    int m = wzor.length();\n    for (int i = 0; i <= n - m; i++) {\n        boolean pasuje = true;\n        for (int j = 0; j < m; j++) {\n            if (text.charAt(i + j) != wzor.charAt(j)) {\n                pasuje = false;\n                break;\n            }\n        }\n        if (pasuje) {\n            return i;\n        } else {\n            return -1;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    System.out.println(\"szukam nas w ananas: \" + szukajWzorca(\"ananas\", \"nas\"));\n    System.out.println(\"szukam xyz w ananas: \" + szukajWzorca(\"ananas\", \"xyz\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam nas w ananas: 3\nszukam xyz w ananas: -1",
+    "calls": [
+     "szukajWzorca"
+    ]
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ananas",
+     "nas"
+    ],
+    "ret": 3
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ananas",
+     "ana"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     "c"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     "x"
+    ],
+    "ret": -1
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Który return zadziałał dla okna 0 (ana nie jest nas)? Pierwsze okno nie pasuje, a metoda już się kończy.",
+   "Else po if (pasuje) kończy szukanie przy pierwszym złym oknie. Co zrobić z tym else?",
+   "Ostatnia podpowiedź: usuń cały else { return -1; } - zostaje return -1 po pętli i"
+  ],
+  "tools": [],
+  "quiz": [
+   {
+    "q": "Dlaczego else { return -1; } w pętli i jest błędem?",
+    "options": [
+     "Bo kończy szukanie po pierwszym złym oknie",
+     "Bo -1 to zły numer",
+     "Bo else nie wolno w pętli"
+    ],
+    "answer": 0,
+    "why": "return kończy metodę od razu. Pierwsze okno, które nie pasuje, wywołuje else i wynik -1, choć dalsze okna mogły pasować."
+   }
+  ],
+  "lesson": "return -1 stoi po pętli i. Wynik „nie ma” wolno dać, dopiero gdy sprawdzisz wszystkie okna."
+ },
+ {
+  "id": 7,
+  "title": "Błąd: charAt(i) bez j",
+  "ref": "Typowe błędy",
+  "goal": "Ta metoda porównuje text.charAt(i) zamiast text.charAt(i + j). Patrzysz więc zawsze na tę samą literę tekstu i okno nie ma pod sobą całego wzoru. Uruchom: szukam nas w ananas daje -1. Popraw porównanie.",
+  "starter": "public static int szukajWzorca(String text, String wzor) {\n    int n = text.length();\n    int m = wzor.length();\n    for (int i = 0; i <= n - m; i++) {\n        boolean pasuje = true;\n        for (int j = 0; j < m; j++) {\n            if (text.charAt(i) != wzor.charAt(j)) {\n                pasuje = false;\n                break;\n            }\n        }\n        if (pasuje) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    System.out.println(\"szukam nas w ananas: \" + szukajWzorca(\"ananas\", \"nas\"));\n    System.out.println(\"szukam a w ananas: \" + szukajWzorca(\"ananas\", \"a\"));\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam nas w ananas: 3\nszukam a w ananas: 0",
+    "calls": [
+     "szukajWzorca"
+    ]
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ananas",
+     "nas"
+    ],
+    "ret": 3
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kotek",
+     "tek"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kotek",
+     "kot"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kotek",
+     "ote"
+    ],
+    "ret": 1
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Wzór ma kilka liter. Pod literą j wzoru stoi litera tekstu nr i + j, a nie samo i.",
+   "Zmień literę tekstu na tę, która leży pod j-tą literą wzoru w oknie zaczynającym się na i.",
+   "Ostatnia podpowiedź: text.charAt(i + j) != wzor.charAt(j)"
+  ],
+  "tools": [
+   {
+    "code": "text.charAt(i + j)",
+    "kind": "litera tekstu pod literą wzoru",
+    "desc": "i to miejsce, w którym zaczyna się okno, a j to numer litery wzoru. Litera tekstu stojąca dokładnie nad j-tą literą wzoru ma numer i + j.",
+    "ex": "String zdanie = \"mama\";\nint start = 1;\nint k = 2;\nchar c = zdanie.charAt(start + k);   // litera nr 3: 'a'\nSystem.out.println(c);"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Okno zaczyna się na i = 3, porównujesz drugą literę wzoru (j = 1). Którą literę tekstu czytasz?",
+    "options": [
+     "Nr 3",
+     "Nr 4",
+     "Nr 1"
+    ],
+    "answer": 1,
+    "why": "i + j = 3 + 1 = 4. Pierwsza litera wzoru leży pod literą 3, druga pod 4, trzecia pod 5."
+   }
+  ],
+  "lesson": "Litera tekstu pod literą j wzoru to charAt(i + j). Samo i nie rusza się w pętli j."
+ },
+ {
+  "id": 8,
+  "title": "Przypadki brzegowe",
+  "ref": "Przypadki brzegowe",
+  "goal": "Metoda szukajWzorca jest gotowa. Twoje zadanie: sprawdzić ją na trudnych przypadkach. Najpierw na kartce zgadnij wynik każdego z pięciu wywołań (podpowiedź w quizie niżej), potem wpisz w main pięć linii w tym samym formacie co w starterze i uruchom: gra pokaże okno krok po kroku. Wywołania: (aaab, aab), (abc, pusty wzór), (ab, abc), (Ala, ala), (xyzab, ab).",
+  "starter": "public static int szukajWzorca(String text, String wzor) {\n    int n = text.length();\n    int m = wzor.length();\n    for (int i = 0; i <= n - m; i++) {\n        boolean pasuje = true;\n        for (int j = 0; j < m; j++) {\n            if (text.charAt(i + j) != wzor.charAt(j)) {\n                pasuje = false;\n                break;\n            }\n        }\n        if (pasuje) {\n            return i;\n        }\n    }\n    return -1;\n}\n\npublic static void main(String[] args) {\n    System.out.println(szukajWzorca(\"aaab\", \"aab\"));\n    // dopisz cztery linie dla: (abc i pusty wzor), (ab i abc), (Ala i ala), (xyzab i ab)\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "1\n0\n-1\n-1\n3",
+    "calls": [
+     "szukajWzorca"
+    ]
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Wpisz cztery kolejne println(szukajWzorca(...)) w tej samej kolejności co w zadaniu.",
+   "Pusty wzór to dwa cudzysłowy bez niczego w środku: \"\".",
+   "Ostatnia podpowiedź: System.out.println(szukajWzorca(\"abc\", \"\")); i podobnie dla ab/abc, Ala/ala, xyzab/ab"
+  ],
+  "tools": [
+   {
+    "code": "\"\"",
+    "kind": "pusty napis",
+    "desc": "Dwa cudzysłowy bez niczego w środku to napis o długości 0. Dla niego length() daje 0, a pętla po jego literach nie robi ani jednego obiegu.",
+    "ex": "String nic = \"\";\nSystem.out.println(nic.length());   // 0\nfor (int k = 0; k < nic.length(); k++) {\n    System.out.println(\"nie wypisze sie\");\n}"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Dla pustego wzoru metoda oddaje 0. Dlaczego?",
+    "options": [
+     "Bo pętla j nie robi obiegu, pasuje zostaje true już w oknie 0",
+     "Bo pusty wzór nie ma sensu",
+     "Bo -1 nie działa dla pustych napisów"
+    ],
+    "answer": 0,
+    "why": "m = 0, więc pętla j nie wykonuje się ani razu i flaga pasuje zostaje true już w oknie 0. Wynik to 0. Tak samo robi prawdziwe indexOf(\"\")."
+   },
+   {
+    "q": "aab w aaab: okno 0 (aaa) nie pasuje. Gdzie jest następne okno?",
+    "options": [
+     "Na literze nr 1, o jedno miejsce dalej",
+     "Na literze nr 3, za wszystkimi zgodnymi literami",
+     "Szukanie kończy się"
+    ],
+    "answer": 0,
+    "why": "Naiwne szukanie zawsze przesuwa okno o JEDNO miejsce. Okno 1 to aab i pasuje. Gdyby okno przeskoczyło za daleko, trafienie by zginęło."
+   },
+   {
+    "q": "Czy szukanie Ala w ala znajdzie wzór?",
+    "options": [
+     "Tak, litery są takie same",
+     "Nie, A i a to różne znaki"
+    ],
+    "answer": 1,
+    "why": "Wielka litera A to 65, mała a to 97. Porównanie znaków != widzi różnicę, więc wynik to -1."
+   }
+  ],
+  "lesson": "Brzegi: pusty wzór daje 0, wzór dłuższy od tekstu daje -1, trafienie na końcu wymaga i <= n - m, powtarzające się litery wymagają przesunięcia o jedno miejsce, wielkość liter ma znaczenie."
+ },
+ {
+  "id": 9,
+  "title": "Ile razy wzór stoi w tekście",
+  "ref": "Ćwiczenie 2 (plik `R14_cw2.java`)",
+  "goal": "Napisz ileRazy(String text, String wzor): liczy, w ilu miejscach wzór stoi w tekście. Trafienia mogą na siebie nachodzić: aa w aaaa stoi w trzech miejscach. Pusty wzór zwraca 0. W main wypisz w trzech liniach ileRazy(\"aaaa\", \"aa\"), ileRazy(\"banan\", \"an\") i ileRazy(\"kot\", \"ptak\").",
+  "starter": "public static int ileRazy(String text, String wzor) {\n    // jak szukajWzorca, ale po trafieniu NIE konczysz szukania\n    // policz trafienia w zmiennej licznik i oddaj ja na koncu\n    // pusty wzor: oddaj 0\n}\n\npublic static void main(String[] args) {\n    System.out.println(ileRazy(\"aaaa\", \"aa\"));\n    // wypisz tak samo dla banan i an oraz dla kot i ptak\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "3\n2\n0",
+    "calls": [
+     "ileRazy"
+    ]
+   },
+   {
+    "call": "ileRazy",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "aaaa",
+     "aa"
+    ],
+    "ret": 3
+   },
+   {
+    "call": "ileRazy",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "banan",
+     "an"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "ileRazy",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kot",
+     "ptak"
+    ],
+    "ret": 0
+   },
+   {
+    "call": "ileRazy",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     ""
+    ],
+    "ret": 0
+   },
+   {
+    "call": "ileRazy",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abab",
+     "ab"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "ileRazy",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "aaa",
+     "aaa"
+    ],
+    "ret": 1
+   },
+   {
+    "call": "ileRazy",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ababa",
+     "aba"
+    ],
+    "ret": 2
+   },
+   {
+    "call": "ileRazy",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "",
+     "a"
+    ],
+    "ret": 0
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\b(for|while)\\b[\\s\\S]*\\b(for|while)\\b",
+    "label": "Dwie pętle: po oknach i po literach wzoru",
+    "msg": "Potrzebne są dwie pętle jedna w drugiej: zewnętrzna przesuwa okno (i), wewnętrzna porównuje litery wzoru (j)."
+   },
+   {
+    "re": "charAt\\s*\\(\\s*(i\\s*\\+\\s*j|j\\s*\\+\\s*i)\\s*\\)",
+    "label": "Litera tekstu pod literą j wzoru to charAt(i + j)",
+    "msg": "Literę tekstu pod literą j wzoru czytasz przez text.charAt(i + j): i to początek okna, j to miejsce we wzorze."
+   },
+   {
+    "re": "\\.\\s*(contains|indexOf|lastIndexOf|matches|regionMatches|startsWith|substring|equals)\\s*\\(",
+    "want": false,
+    "label": "Szukanie jest własne (bez contains, indexOf, substring...)",
+    "msg": "Na tym poziomie szukasz SAM, dwiema pętlami. Nie wolno contains, indexOf, lastIndexOf, matches, regionMatches, startsWith ani substring/equals na kawałku tekstu."
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "To prawie szukajWzorca, ale po trafieniu nie robisz return ani break z pętli i. Zamiast tego zwiększasz licznik.",
+   "licznik = 0 przed pętlą i. Po pętli oddaj licznik. Pusty wzór obsłuż osobno na początku metody, bo każde okno by go „znalazło”.",
+   "Ostatnia podpowiedź: if (pasuje) { licznik++; } oraz na początku if (m == 0) { return 0; }"
+  ],
+  "tools": [
+   {
+    "code": "licznik++",
+    "kind": "liczenie trafień",
+    "desc": "licznik++ dodaje 1 do licznika. Zaczynasz od 0 przed pętlą, w każdym trafieniu dodajesz 1, a po pętli oddajesz sumę.",
+    "ex": "int wiek[] = {12, 30, 15, 41};\nint doroslych = 0;\nfor (int k = 0; k < wiek.length; k++) {\n    if (wiek[k] >= 18) {\n        doroslych++;\n    }\n}\nSystem.out.println(doroslych);   // 2"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "ileRazy(\"aaaa\", \"aa\") daje 3, a nie 2. Dlaczego?",
+    "options": [
+     "Okna 0, 1 i 2 każde pasują, bo trafienia nachodzą na siebie",
+     "Bo 4 / 2 = 2, a plus jeden zawsze",
+     "Bo trzecie aa jest ukryte"
+    ],
+    "answer": 0,
+    "why": "Okno przesuwa się o jedno miejsce, więc aa na 0-1, na 1-2 i na 2-3 to trzy trafienia."
+   }
+  ],
+  "lesson": "Liczenie wszystkich trafień: po trafieniu zwiększasz licznik i idziesz dalej, a okno wciąż przesuwa się o jedno miejsce."
+ },
+ {
+  "id": 10,
+  "title": "Szukanie w zaszyfrowanych notatkach",
+  "ref": "Ćwiczenie 3 (plik `R14_cw3.java`)",
+  "goal": "W main stoją dwie listy równoległe: tytuly i tresci. Treści są zaszyfrowane szyfrem Cezara z kluczem 3 (małe litery, spacje bez zmian). Metodę odszyfruj masz gotową. Napisz zawiera(String text, String wzor), czyli to samo szukanie dwiema pętlami, ale oddaje true albo false. W main wczytaj słowo ze Scannera. Dla każdej notatki odszyfruj treść do zmiennej tekst, sprawdź ją przez zawiera i wypisz tytuł każdej notatki z tym słowem. Gdy żadna nie ma, wypisz brak notatek. Lista tresci ma zostać zaszyfrowana.",
+  "starter": "public static String odszyfruj(String coded, int klucz) {\n    char znaki[] = coded.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' - klucz + 26) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static boolean zawiera(String text, String wzor) {\n    // dwie petle jak w szukajWzorca: okno i po tekscie, j po literach wzoru\n    // wszystkie litery wzoru pasuja: oddaj true\n    // po petli i: oddaj false\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    tytuly.add(\"Zakupy\");\n    tresci.add(\"nxs pohnr l fkohe\");\n    tytuly.add(\"Szkola\");\n    tresci.add(\"cdgdqlh c pdwhpdwbnl\");\n    tytuly.add(\"Dom\");\n    tresci.add(\"xpbf rnqr l srgohm nzldwb\");\n\n    Scanner skan = new Scanner(System.in);\n    String szukane = skan.nextLine();\n    // dla kazdej notatki: String tekst = odszyfruj(tresci.get(i), 3);\n    // jesli zawiera(tekst, szukane) - wypisz tytul\n    // jesli zadna nie ma: brak notatek\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "in": "mleko\n",
+    "out": "Zakupy",
+    "calls": [
+     "zawiera",
+     "odszyfruj"
+    ],
+    "named_lists_end": {
+     "tresci": [
+      "nxs pohnr l fkohe",
+      "cdgdqlh c pdwhpdwbnl",
+      "xpbf rnqr l srgohm nzldwb"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "okno\n",
+    "out": "Dom",
+    "calls": [
+     "zawiera",
+     "odszyfruj"
+    ],
+    "named_lists_end": {
+     "tresci": [
+      "nxs pohnr l fkohe",
+      "cdgdqlh c pdwhpdwbnl",
+      "xpbf rnqr l srgohm nzldwb"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "kot\n",
+    "out": "brak notatek",
+    "calls": [
+     "zawiera",
+     "odszyfruj"
+    ],
+    "named_lists_end": {
+     "tresci": [
+      "nxs pohnr l fkohe",
+      "cdgdqlh c pdwhpdwbnl",
+      "xpbf rnqr l srgohm nzldwb"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "i\n",
+    "out": "Zakupy\nSzkola\nDom",
+    "calls": [
+     "zawiera",
+     "odszyfruj"
+    ],
+    "named_lists_end": {
+     "tresci": [
+      "nxs pohnr l fkohe",
+      "cdgdqlh c pdwhpdwbnl",
+      "xpbf rnqr l srgohm nzldwb"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "kwiaty\n",
+    "out": "Dom",
+    "calls": [
+     "zawiera",
+     "odszyfruj"
+    ],
+    "named_lists_end": {
+     "tresci": [
+      "nxs pohnr l fkohe",
+      "cdgdqlh c pdwhpdwbnl",
+      "xpbf rnqr l srgohm nzldwb"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "matematyki\n",
+    "out": "Szkola",
+    "calls": [
+     "zawiera",
+     "odszyfruj"
+    ],
+    "named_lists_end": {
+     "tresci": [
+      "nxs pohnr l fkohe",
+      "cdgdqlh c pdwhpdwbnl",
+      "xpbf rnqr l srgohm nzldwb"
+     ]
+    }
+   },
+   {
+    "main": true,
+    "in": "Dom\n",
+    "out": "brak notatek",
+    "calls": [
+     "zawiera",
+     "odszyfruj"
+    ],
+    "named_lists_end": {
+     "tresci": [
+      "nxs pohnr l fkohe",
+      "cdgdqlh c pdwhpdwbnl",
+      "xpbf rnqr l srgohm nzldwb"
+     ]
+    }
+   },
+   {
+    "call": "zawiera",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kup mleko i chleb",
+     "mleko"
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "zawiera",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kup mleko i chleb",
+     "chleb"
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "zawiera",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "kup mleko",
+     "mlekoo"
+    ],
+    "ret": "false"
+   },
+   {
+    "call": "zawiera",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ala",
+     ""
+    ],
+    "ret": "true"
+   },
+   {
+    "call": "zawiera",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     "ac"
+    ],
+    "ret": "false"
+   },
+   {
+    "call": "zawiera",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "zadanie z matematyki",
+     "ki"
+    ],
+    "ret": "true"
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\b(for|while)\\b[\\s\\S]*\\b(for|while)\\b",
+    "label": "Dwie pętle: po oknach i po literach wzoru",
+    "msg": "Potrzebne są dwie pętle jedna w drugiej: zewnętrzna przesuwa okno (i), wewnętrzna porównuje litery wzoru (j)."
+   },
+   {
+    "re": "charAt\\s*\\(\\s*(i\\s*\\+\\s*j|j\\s*\\+\\s*i)\\s*\\)",
+    "label": "Litera tekstu pod literą j wzoru to charAt(i + j)",
+    "msg": "Literę tekstu pod literą j wzoru czytasz przez text.charAt(i + j): i to początek okna, j to miejsce we wzorze."
+   },
+   {
+    "re": "\\.\\s*(contains|indexOf|lastIndexOf|matches|regionMatches|startsWith|substring|equals)\\s*\\(",
+    "want": false,
+    "label": "Szukanie jest własne (bez contains, indexOf, substring...)",
+    "msg": "Na tym poziomie szukasz SAM, dwiema pętlami. Nie wolno contains, indexOf, lastIndexOf, matches, regionMatches, startsWith ani substring/equals na kawałku tekstu."
+   },
+   {
+    "re": "\\btresci\\s*\\.\\s*set\\s*\\(",
+    "want": false,
+    "label": "Lista tresci zostaje zaszyfrowana",
+    "msg": "Nie wpisuj odszyfrowanego tekstu z powrotem do listy. Trzymaj go w zmiennej."
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Metoda zawiera to szukajWzorca, tylko zamiast numeru oddaje true (trafienie) albo false (po pętli i). W main pętla po i idzie po liście tresci.",
+   "Dla każdej notatki zrób String tekst = odszyfruj(tresci.get(i), 3); i szukaj w zmiennej tekst, a nie w liście. Flaga boolean bylo = false; mówi, czy cokolwiek wypisano.",
+   "Ostatnia podpowiedź: if (zawiera(tekst, szukane)) { System.out.println(tytuly.get(i)); bylo = true; } a po pętli if (!bylo) { System.out.println(\"brak notatek\"); }"
+  ],
+  "tools": [
+   {
+    "code": "String tekst = odszyfruj(tresci.get(i), 3)",
+    "kind": "odszyfrowanie „w locie”",
+    "desc": "Odszyfrowany tekst trafia do zwykłej zmiennej. Lista tresci zostaje zaszyfrowana, a zmienna żyje tylko w jednym obiegu pętli. Szukasz w zmiennej.",
+    "ex": "ArrayList<String> slowa = new ArrayList<>();\nslowa.add(\"KOT\");\nfor (int k = 0; k < slowa.size(); k++) {\n    String male = slowa.get(k).toLowerCase();   // kopia, lista bez zmian\n    System.out.println(male);   // kot\n}\nSystem.out.println(slowa.get(0));   // nadal KOT"
+   },
+   {
+    "code": "boolean bylo = false",
+    "kind": "czy cokolwiek znaleziono",
+    "desc": "Flaga ustawiona na false przed pętlą. Gdy coś znajdziesz, zmieniasz na true. Po pętli false znaczy, że nic nie znaleziono.",
+    "ex": "int oceny[] = {3, 4, 2};\nboolean jedynka = false;\nfor (int k = 0; k < oceny.length; k++) {\n    if (oceny[k] == 1) {\n        jedynka = true;\n    }\n}\nSystem.out.println(jedynka);   // false"
+   }
+  ],
+  "quiz": [
+   {
+    "q": "Czemu szukasz w zmiennej tekst, a nie od razu w tresci.get(i)?",
+    "options": [
+     "Bo tresci.get(i) to szyfrogram - tam słowa nie stoją",
+     "Bo get nie działa w pętli",
+     "Bo zmienna jest szybsza"
+    ],
+    "answer": 0,
+    "why": "W liście leży szyfrogram (nxs pohnr...). Słowo mleko stoi dopiero w odszyfrowanej treści. Dlatego najpierw odszyfruj, potem szukaj."
+   },
+   {
+    "q": "Czy po szukaniu w liście tresci nadal leży szyfrogram?",
+    "options": [
+     "Tak - odszyfrowany tekst był tylko w zmiennej",
+     "Nie - lista została odszyfrowana"
+    ],
+    "answer": 0,
+    "why": "odszyfruj oddaje nowy napis i nie rusza listy. Dzięki temu w archiwum zostaje zaszyfrowana treść."
+   }
+  ],
+  "lesson": "Notatkę odszyfrowujesz do zwykłej zmiennej, szukasz w niej i zapominasz. Lista z szyfrogramami nie zmienia się."
+ },
+ {
+  "id": 11,
+  "title": "Błąd: odszyfrowanie nadpisuje listę",
+  "ref": "Typowe błędy",
+  "goal": "Ten program odszyfrowuje treść i wpisuje ją z powrotem do listy (tresci.set). Szukanie działa, ale po nim w liście leży zwykły tekst, a w projekcie ma tam zostać szyfrogram. Uruchom i zobacz, co stoi w liście na końcu. Popraw: odszyfrowany tekst trzymaj tylko w zmiennej.",
+  "starter": "public static String odszyfruj(String coded, int klucz) {\n    char znaki[] = coded.toCharArray();\n    for (int i = 0; i < znaki.length; i++) {\n        char c = znaki[i];\n        if (c >= 'a' && c <= 'z') {\n            znaki[i] = (char) ((c - 'a' - klucz + 26) % 26 + 'a');\n        }\n    }\n    return new String(znaki);\n}\n\npublic static boolean zawiera(String text, String wzor) {\n    int n = text.length();\n    int m = wzor.length();\n    for (int i = 0; i <= n - m; i++) {\n        boolean pasuje = true;\n        for (int j = 0; j < m; j++) {\n            if (text.charAt(i + j) != wzor.charAt(j)) {\n                pasuje = false;\n                break;\n            }\n        }\n        if (pasuje) {\n            return true;\n        }\n    }\n    return false;\n}\n\npublic static void main(String[] args) {\n    ArrayList<String> tytuly = new ArrayList<>();\n    ArrayList<String> tresci = new ArrayList<>();\n    tytuly.add(\"Zakupy\");\n    tresci.add(\"nxs pohnr l fkohe\");\n    tytuly.add(\"Szkola\");\n    tresci.add(\"cdgdqlh c pdwhpdwbnl\");\n    tytuly.add(\"Dom\");\n    tresci.add(\"xpbf rnqr l srgohm nzldwb\");\n\n    for (int i = 0; i < tresci.size(); i++) {\n        tresci.set(i, odszyfruj(tresci.get(i), 3));\n        if (zawiera(tresci.get(i), \"okno\")) {\n            System.out.println(tytuly.get(i));\n        }\n    }\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "Dom",
+    "calls": [
+     "zawiera",
+     "odszyfruj"
+    ],
+    "named_lists_end": {
+     "tresci": [
+      "nxs pohnr l fkohe",
+      "cdgdqlh c pdwhpdwbnl",
+      "xpbf rnqr l srgohm nzldwb"
+     ]
+    }
+   }
+  ],
+  "hints": [
+   "Zobacz, jak wygląda lista tresci na końcu. Szukanie zadziałało, ale lista się zmieniła. Która linijka ją zmienia?",
+   "Zamiast wpisywać wynik odszyfruj do listy, zapisz go w zwykłej zmiennej String tekst. Potem szukaj w tej zmiennej.",
+   "Ostatnia podpowiedź: String tekst = odszyfruj(tresci.get(i), 3); if (zawiera(tekst, \"okno\")) {"
+  ],
+  "tools": [],
+  "quiz": [
+   {
+    "q": "Czemu w projekcie w liście ma zostać szyfrogram?",
+    "options": [
+     "Bo do pliku (i do listy) idzie tylko zaszyfrowana treść",
+     "Bo listy nie mogą trzymać zwykłego tekstu",
+     "Bo odszyfruj działa tylko raz"
+    ],
+    "answer": 0,
+    "why": "Cały sens archiwum to treść zaszyfrowana. Gdyby szukanie ją odszyfrowało na stałe, kolejny zapis wpisałby zwykły tekst do pliku."
+   }
+  ],
+  "lesson": "Szukanie w odszyfrowanej treści nie zmienia listy: tekst do zmiennej, szukanie w zmiennej, lista zostaje z szyfrogramem."
+ },
+ {
+  "id": 12,
+  "title": "Sprawdzian",
+  "ref": "Sprawdzian",
+  "goal": "Z pamięci, bez podglądania: napisz szukajWzorca(String text, String wzor) z ćwiczenia 1. Zwraca numer pierwszego trafienia albo -1. Bez contains, indexOf i substring. W main użyj tekstu ananas i wypisz pozycje wzorów nas, ana i xyz w formacie z ćwiczenia 1. Pamiętaj o brzegach: pusty wzór, wzór dłuższy od tekstu, trafienie na końcu.",
+  "starter": "public static void main(String[] args) {\n    // tu napisz szukajWzorca (nad main) i wypisz trzy linie\n}\n",
+  "tests": [
+   {
+    "main": true,
+    "out": "szukam nas: pozycja 3\nszukam ana: pozycja 0\nszukam xyz: pozycja -1",
+    "calls": [
+     "szukajWzorca"
+    ]
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "aaab",
+     "aab"
+    ],
+    "ret": 1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "xyzab",
+     "ab"
+    ],
+    "ret": 3
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "ab",
+     "abc"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abc",
+     ""
+    ],
+    "ret": 0
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "",
+     "a"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "Ala",
+     "ala"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abab",
+     "bab"
+    ],
+    "ret": 1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "xaxb",
+     "ab"
+    ],
+    "ret": -1
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "abcabd",
+     "abd"
+    ],
+    "ret": 3
+   },
+   {
+    "call": "szukajWzorca",
+    "types": [
+     "String",
+     "String"
+    ],
+    "args": [
+     "aaaa",
+     "aa"
+    ],
+    "ret": 0
+   }
+  ],
+  "code_checks": [
+   {
+    "re": "\\b(for|while)\\b[\\s\\S]*\\b(for|while)\\b",
+    "label": "Dwie pętle: po oknach i po literach wzoru",
+    "msg": "Potrzebne są dwie pętle jedna w drugiej: zewnętrzna przesuwa okno (i), wewnętrzna porównuje litery wzoru (j)."
+   },
+   {
+    "re": "charAt\\s*\\(\\s*(i\\s*\\+\\s*j|j\\s*\\+\\s*i)\\s*\\)",
+    "label": "Litera tekstu pod literą j wzoru to charAt(i + j)",
+    "msg": "Literę tekstu pod literą j wzoru czytasz przez text.charAt(i + j): i to początek okna, j to miejsce we wzorze."
+   },
+   {
+    "re": "\\.\\s*(contains|indexOf|lastIndexOf|matches|regionMatches|startsWith|substring|equals)\\s*\\(",
+    "want": false,
+    "label": "Szukanie jest własne (bez contains, indexOf, substring...)",
+    "msg": "Na tym poziomie szukasz SAM, dwiema pętlami. Nie wolno contains, indexOf, lastIndexOf, matches, regionMatches, startsWith ani substring/equals na kawałku tekstu."
+   },
+   {
+    "re": "\\bi\\s*<=\\s*\\w+\\s*-\\s*\\w+|\\bi\\s*<\\s*\\w+\\s*-\\s*\\w+\\s*\\+\\s*1|\\bi\\s*<=\\s*\\w+\\.length\\(\\)\\s*-\\s*\\w+\\.length\\(\\)",
+    "label": "Pętla i kończy się na n - m (z <=)",
+    "msg": "Pętla i ma kończyć się na n - m włącznie: i <= n - m (n to długość tekstu, m to długość wzoru)."
+   }
+  ],
+  "roles": {
+   "i": "początek okna: numer litery tekstu, od której zaczyna się wzór",
+   "j": "numer porównywanej litery wzoru"
+  },
+  "hints": [
+   "Dwie pętle: i po początkach okna, j po literach wzoru. Przy złej literze break, przy całym trafieniu return i, po pętli i return -1.",
+   "Granica pętli i to n - m z <=. Literę tekstu czytasz przez charAt(i + j).",
+   "Ostatnia podpowiedź: for (int i = 0; i <= n - m; i++) { boolean pasuje = true; for (int j = 0; j < m; j++) { if (text.charAt(i + j) != wzor.charAt(j)) { pasuje = false; break; } } if (pasuje) { return i; } } return -1;"
+  ],
+  "tools": [],
+  "quiz": [
+   {
+    "q": "Dlaczego pętla i kończy się na n - m, a nie na n?",
+    "options": [
+     "Bo dalej okno wystawałoby za koniec tekstu",
+     "Bo Java nie lubi n",
+     "Bo wtedy szukanie jest szybsze, ale wynik ten sam"
+    ],
+    "answer": 0,
+    "why": "Wzór ma m liter. Okno zaczynające się dalej niż n - m ma litery poza tekstem i charAt wywala wyjątek."
+   }
+  ],
+  "lesson": "Naiwne szukanie wzorca: dwie pętle, okno przesuwane o jedno miejsce, charAt(i + j), i <= n - m, return -1 po pętli."
+ }
+]

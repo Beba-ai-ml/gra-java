@@ -429,6 +429,40 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
 .lpairs .lpnotes div.unk::before { content: "? "; }
 .tl.in { color: #8fc28f; }
 
+/* ---------- chapter 14: naive pattern search - the pattern strip slides under the text ---------- */
+.ptb { display: none; margin-top: 12px; background: #fffdf6; border: 2px solid var(--ink-soft); border-radius: 8px; padding: 10px 14px 12px; box-shadow: 0 3px 0 #d6c7a3; --tw: 38px; }
+.ptb.on { display: block; animation: frameIn .25s ease; }
+.pthead { display: flex; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; font-family: var(--sans); font-size: 15px; color: var(--ink-soft); }
+.pthead b { color: var(--ink); font-size: 16px; }
+.pthead .ptinfo { font-family: var(--mono); font-size: 14px; }
+.ptscroll { overflow-x: auto; padding: 6px 0 2px; }
+.ptwrap { position: relative; margin-left: 58px; height: 148px; }
+.ptlab { position: absolute; left: -58px; width: 54px; font-family: var(--sans); font-size: 13px; color: var(--ink-soft); text-align: right; }
+.ptlab.t { top: 28px; } .ptlab.w { top: 98px; }
+.ptidx, .ptrow { position: absolute; display: flex; left: 0; }
+.ptidx { top: 4px; }
+.ptidx span { width: var(--tw); text-align: center; font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+.ptrow.text { top: 24px; }
+.ptstrip { position: absolute; top: 80px; left: 0; display: flex; transition: left .45s ease; }
+.ptt { width: calc(var(--tw) - 4px); height: 44px; margin-right: 4px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 21px; font-weight: bold; background: linear-gradient(180deg, #eef5fb, #d6e7f5); border: 2px solid #87a9c7; color: var(--ink); transition: background .2s, transform .2s; }
+.ptt.inwin { border-color: #b59a1c; background: #fff7d1; }
+.ptt.eq { background: #bfe8bf; border-color: #3f8f3f; }
+.ptt.ne { background: #f4b9b2; border-color: #b53a2d; }
+.ptt.full { background: #7fd17f; border-color: #1f7a1f; box-shadow: 0 0 0 3px #ffe58a; }
+.ptt.over { background: repeating-linear-gradient(45deg, #fde0dc, #fde0dc 6px, #f4b9b2 6px, #f4b9b2 12px); border-style: dashed; }
+.ptstrip .ptt { border-color: #8a6d2a; background: linear-gradient(180deg, #fff1c2, #f3d98a); }
+.ptstrip .ptt.eq { background: #bfe8bf; border-color: #3f8f3f; }
+.ptstrip .ptt.ne { background: #f4b9b2; border-color: #b53a2d; }
+.ptstrip .ptt.full { background: #7fd17f; border-color: #1f7a1f; }
+.ptstrip .ptt.now, .ptrow .ptt.now { transform: translateY(-3px); }
+.ptsay { margin-top: 6px; min-height: 22px; font-family: var(--sans); font-size: 15px; color: var(--ink); }
+.ptsay.eq { color: #1f6f1f; font-weight: bold; } .ptsay.ne { color: #a3281b; }
+.pttrail { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; font-family: var(--mono); font-size: 13px; }
+.pttrail .st { padding: 1px 8px; border-radius: 10px; background: #f1e8d0; color: var(--ink-soft); }
+.pttrail .st.eq { background: #bfe8bf; color: #1f5f1f; }
+.ptverdict { margin-top: 6px; font-family: var(--sans); font-size: 15px; font-weight: bold; }
+.ptverdict.hit { color: #1f6f1f; } .ptverdict.miss { color: #a3281b; }
+
 /* ---------- chapter 8: linear search - one step = one element compared with the searched value ---------- */
 .srch { display: none; margin-top: 12px; background: #fffdf6; border: 2px solid var(--ink-soft); border-radius: 8px; padding: 10px 14px 12px; box-shadow: 0 3px 0 #d6c7a3; }
 .srch.on { display: block; animation: frameIn .25s ease; }
@@ -477,6 +511,15 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
 .sxb.skip.bad { color: var(--bad); border-color: var(--bad); }
 .drawer.sx-miss, .lbox.sx-miss { opacity: .5; }
 .drawer.sx-miss.read, .lbox.sx-miss.read { opacity: 1; }
+.lbox.out { opacity: .35; filter: grayscale(.6); }
+.drawer.bmid { box-shadow: 0 0 0 5px #f0b35a, 0 3px 0 var(--wood-3); }
+.lbox.bmid { box-shadow: 0 0 0 5px #f0b35a, 0 3px 0 #a37c42; }
+.drawer.bmid.out, .lbox.bmid.out { opacity: 1; filter: none; }
+.srch.bin { border-color: #1f5fbf; }
+.srsign.bs-lt { color: #c06a00; }
+.srsign.bs-gt { color: #1f5fbf; }
+.srsay.bad { color: var(--bad); font-weight: bold; }
+.bswarn { margin-top: 8px; padding: 5px 10px; border-left: 5px solid var(--bad); background: var(--bad-bg); font-size: 15px; }
 .drawer.sx-hit { box-shadow: 0 0 0 5px #9fd59b, 0 3px 0 var(--wood-3); }
 .lbox.sx-hit { box-shadow: 0 0 0 5px #9fd59b, 0 3px 0 #a37c42; }
 .drawer.sx-skip, .lbox.sx-skip { outline: 3px dashed #9c8457; outline-offset: 3px; }
@@ -486,6 +529,59 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
 .srminus { position: absolute; top: 74px; width: 70px; height: 80px; border: 2.5px dashed var(--ink-soft); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: var(--sans); color: var(--ink-soft); background: rgba(255,255,255,.35); animation: frameIn .25s ease; }
 .srminus b { font-family: var(--mono); font-size: 24px; color: var(--ink); }
 .srminus small { font-size: 11.5px; line-height: 1.15; }
+
+/* ---------- chapter 16: files on disk, cursor, split, exceptions ---------- */
+.fpanel { display: none; margin-top: 12px; gap: 12px; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: start; }
+.fpanel.on { display: grid; animation: frameIn .25s ease; }
+.fpcol { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.ffiles { display: flex; flex-wrap: wrap; gap: 10px; min-height: 40px; align-items: flex-start; }
+.ffiles .none { color: var(--ink-soft); font-size: 14px; }
+.fcard { background: #fff; border: 2px solid #c9bd9b; border-radius: 8px; min-width: 190px; max-width: 100%; box-shadow: 0 2px 0 #e6dcc2; overflow: hidden; transition: box-shadow .2s, border-color .2s; }
+.fcard .fh { background: #efe2bf; padding: 3px 10px; display: flex; justify-content: space-between; gap: 10px; align-items: baseline; font-family: var(--mono); font-size: 15px; }
+.fcard .fst { font-family: var(--sans); font-size: 12.5px; color: var(--ink-soft); }
+.fcard.open-w { border-color: #c98a1d; box-shadow: 0 0 0 3px #f6e3b0; }
+.fcard.open-w .fst { color: #8a5a00; font-weight: bold; }
+.fcard.open-r { border-color: #3d79b5; box-shadow: 0 0 0 3px #d5e6f6; }
+.fcard.open-r .fst { color: #25598f; font-weight: bold; }
+.fcard.saved { border-color: var(--ok); box-shadow: 0 0 0 3px var(--ok-bg); }
+.fcard.saved .fst { color: var(--ok); font-weight: bold; }
+.fcard.bad { border-color: var(--bad); border-style: dashed; background: #fdf0ee; }
+.fcard.bad .fst { color: var(--bad); font-weight: bold; }
+.fcard.ghost { border-style: dashed; opacity: .75; }
+.fbody { padding: 4px 0; font-family: var(--mono); font-size: 15px; min-height: 24px; }
+.fline { display: flex; gap: 8px; padding: 1px 10px; align-items: baseline; position: relative; }
+.fline i { font-style: normal; color: #a99c78; font-size: 12px; min-width: 14px; text-align: right; }
+.fline code { font-family: var(--mono); white-space: pre; }
+.fline.cur { background: #d5e6f6; }
+.fline.cur::before { content: "▶"; position: absolute; left: -1px; color: #25598f; font-size: 11px; }
+.fline.new { animation: fnew .5s ease; }
+.fline.pend { border-left: 4px dashed #c98a1d; background: #fff7e0; }
+.fline.pend code { color: #8a5a00; }
+.fline.lost { text-decoration: line-through; opacity: .55; border-left: 4px dashed var(--bad); background: #fdf0ee; }
+.fempty { color: var(--ink-soft); font-family: var(--sans); font-size: 13px; padding: 2px 10px; }
+.fnote { font-family: var(--sans); font-size: 12.5px; padding: 3px 10px 5px; color: var(--ink-soft); }
+.fnote.bad { color: var(--bad); font-weight: bold; }
+@keyframes fnew { from { transform: translateY(-9px); opacity: 0; background: #fff1b8; } to { transform: none; opacity: 1; } }
+.ftool { min-height: 44px; font-family: var(--sans); font-size: 14px; }
+.ftool .row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 4px 0; font-family: var(--mono); font-size: 16px; }
+.ftool .ch { display: inline-block; min-width: 17px; padding: 1px 4px; text-align: center; background: #fff; border: 1.5px solid #d9cfb5; border-radius: 4px; }
+.ftool .ch.cut { background: #fde2dd; border-color: var(--bad); color: var(--bad); font-weight: bold; }
+.ftool .ch.in { background: #d9efdc; border-color: var(--ok); }
+.ftool .part { display: inline-flex; gap: 5px; align-items: baseline; padding: 2px 8px; background: #d9efdc; border: 2px solid var(--ok); border-radius: 6px; }
+.ftool .part i { font-style: normal; font-size: 12px; color: var(--ink-soft); }
+.ftool .part.many { background: #fde2dd; border-color: var(--bad); padding: 1px 6px; }
+.ftool .op { color: var(--ink-soft); font-family: var(--sans); font-size: 13.5px; }
+.ftool .res { font-weight: bold; }
+.ftool .res.yes { color: var(--ok); }
+.ftool .res.no { color: var(--bad); }
+.ftool .warn { color: var(--bad); font-weight: bold; font-family: var(--sans); font-size: 14px; }
+.fexc { border: 2px solid var(--bad); background: #fdf0ee; border-radius: 8px; padding: 6px 12px; font-size: 14.5px; }
+.fexc b { font-family: var(--mono); color: var(--bad); }
+.fexc .jump { font-family: var(--mono); margin-top: 3px; }
+.fexc.caught { border-color: #c98a1d; background: #fff7e0; }
+.fexc.caught b { color: #8a5a00; }
+.fexc.died { animation: fshake .4s; }
+@keyframes fshake { 20% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 80% { transform: translateX(-3px); } }
 /* ---------- chapter 10: menu loop - keyboard, Scanner buffer, switch jumping to a case, do-while going round ---------- */
 .mloop { display: none; margin-top: 12px; gap: 12px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
 .mloop.on { display: grid; animation: frameIn .25s ease; }
@@ -664,6 +760,29 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
 .rail.narrow .ptr b { font-size: 13px; padding: 0 5px; }
 .drawer.bad .lab { background: var(--bad-bg); }
 .drawer.bad .lab .lt { color: var(--bad); }
+.vig { display: none; margin: 4px 0 8px; overflow-x: auto; overflow-y: hidden; padding-bottom: 4px; }
+.vig.on { display: block; }
+.vig-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-family: var(--sans); font-size: 14px; color: var(--ink-soft); margin-bottom: 6px; }
+.vig-head b { color: var(--ink); font-size: 15px; }
+.vig-key { font-family: var(--mono); font-size: 14px; background: #fff; border: 1.5px solid #c9b48a; border-radius: 6px; padding: 1px 8px; color: var(--ink); }
+.vig-key i { font-style: normal; font-size: 11px; color: var(--ink-soft); }
+.vig-grid { display: flex; gap: 4px; width: max-content; }
+.vcol { width: 46px; text-align: center; font-family: var(--mono); }
+.vrow-l { margin-right: 4px; font-family: var(--sans); font-size: 12px; color: var(--ink-soft); text-align: right; width: 64px; white-space: nowrap; }
+.vrow-l span { display: block; height: 34px; line-height: 34px; }
+.vrow-l span.k { margin-top: 3px; }
+.vrow-l span.s { height: 17px; line-height: 17px; }
+.vt, .vk { height: 34px; line-height: 30px; font-size: 20px; font-weight: bold; border: 1.5px solid var(--wood-2); background: var(--label); border-radius: 5px; color: var(--ink); transition: background .2s, border-color .2s; }
+.vk { margin-top: 3px; border-style: dashed; color: #b6a780; background: rgba(255,255,255,.3); }
+.vcol.has .vk { border-style: solid; color: #1f5fbf; background: #dfe9f7; border-color: #1f5fbf; }
+.vcol.has.wrap .vk { background: #fff4dc; border-color: #d99a2b; color: #9a5b00; }
+.vcol.cur .vt { background: var(--marker); border-color: var(--ink); border-width: 2.5px; }
+.vcol.nl .vt { color: #9a8f7a; font-weight: normal; border-style: dashed; }
+.vcol.nl .vk { border-color: #d6ccb5; }
+.vn, .vs { height: 17px; line-height: 17px; font-size: 11.5px; color: var(--ink-soft); white-space: nowrap; }
+.vs { color: var(--ok); font-weight: bold; }
+.vcol.wrap .vn { color: #9a5b00; font-weight: bold; }
+.vcol.bad .vs { color: var(--bad); }
 .abc { display: none; margin: 4px 0 6px; overflow-x: auto; overflow-y: hidden; }
 .abc.on { display: block; }
 .abc-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-family: var(--sans); font-size: 14px; color: var(--ink-soft); }
@@ -803,8 +922,10 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
       </div>
       <div class="frames" id="frames"></div>
       <div class="srch" id="srch"></div>
+      <div class="ptb" id="pat"></div>
       <div class="strs" id="strs"></div>
       <div class="sortp" id="sortp"></div>
+      <div class="srch bin" id="binp"></div>
       <div class="mloop" id="mloop">
         <div class="mcol">
           <div class="mbox" id="mKbBox"><div class="mh"><b>Klawiatura</b> - to gra wpisze po kolei (⏎ = Enter)</div><div class="keys" id="mKeys"></div></div>
@@ -815,7 +936,17 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
           <div class="mbox" id="mDwBox" hidden><div class="mh"><b>Pętla do-while</b> - warunek sprawdzany na dole</div><div class="mcond" id="mCond"></div><div class="passes" id="mPasses"></div></div>
         </div>
       </div>
+      <div class="fpanel" id="fpanel">
+        <div class="fpcol">
+          <div class="mbox"><div class="mh"><b>Katalog programu</b> - pliki na dysku (<span style="color:#8a5a00">pomarańczowa linia</span> = jeszcze w pamięci programu, <span style="color:#25598f">niebieska strzałka</span> = tu czyta program)</div><div class="ffiles" id="fpFiles"></div></div>
+        </div>
+        <div class="fpcol">
+          <div class="mbox" id="fpExcBox" hidden><div class="mh"><b>Wyjątek</b> - co się stało z programem</div><div id="fpExc"></div></div>
+          <div class="mbox" id="fpToolBox" hidden><div class="mh" id="fpToolHead"></div><div class="ftool" id="fpTool"></div></div>
+        </div>
+      </div>
       <div class="rail" id="rail"></div>
+      <div class="vig" id="vig"></div>
       <div class="abc" id="abc"></div>
       <div class="lists" id="lists"></div>
       <div class="controls">
@@ -915,6 +1046,11 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     12: "Rozdział 12 · obrona: pokaż w kodzie i wytłumacz",
     10: "Rozdział 10 · menu: <code>do-while</code>, <code>switch</code>, <code>Scanner</code>",
     11: "Rozdział 11 · cały projekt notatek krok po kroku",
+    13: "Rozdział 13 · wyszukiwanie binarne: <code>p</code>, <code>k</code>, <code>mid</code>, połowa odpada",
+    14: "Rozdział 14 · szukanie wzorca: okno przesuwa się pod tekstem, bez <code>contains</code>",
+    15: "Rozdział 15 · szyfr Vigenère'a: klucz pod tekstem, <code>% klucz.length()</code>",
+    17: "Rozdział 17 · cały projekt na 4.0 i 5.0: binarne, wyszukiwanie słowa, Vigenère, plik <code>archiwum.txt</code>, obrona",
+    16: "Rozdział 16 · pliki i wyjątki: <code>try-catch</code>, zapis i odczyt <code>archiwum.txt</code>, <code>split</code>",
   };
   function storeKey(ch) { return ch === 1 ? "gra-r1-v2" : ch === 2 ? "gra-r2-v2" : `gra-r${ch}-v1`; }
   // chapter 2 got a new level 8 ("Brakujący return"): old levels 8, 9, 10 are now 9, 10, 11
@@ -1083,9 +1219,12 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     renderNav();
     czReset();
     sortReset();
+    binReset();
     if (isClass()) resetClassStage(); else resetStage(cur.tests[0].arr);
     mlReset();
+    fileReset();
     abcReset();
+    vigReset();
     appReset();
     renderEditor();
     setHl(null);
@@ -1109,7 +1248,12 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     const shown = t.types.map((ty, k) => ty === "int[]" ? `{${t.args[k].join(", ")}}` : ty === "String" ? `"${t.args[k]}"`
       : ty === "char" ? `'${t.args[k]}'` : ty === "char[]" ? `"${t.args[k]}".toCharArray()`
       : ty.startsWith("ArrayList") ? `[${t.args[k].map(fmtV).join(", ")}]` : String(t.args[k]));
-    return `${t.call}(${shown.join(", ")})`;
+    return `${t.call}(${shown.join(", ")})${t.files ? " " + filesLabel(t.files) : ""}`;
+  }
+  // chapter 16: the folder the test starts with, e.g. [w katalogu: dane.txt = «a⏎b», brak.txt nie ma]
+  function filesLabel(files) {
+    const names = Object.entries(files).map(([n, v]) => v == null ? `${n} (folder)` : `${n} = «${v.replace(/\n/g, "⏎")}»`);
+    return `[w katalogu: ${names.length ? names.join(", ") : "pusto"}]`;
   }
   function renderGoal() {
     const ref = cur.ref ? `<span class="ref">${esc(cur.ref)}</span>` : "";
@@ -1117,7 +1261,9 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
       const mt = cur.tests.find((t) => t.main);
       const calls = cur.tests.filter((t) => t.call).map((t) => `<code>${esc(callLabel(t))}</code>`);
       let target = mt && mt.in != null ? `W konsoli gra wpisze za Ciebie: <pre class="expect">${esc(mt.in.replace(/\n$/, ""))}</pre>` : "";
+      if (mt && mt.files) target += `<span>Na starcie w katalogu programu: <code>${esc(filesLabel(mt.files).slice(13, -1))}</code></span>`;
       if (mt && mt.out != null) target += `Na ekranie ma być: <pre class="expect">${esc(mt.out)}</pre>`;
+      if (mt && mt.files_end) target += Object.entries(mt.files_end).map(([n, v]) => `Po programie plik <code>${esc(n)}</code> ma zawierać: <pre class="expect">${esc(v.replace(/\n$/, "") || "(pusty)")}</pre>`).join("");
       if (mt && mt.exc) target += `<span>a potem program ma się wywrócić: <code>${esc(mt.exc.split(".").pop())}</code></span>`;
       const moreMain = cur.tests.filter((t) => t.main && t.in != null).length - 1;
       if (moreMain > 0) target += `<span>(gra uruchomi program jeszcze ${moreMain} raz${moreMain > 1 ? "y" : ""} z innymi słowami w konsoli)</span>`;
@@ -1125,7 +1271,7 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
       const mine = cur.carry && state.passedCode && state.passedCode[cur.carry];
       const carry = !cur.carry ? "" : mine
         ? `<p class="carry">Ten krok budujesz na swoim kodzie z poziomu ${cur.carry}. <button type="button" class="small" id="carryBtn">Wstaw mój kod z poziomu ${cur.carry}</button></p>`
-        : `<p class="carry">Najpierw zalicz poziom ${cur.carry} - wtedy gra wstawi tu Twój kod z tamtego kroku. Na razie w edytorze jest tylko szkielet.</p>`;
+        : `<p class="carry">Najpierw zalicz poziom ${cur.carry} - wtedy gra wstawi tu Twój kod z tamtego kroku. Na razie w edytorze jest ${cur.carry_ref ? "wzorcowy kod z tamtego kroku" : "tylko szkielet"}.</p>`;
       $("goal").innerHTML = `<h2>Poziom ${cur.id}. ${esc(cur.title)}${ref}</h2><p>${esc(cur.goal)}</p>${carry}<div class="target">${target}</div>`;
       if ($("carryBtn")) $("carryBtn").addEventListener("click", () => { const c = carried(); if (c) edit(0, ta.value.length, c, 0); });
       return;
@@ -1235,7 +1381,7 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
 
   function abcReset() {
     const box = $("abc");
-    abc = { on: !!(cur && cur.view === "szyfr"), svals: {}, base: 97, letter: null, open: false, placed: false, pos: null, name: "", params: {}, lastRes: null, wrongBase: false };
+    abc = { on: !!(cur && (cur.view === "szyfr" || cur.abc)), svals: {}, base: 97, letter: null, open: false, placed: false, pos: null, name: "", params: {}, lastRes: null, wrongBase: false };
     box.classList.toggle("on", abc.on);
     box.innerHTML = "";
     if (!abc.on) return;
@@ -1409,6 +1555,12 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
   // a % b: the shift (right / left / left + 26) step by step, then the wrap
   async function abcMod(ev, ms, token, fast) {
     const tail = `${ev.a} % ${ev.b} = ${ev.r}`;
+    if (vig.on && ev.b !== 26) {
+      vigMod(ev);
+      caption(`${tail}: ${ev.a >= ev.b ? "numer klucza doszedł do końca klucza i wraca na początek (zawija się)" : "numer klucza mieści się w kluczu, zostaje bez zmian"}`);
+      if (!fast) await sleep(ms * 0.8, token);
+      return;
+    }
     if (!abc.placed || ev.b !== 26 || abc.pos == null) { caption(tail); if (!fast) await sleep(ms * 0.6, token); return; }
     const s = abc.pos, z = abc.params.szyfr, left = isDecrypt(ev.m), name = "";
     const tone = abc.wrongBase ? "bad" : "warn", toneCap = abc.wrongBase ? true : "warn";
@@ -1473,9 +1625,104 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     return wrapTo();
   }
   function krokow4(k) { const d = k % 10, t = k % 100; return k === 1 ? "miejsce" : d >= 2 && d <= 4 && !(t >= 12 && t <= 14) ? "miejsca" : "miejsc"; }
+  // ---- chapter 15 (level "vig": true): Vigenere - the message row with the key row under it ----
+  // Everything is read from real events: i (variable) = column, sget on the key = the key letter placed under that column,
+  // % with b != 26 = the wrap of the key index, dist of the key letter = its shift. Nothing is computed by the game.
+  let vig = { on: false };
+  function vigReset() {
+    vig = { on: !!(cur && cur.vig), text: null, key: null, cols: [], pos: null, kc: null, kPending: false, mod: null, lastIdx: null, keyCol: null };
+    const box = $("vig");
+    box.classList.toggle("on", vig.on);
+    box.innerHTML = "";
+    if (vig.on) vigBuild();
+  }
+  function vigUnq(v) { try { const s = JSON.parse(v); return typeof s === "string" ? s : null; } catch (e) { return null; } }
+  function vigBuild() {
+    const box = $("vig");
+    const t = vig.text || "", k = vig.key;
+    if (!t && !k) { box.innerHTML = `<div class="vig-head"><b>Tekst i klucz</b><span>tu pojawi się tekst, a pod nim litery klucza, które do niego pasują</span></div>`; return; }
+    const keyTiles = k ? [...k].map((c, i) => `${esc(c)}<i>${i}</i>`).join(" ") : "";
+    let cols = "";
+    [...t].forEach((c, i) => {
+      const nl = !isLetter(c.charCodeAt(0));
+      cols += `<div class="vcol${nl ? " nl" : ""}" data-i="${i}"><div class="vt">${c === " " ? "␣" : esc(c)}</div><div class="vk">${nl ? "" : "?"}</div><div class="vn">${i}</div><div class="vs"></div></div>`;
+    });
+    box.innerHTML = `<div class="vig-head"><b>Tekst i klucz</b>${k ? `<span class="vig-key" title="litery klucza i ich numery">klucz: ${keyTiles}</span>` : ""}<span id="vigNote">${esc(vig.note || "")}</span></div>
+      <div class="vig-grid"><div class="vrow-l"><span>tekst</span><span class="k">klucz</span><span class="s">numer</span><span class="s">przesunięcie</span></div>${cols}</div>`;
+  }
+  function vigCol(i) { return $("vig").querySelector(`.vcol[data-i="${i}"]`); }
+  function vigSetText(s) { if (s === vig.text) return; vig.text = s; vig.cols = []; vig.pos = null; vigBuild(); }
+  function vigHere(i) {
+    vig.pos = i;
+    $("vig").querySelectorAll(".vcol.cur").forEach((e) => e.classList.remove("cur"));
+    const c = vigCol(i);
+    if (c) c.classList.add("cur");
+  }
+  function vigNote(t) { vig.note = t; const n = $("vigNote"); if (n) n.textContent = t; }
+  // returns true when the event belongs to the key and the Caesar strip must not treat it as a message letter
+  function vigAfter(ev) {
+    if ((ev.t === "v" || ev.t === "arg") && typeof ev.v === "string" && ev.v.startsWith('"')) {
+      const s = vigUnq(ev.v);
+      if (s != null && /^(klucz|key)/i.test(ev.name)) { if (s !== vig.key) { vig.key = s; vigBuild(); } }
+      else if (s != null && /^(text|tekst|wiadomosc|msg)/i.test(ev.name)) vigSetText(s);
+      return false;
+    }
+    if (ev.t === "carr" && ev.s != null) { vigSetText(ev.s); return false; }
+    if (ev.t === "call") {
+      vig.pos = null; vig.kPending = false; vig.mod = null; vig.lastIdx = null;
+      $("vig").querySelectorAll(".vcol").forEach((e) => { e.classList.remove("has", "wrap", "cur"); const k = e.querySelector(".vk"); if (k) k.textContent = e.classList.contains("nl") ? "" : "?"; e.querySelector(".vn").textContent = e.dataset.i; e.querySelector(".vs").textContent = ""; });
+      vigNote(`${ev.name}: ${isDecrypt(ev.name) ? "odejmujemy" : "dodajemy"} przesunięcie z klucza`);
+      return false;
+    }
+    if (ev.t === "v" && ev.name === "i" && typeof ev.v === "number") {
+      vigHere(ev.v);
+      return false;
+    }
+    if (ev.t === "v" && ev.name === "szyfr" && typeof ev.v === "number" && vig.lastIdx != null) {
+      const c = vigCol(vig.keyCol);
+      if (c) c.querySelector(".vs").textContent = (ev.m && isDecrypt(ev.m) ? "-" : "+") + ev.v;
+      return false;
+    }
+    if (ev.t === "cr" || (ev.t === "sget" && !(vig.key != null && ev.s === vig.key))) {
+      if (ev.t === "sget" && vig.text == null) vigSetText(ev.s);
+      vigHere(ev.i);
+      return false;
+    }
+    if (ev.t === "sget" && ev.s === vig.key) {
+      const col = vig.pos != null ? vig.pos : 0, c = vigCol(col);
+      vig.kPending = true;
+      vig.kc = ev.v;
+      vig.lastIdx = ev.i;
+      vig.keyCol = col;
+      if (c) {
+        c.classList.add("has");
+        c.querySelector(".vk").textContent = ev.c;
+        const m = vig.mod && vig.mod.r === ev.i ? vig.mod : null;
+        const wrapped = !!m && m.r === 0 && m.a > 0;   // the key starts again from its first letter
+        c.classList.toggle("wrap", wrapped);
+        c.querySelector(".vn").textContent = m ? `${m.a}%${m.b}=${m.r}` : `klucz[${ev.i}]`;
+      }
+      vig.mod = null;
+      return true;
+    }
+    return false;
+  }
+  // a % b where b is not 26 = the key index wrapping around the key
+  function vigMod(ev) { vig.mod = { a: ev.a, b: ev.b, r: ev.r }; }
+  // key letter - 'a' = its number = the shift for this column
+  function vigKeyDist(ev) {
+    if (!vig.on || !vig.kPending || ev.a !== vig.kc) return false;
+    vig.kPending = false;
+    const c = vigCol(vig.keyCol);
+    if (c) c.querySelector(".vs").textContent = `${isDecrypt(ev.m) ? "-" : "+"}${ev.r}`;
+    return true;
+  }
   // events that the strip takes over completely on chapter 4 levels
   async function abcOwn(ev, prev, fast, ms, token) {
-    if (ev.t === "dist") {
+    if (ev.t === "dist" && vigKeyDist(ev)) {
+      caption(`litera klucza ${said(ev.a)} - '${String.fromCharCode(ev.b)}' = ${ev.r}: tyle miejsc przesuniemy literę tekstu pod nią`);
+      if (!fast) await sleep(ms * 1.1, token);
+    } else if (ev.t === "dist") {
       if (!abcDist(ev)) caption(`${ev.a} - ${ev.b} = ${ev.r}`);
       if (!fast) await sleep(ms * 1.1, token);
     } else if (ev.t === "mod") {
@@ -1499,6 +1746,12 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
   const ABC_OWN = new Set(["dist", "mod", "i2c", "cw"]);
   // after the chapter 3 handler: letters read, int / char / String variables, names
   async function abcAfter(ev, prev, fast, ms, token) {
+    if (vig.on && vigAfter(ev)) {
+      caption(`klucz[${ev.i}] = '${ev.c}' - litera klucza stoi teraz pod literą tekstu nr ${vig.keyCol}`);
+      if (!fast) await sleep(ms * 0.8, token);
+      return;
+    }
+    if (ev.t === "v" && ev.ch != null && vig.on && vig.kPending && ev.ch === vig.kc) return;
     if (ev.t === "cr" || ev.t === "sget") {
       abcLetter(ev.v);
     } else if (ev.t === "call") {
@@ -1538,9 +1791,12 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     pushFrame("main");
     resetStrs();
     srReset();
+    ptReset();
     czReset();
     sortReset();
+    binReset();
     appReset();
+    fileReset();
   }
   function pushFrame(m) {
     const fr = $("frames");
@@ -2457,6 +2713,201 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     if (so.cmpAll || so.rows.length) { so.done = true; soPaint(); }
   }
 
+  // ---- chapter 13: binary search. A step = the middle element just read (t[mid], lista.get(mid)) compared with the searched
+  // value. The page takes the TRUE relation from the two values (<, =, >), independent of how the student wrote the if:
+  // mid is lit, the sign stands between mid's value and the searched value, the half that cannot hold the value greys out,
+  // steps are counted and in the end compared with the steps of going one by one. Loop conditions (p <= k) are int
+  // comparisons that follow no element read - they only tell the page that a new loop turn begins. ----
+  let bs = null, bsRead = null, bsAv = null, bsAge = 99;
+  function binOn() { return !!(chap && (chap.id === 13 || (chap.id === 17 && cur && cur.bin))); }
+  function binReset() {
+    bs = null; bsRead = null; bsAv = null; bsAge = 99;
+    const b = $("binp");
+    if (b) { b.classList.remove("on"); b.innerHTML = ""; }
+    document.querySelectorAll("#stage .bmid").forEach((e) => e.classList.remove("bmid"));
+  }
+  function binCmpVals(a, b) { return typeof a === "number" && typeof b === "number" ? Math.sign(a - b) : (String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0); }
+  function binSorted(vals) { for (let k = 1; k < vals.length; k++) if (binCmpVals(vals[k - 1], vals[k]) > 0) return false; return true; }
+  function binVals(s) { return s.kind === "arr" ? (bsAv || []) : ((lists.get(s.id) || { vals: [] }).vals || []); }
+  function binMaxProbes(n) { return n > 0 ? Math.floor(Math.log2(n)) + 1 : 0; }
+  function binCells(s) { return s.kind === "arr" ? boxes : (lists.get(s.id) || { boxes: [] }).boxes; }
+  // the range that is still "alive": the student's own p..k when both exist, else the one worked out from the comparisons
+  function binRange() {
+    const pair = RANGES.find(([a, b]) => vars[a] != null && vars[b] != null);
+    if (pair) return { lo: vars[pair[0]], hi: vars[pair[1]], own: true };
+    return bs ? { lo: bs.lo, hi: bs.hi, own: false } : null;
+  }
+  function binPaintRange() {
+    if (!bs || bs.closed) return;
+    const r = binRange();
+    if (!r) return;
+    binCells(bs).forEach((d, i) => d.classList.toggle("out", i < r.lo || i > r.hi));
+  }
+  function binStart(rd, target, isStr, f) {
+    srClearMarks();
+    document.querySelectorAll("#stage .bmid").forEach((e) => e.classList.remove("bmid"));
+    const s = { kind: rd.kind, id: rd.id };
+    const vals = binVals(s);
+    const n = rd.kind === "arr" ? boxes.length : vals.length;
+    bs = { f, kind: rd.kind, id: rd.id, n, target, isStr, steps: [], lo: 0, hi: n - 1, closed: false, fresh: true, hit: -1,
+      sorted: binSorted(vals), vals: vals.slice(), last: null };
+    binCells(bs).forEach((d) => d.classList.remove("out"));
+    const box = $("binp");
+    box.classList.add("on");
+    const what = rd.kind === "arr" ? "szufladach" : "pudełkach";
+    const warn = bs.sorted ? "" : `<div class="bswarn">Uwaga: tych ${n} ${rd.kind === "arr" ? "liczb" : "elementów"} NIE stoi po kolei od najmniejszego. Szukanie binarne zakłada, że stoi - tu może pokazać „nie ma”, choć jest.</div>`;
+    box.innerHTML = `<div class="srhead"><b>Szukanie binarne</b><span>w ${n} ${what}, połowa odpada co krok:</span>
+      <span class="srwant">szukam ${esc(srShow(target, isStr))}</span><span class="srcount"></span></div>${warn}
+      <div class="srcmp"><div class="srslot elem empty"><small>środek</small><b>?</b></div><div class="srsign">?</div>
+      <div class="srslot want"><small>szukam</small><b>${esc(srShow(target, isStr))}</b></div><div class="srsay"></div></div>
+      <div class="srtrail"></div><div class="srverdict"></div>`;
+  }
+  // rel: how the middle element stands against the searched value: -1 smaller / before, 0 equal, 1 bigger / after
+  async function binStep(rd, target, rel, isStr, fast, ms, token) {
+    const f = fstack[fstack.length - 1];
+    if (!bs || bs.closed || bs.f !== f || bs.kind !== rd.kind || bs.id !== rd.id || !srSame(bs.target, target)) {
+      if (bs && !bs.closed) await binEnd(null, true, 0, token);
+      binStart(rd, target, isStr, f);
+    }
+    const sameTurn = bs.last && !bs.fresh && bs.last.i === rd.i;
+    const box = $("binp");
+    const cells = binCells(bs);
+    const src = cells[rd.i];
+    const slot = box.querySelector(".srslot.elem"), sign = box.querySelector(".srsign"), say = box.querySelector(".srsay");
+    const noun = rd.kind === "arr" ? "szuflada" : "pudełko";
+    if (!sameTurn) {
+      const own = binRange();
+      const lo = own ? own.lo : 0, hi = own ? own.hi : bs.n - 1;
+      const st = { no: bs.steps.length + 1, i: rd.i, v: rd.v, rel, lo, hi, repeat: false };
+      const prev = bs.steps[bs.steps.length - 1];
+      // the same range and the same middle again: nothing shrank since the last step
+      if (prev && prev.lo === lo && prev.hi === hi && prev.i === rd.i && own && own.own) { st.repeat = true; bs.repeats = (bs.repeats || 0) + 1; }
+      bs.steps.push(st);
+      bs.last = st;
+      if (!own || !own.own) { if (rel < 0) bs.lo = rd.i + 1; else if (rel > 0) bs.hi = rd.i - 1; }
+      if (rel === 0) bs.hit = rd.i;
+    }
+    bs.fresh = false;
+    const st = bs.last;
+    // an endless loop repeats the same step hundreds of times: show it twice, then run through it
+    if (st.repeat && bs.repeats > 2) { fast = true; anim.skip = true; }   // the rest of the endless loop plays instantly (like the Skip button)
+    document.querySelectorAll("#stage .bmid").forEach((e) => e.classList.remove("bmid"));
+    srClearMarks();
+    if (src) src.classList.add("bmid");
+    const left = Math.max(st.hi - st.lo + 1, 0);
+    box.querySelector(".srcount").textContent = `krok ${st.no} - jeszcze ${left} z ${bs.n} do sprawdzenia`;
+    slot.classList.remove("empty");
+    slot.innerHTML = `<small>${esc(noun)} ${rd.i} (środek)</small><b>${esc(srShow(rd.v, isStr))}</b>`;
+    sign.textContent = "?"; sign.className = "srsign";
+    say.textContent = ""; say.className = "srsay";
+    if (!fast && src) { fly(src, slot, srShow(rd.v, isStr), Math.max(ms * 0.55, 110), $("stage")); await sleep(Math.max(ms * 0.55, 110), token); }
+    else if (!fast) await sleep(ms * 0.3, token);
+    const sg = rel < 0 ? "<" : rel > 0 ? ">" : "=";
+    sign.textContent = sg;
+    sign.className = "srsign " + (rel === 0 ? "eq" : "bs-" + (rel < 0 ? "lt" : "gt"));
+    const word = isStr ? (rel < 0 ? "stoi PRZED" : "stoi PO") : (rel < 0 ? "jest MNIEJSZE od" : "jest WIĘKSZE od");
+    const t = srShow(target, isStr), v = srShow(rd.v, isStr);
+    let msg;
+    if (rel === 0) msg = `${v} = ${t} - trafione! Szukane leży pod numerem ${rd.i}.`;
+    else if (rel < 0) msg = `${v} ${word} ${t}, więc ${t} może być tylko na PRAWO od numeru ${rd.i}. Lewa połowa odpada: numery ${st.lo}..${rd.i}.`;
+    else msg = `${v} ${word} ${t}, więc ${t} może być tylko na LEWO od numeru ${rd.i}. Prawa połowa odpada: numery ${rd.i}..${st.hi}.`;
+    if (st.repeat) msg = `Ten sam zakres ${st.lo}..${st.hi} i ten sam środek ${rd.i} co w poprzednim kroku - nic się nie skurczyło! Pętla będzie kręcić się w kółko: p albo k musi przeskoczyć środek (mid + 1 albo mid - 1).`;
+    say.textContent = msg;
+    say.className = "srsay" + (rel === 0 ? " eq" : st.repeat ? " bad" : "");
+    if (src) src.classList.toggle("sx-hit", rel === 0);
+    srBadge({ kind: rd.kind, id: rd.id }, rd.i, rel === 0 ? "eq" : "", sg);
+    if (!sameTurn && !(st.repeat && bs.repeats > 3)) {
+      const tr = box.querySelector(".srtrail");
+      const chip = document.createElement("span");
+      chip.className = "st" + (rel === 0 ? " eq" : st.repeat ? " card" : "");
+      chip.textContent = `${st.no}: ${st.lo}..${st.hi} środek ${rd.i}: ${v} ${sg} ${t}`;
+      tr.appendChild(chip);
+    }
+    caption(`krok ${st.no}: ${noun} ${rd.i} = ${v}, szukam ${t}  →  ${rel === 0 ? "trafione" : rel < 0 ? "środek za mały, odpada lewa połowa" : "środek za duży, odpada prawa połowa"}`, st.repeat ? "warn" : false);
+    if (!fast) await sleep(rel === 0 ? ms * 1.1 : ms * 0.9, token);
+    binPaintRange();
+  }
+  async function binEvent(ev, fast, ms, token) {
+    if (!binOn()) return;
+    if (ev.t === "arr") { bsAv = ev.vals.slice(); return; }
+    if (ev.t === "w") { if (bsAv) bsAv[ev.i] = ev.v; return; }
+    // two element reads right after each other (tab[j - 1] > tab[j]) are a comparison of two elements, e.g. in sorting - not a step
+    const readNow = (r) => { bsRead = Object.assign(r, { two: !!(bsRead && bsAge <= 2) }); bsAge = 0; };
+    if (ev.t === "r") { readNow({ kind: "arr", i: ev.i, v: ev.v }); return; }
+    if (ev.t === "lget" && !ev.it) { readNow({ kind: "list", id: ev.id, i: ev.i, v: ev.v }); return; }
+    bsAge++;
+    if (ev.t === "call" || ev.t === "out") { bsRead = null; return; }
+    if (ev.t === "v") { if (bs && !bs.closed) binPaintRange(); return; }
+    if (ev.t === "icmp") {
+      const rd = bsRead && !bsRead.two && bsAge <= 3 ? bsRead : null;
+      const ma = rd && srSame(rd.v, ev.a), mb = rd && srSame(rd.v, ev.b);
+      bsRead = null;
+      if (!rd || (!ma && !mb)) { if (bs) bs.fresh = true; return; }
+      bsRead = null;
+      const rel = ma && mb ? 0 : ma ? binCmpVals(ev.a, ev.b) : binCmpVals(ev.b, ev.a);
+      await binStep(rd, ma && !mb ? ev.b : ev.a, rel, false, fast, ms, token);
+      return;
+    }
+    if (ev.t === "cmp" || ev.t === "eq") {
+      const rd = bsRead && !bsRead.two && bsAge <= 6 ? bsRead : null;
+      if (!rd) { bsRead = null; return; }
+      const ma = srSame(rd.v, ev.a), mb = srSame(rd.v, ev.b);
+      if (!ma && !mb) { bsRead = null; return; }
+      if (ev.t === "eq") {
+        // equals only says yes / no - a "no" has no direction, the compareTo that follows gives it
+        if (!ev.v) return;
+        bsRead = null;
+        await binStep(rd, ev.b, 0, true, fast, ms, token);
+        return;
+      }
+      bsRead = null;
+      const sgn = Math.sign(ev.v);
+      await binStep(rd, ma ? ev.b : ev.a, ma ? sgn : -sgn, true, fast, ms, token);
+    }
+  }
+  // close the search: retV = what the method returns (null when the search lived in main)
+  async function binEnd(retV, fast, ms, token) {
+    if (!bs || bs.closed) return;
+    const s = bs;
+    s.closed = true;
+    const r = retV != null && /^-?\d+$/.test(String(retV)) ? Number(retV) : null;
+    const steps = s.steps.length;
+    const max = binMaxProbes(s.n);
+    const want = srShow(s.target, s.isStr);
+    const at = s.vals.findIndex((x) => srSame(x, s.target));
+    const unit = s.kind === "arr" ? "szuflad" : "pudełek";
+    let tone, html, short;
+    if (s.hit >= 0 && (r == null || r === s.hit)) {
+      tone = "ok";
+      html = `Znalezione: ${esc(want)} leży pod numerem <span class="res">${s.hit}</span> po <span class="res">${steps}</span> ${steps === 1 ? "kroku" : "krokach"}. `
+        + `Po kolei trzeba by otworzyć szuflady od 0 do ${s.hit}, czyli ${s.hit + 1}. W ${s.n} ${unit} binarnie najwyżej ${max} ${max === 1 ? "krok" : "kroków"}.`;
+      short = `znalezione pod numerem ${s.hit}, ${steps} ${steps === 1 ? "krok" : "kroków"}`;
+    } else if (s.hit >= 0) {
+      tone = "bad";
+      html = `Szukanie trafiło w numer <span class="res">${s.hit}</span>, a wynik to <span class="res">${r}</span>. Metoda oddaje coś innego niż znalazła.`;
+      short = `trafienie ${s.hit}, a wynik ${r}`;
+    } else if (at >= 0) {
+      tone = "bad";
+      html = `Wynik: „nie ma”${r === -1 ? ` (<span class="res">-1</span>)` : ""}, a ${esc(want)} LEŻY pod numerem <span class="res">${at}</span>! `
+        + (s.sorted ? `Dane są posortowane, więc to błąd w pętli: zakres skończył się za wcześnie (sprawdź warunek <code>p &lt;= k</code> i to, czy p i k przeskakują środek).`
+          : `Dane NIE są posortowane, więc połowa wyrzucona przez szukanie wcale nie musiała być zła. Najpierw posortuj.`);
+      short = `${want} jest pod numerem ${at}, a szukanie mówi „nie ma”`;
+    } else {
+      tone = "none";
+      html = `Nie ma: po <span class="res">${steps}</span> ${steps === 1 ? "kroku" : "krokach"} nie zostało już nic do sprawdzenia (p przeskoczyło za k).`
+        + (r === -1 ? ` Wynik <span class="res">-1</span>.` : "") + ` Po kolei trzeba by sprawdzić wszystkie ${s.n}.`;
+      short = `nie ma, ${steps} ${steps === 1 ? "krok" : "kroków"} zamiast ${s.n}`;
+    }
+    const v = $("binp").querySelector(".srverdict");
+    v.className = "srverdict on " + tone;
+    v.innerHTML = html;
+    const cells = binCells(s);
+    if (s.hit < 0) cells.forEach((d) => d.classList.add("out"));
+    const who = s.f && s.f.m !== "main" ? s.f.m : "main";
+    caption(`${tone === "bad" ? "Uwaga: " : ""}${who}: ${short}`, tone === "bad");
+    if (!fast) await sleep(ms * 1.2, token);
+  }
+
   // ---- chapter 3: chars are numbers (string tiles, alphabet strip, formula box) ----
   const ACW = 32;
   let czText = null, czBase = 0, czFrom = null, czShift = false;
@@ -2553,6 +3004,7 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
   function renderRange() {
     const pair = RANGES.find(([a, b]) => vars[a] != null && vars[b] != null);
     let bar = $("rail").querySelector(".rangebar");
+    if (binOn() && !pair) { if (bar) bar.remove(); return; }   // chapter 13 greys the thrown-away half itself (binPaintRange)
     boxes.forEach((d) => d.classList.remove("out"));
     if (!pair) { if (bar) bar.remove(); return; }
     const lo = vars[pair[0]], hi = vars[pair[1]];
@@ -2751,6 +3203,159 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     strHist(`${expr} → ${ev.v}`);
     caption(`${expr} → ${ev.v}${!ev.v && ev.a === ev.b ? "  (ten sam napis, ale dwie różne kartki!)" : ""}`);
     if (!fast) await sleep(ms * 1.6, token);
+  }
+
+
+  // ---- chapter 14: naive pattern search. The pattern is a strip under the text. A comparison = two charAt reads
+  // (one in the text, one in the pattern) followed by the char == char check (ieq); the strip stands at i = text index - pattern index.
+  // New window = the strip slides one step right. A whole pattern of green letters lights the window. No new harness events.
+  let pt = null, ptReads = [], ptHist = [];
+  const PT_KEEP = new Set(["sget", "v", "slen", "len", "ieq"]);
+  function ptOn() { return !!(chap && (chap.id === 14 || (chap.id === 17 && cur && cur.pt))); }
+  function ptReset() {
+    pt = null; ptReads = []; ptHist = [];
+    const b = $("pat");
+    if (b) { b.classList.remove("on"); b.innerHTML = ""; }
+  }
+  function ptNote(ev) {
+    if (ev.t === "sget") { ptReads.push({ s: ev.s, i: ev.i, v: ev.v }); if (ptReads.length > 2) ptReads.shift(); }
+    else if (!PT_KEEP.has(ev.t)) ptReads = [];
+  }
+  function ptWinLabel(w) { return `okno ${w.off}: ` + (w.marks.length ? w.marks.map((m) => `${m.c}${m.eq ? "=" : "≠"}${m.p}`).join(" ") : "(pusto)") + (w.full ? " - całe pasuje" : ""); }
+  function ptOpen(text, pat, f) {
+    if (pt && !pt.closed) ptCloseWin();
+    const n = text.length, m = pat.length;
+    pt = { text, pat, f, off: 0, cur: null, wins: [], closed: false, cmp: 0, found: -1 };
+    const box = $("pat");
+    box.classList.add("on");
+    const tw = 38;
+    const tiles = (str, extra) => [...str].map((c, k) => `<div class="ptt" data-k="${k}">${esc(c === " " ? "␣" : c)}</div>`).join("");
+    const idx = [...text].map((_, k) => `<span>${k}</span>`).join("");
+    const wins = n - m + 1;
+    box.innerHTML = `<div class="pthead"><b>Wzór pod tekstem</b><span class="ptinfo">tekst: n = ${n} liter, wzór: m = ${m} liter, okien: ${wins > 0 ? wins : 0} (i od 0 do n - m = ${n - m})</span></div>
+      <div class="ptscroll"><div class="ptwrap" style="width:${Math.max(n, m) * tw + 80}px">
+        <div class="ptlab t">tekst</div><div class="ptidx" id="ptIdx">${idx}</div>
+        <div class="ptrow text" id="ptText">${tiles(text)}</div>
+        <div class="ptlab w">wzór</div>
+        <div class="ptstrip" id="ptStrip">${tiles(pat)}</div>
+      </div></div>
+      <div class="ptsay" id="ptSay">wzór przykładam pod początek tekstu (okno 0)</div>
+      <div class="pttrail" id="ptTrail">${ptHist.map((h) => `<span class="st h${h.hit ? " eq" : ""}">${esc(h.t)}</span>`).join("")}</div><div class="ptverdict" id="ptVerdict"></div>`;
+    ptWindow(0);
+  }
+  function ptCloseWin() {
+    if (!pt || !pt.cur || !pt.cur.marks.length) return;
+    pt.wins.push(pt.cur);
+    const tr = $("ptTrail");
+    if (tr) {
+      const chip = document.createElement("span");
+      chip.className = "st" + (pt.cur.full ? " eq" : "");
+      chip.textContent = ptWinLabel(pt.cur);
+      tr.appendChild(chip);
+      const wc = tr.querySelectorAll(".st:not(.h)"); if (wc.length > 14) wc[0].remove();
+    }
+    pt.cur = null;
+  }
+  function ptTile(row, k) { const r = $(row); return r ? r.children[k] || null : null; }
+  function ptWindow(off) {
+    pt.off = off;
+    pt.cur = { off, marks: [], full: false };
+    const ttiles = [...$("ptText").children], strip = $("ptStrip");
+    ttiles.forEach((t) => t.classList.remove("eq", "ne", "full", "inwin", "now", "over"));
+    [...strip.children].forEach((t) => t.classList.remove("eq", "ne", "full", "now"));
+    for (let k = 0; k < pt.pat.length; k++) {
+      if (off + k < ttiles.length) ttiles[off + k].classList.add("inwin");
+    }
+    strip.style.left = off * 38 + "px";
+    // the part of the strip that hangs over the end of the text
+    [...strip.children].forEach((t, k) => t.classList.toggle("over", off + k >= ttiles.length));
+  }
+  function ptSay(text, tone) { const e = $("ptSay"); if (e) { e.textContent = text; e.className = "ptsay" + (tone ? " " + tone : ""); } }
+  function ptQ(c) { return "'" + (c === " " ? "␣" : c) + "'"; }
+  async function ptCompare(ev, fast, ms, token) {
+    let [ra, rb] = ptReads.slice(-2);
+    ptReads = [];
+    let t = ra, p = rb;
+    if (pt && !pt.closed && pt.text !== pt.pat) {
+      if (ra.s === pt.pat && rb.s === pt.text) { t = rb; p = ra; }
+    } else if (ra.s.length < rb.s.length || (ra.s.length === rb.s.length && ra.i < rb.i)) { t = rb; p = ra; }
+    const f = fstack[fstack.length - 1];
+    if (!pt || pt.closed || !$("ptText") || pt.text !== t.s || pt.pat !== p.s || (pt.f !== f && pt.cmp > 0 && t.i - p.i === 0 && pt.cur && pt.cur.marks.length && pt.off === 0 && false)) ptOpen(t.s, p.s, f);
+    const off = t.i - p.i;
+    if (off !== pt.off) {
+      ptCloseWin();
+      ptWindow(off);
+      caption(`okno przesuwa się o jedno miejsce w prawo: teraz zaczyna się na literze nr ${off}`);
+      if (!fast) await sleep(Math.max(ms * 0.9, 450), token);
+    } else if (!pt.cur) ptWindow(off);
+    const eq = !!ev.v;
+    const tt = ptTile("ptText", t.i), pp = ptTile("ptStrip", p.i);
+    $("ptText").querySelectorAll(".now").forEach((e) => e.classList.remove("now"));
+    $("ptStrip").querySelectorAll(".now").forEach((e) => e.classList.remove("now"));
+    const tc = String.fromCharCode(t.v), pc = String.fromCharCode(p.v);
+    pt.cmp++;
+    pt.cur.marks.push({ c: tc, p: pc, eq });
+    if (tt) tt.classList.add("now");
+    if (pp) pp.classList.add("now");
+    if (!fast) await sleep(Math.max(ms * 0.4, 120), token);
+    if (tt) { tt.classList.remove("inwin"); tt.classList.add(eq ? "eq" : "ne"); }
+    if (pp) pp.classList.add(eq ? "eq" : "ne");
+    const done = eq && p.i === pt.pat.length - 1;
+    if (done) {
+      pt.cur.full = true;
+      pt.found = off;
+      [...$("ptText").children].slice(off, off + pt.pat.length).forEach((e) => { e.classList.remove("inwin", "eq"); e.classList.add("full"); });
+      [...$("ptStrip").children].forEach((e) => { e.classList.remove("eq"); e.classList.add("full"); });
+      ptSay(`text[${t.i}] = ${ptQ(tc)} i wzór[${p.i}] = ${ptQ(pc)}: zgadza się. To była ostatnia litera wzoru - CAŁY wzór pasuje, znaleziony na miejscu ${off}!`, "eq");
+      caption(`wszystkie ${pt.pat.length} liter wzoru się zgodziło: wzór stoi w tekście od litery nr ${off}`);
+    } else if (eq) {
+      ptSay(`text[${t.i}] = ${ptQ(tc)} i wzór[${p.i}] = ${ptQ(pc)}: zgadza się - sprawdzam następną literę wzoru`, "eq");
+      caption(`litera ${t.i} tekstu (${ptQ(tc)}) = litera ${p.i} wzoru (${ptQ(pc)})  →  zgadza się, idę dalej`);
+    } else {
+      ptSay(`text[${t.i}] = ${ptQ(tc)} ale wzór[${p.i}] = ${ptQ(pc)}: różne! To okno odpada, wzór przesunie się o jedno miejsce.`, "ne");
+      caption(`litera ${t.i} tekstu (${ptQ(tc)}) ≠ litera ${p.i} wzoru (${ptQ(pc)})  →  to okno odpada`);
+    }
+    if (!fast) await sleep(done ? ms * 1.3 : eq ? ms * 0.7 : ms * 0.9, token);
+  }
+  function ptOob(ev) {
+    if (!pt || pt.closed) return false;
+    const off = ev.i - Math.max(pt.cur ? pt.cur.marks.length : 0, 0);
+    ptCloseWin();
+    ptWindow(Math.max(off, 0));
+    const tl = pt.text.length;
+    ptSay(`charAt(${ev.i}): w tekście nie ma litery nr ${ev.i} (są numery 0..${tl - 1}). Okno wystaje za koniec tekstu - pętla i poszła za daleko, powinna kończyć się na n - m = ${tl - pt.pat.length}.`, "ne");
+    caption(`charAt(${ev.i}) - nie ma takiej litery! Okno wystaje za koniec tekstu.`, true);
+    if (ev.l > 0) setHl(ev.l, "err");
+    return true;
+  }
+  function ptArg(f, ev) {
+    if (!f || ev.v == null || typeof ev.v !== "string" || ev.v[0] !== '"') return;
+    let val; try { val = JSON.parse(ev.v); } catch (e) { return; }
+    if (!f.ptArgs) f.ptArgs = [];
+    f.ptArgs.push(val);
+    if (f.ptArgs.length === 2 && f.m !== "main") ptOpen(f.ptArgs[0], f.ptArgs[1], f);
+  }
+  async function ptRet(f, ev, fast, ms, token) {
+    if (!pt || pt.closed || pt.f !== f) return;
+    ptCloseWin();
+    pt.closed = true;
+    const v = ev.v, n = pt.text.length, m = pt.pat.length;
+    let line, tone;
+    const num = Number(v);
+    if (v === "false" || (v !== "true" && num === -1 && f.m !== "ileRazy")) {
+      tone = "miss";
+      line = pt.cmp === 0 && m > n ? `wzór (m = ${m}) jest dłuższy od tekstu (n = ${n}): n - m = ${n - m}, pętla i nie zrobiła ani jednego obiegu. Okien jest 0, więc wynik: nie ma.`
+        : `wszystkie okna sprawdzone, żadne nie pasowało: ${f.m} oddaje ${v === "false" ? "false" : "-1"} (nie ma wzoru w tekście).`;
+    } else if (v === "true" || !Number.isNaN(num)) {
+      tone = "hit";
+      line = pt.cmp === 0 && m === 0 ? `pusty wzór nie ma liter do sprawdzenia: pętla j nie zrobiła obiegu i już okno 0 „pasuje”. Wynik ${v}.`
+        : f.m === "ileRazy" ? `${f.m} oddaje ${v} - tyle okien miało całe trafienie.` : `znaleziono: ${f.m} oddaje ${v}.`;
+    } else return;
+    ptHist.push({ t: `${f.m}: ${pt.text.length > 12 ? pt.text.slice(0, 11) + "…" : pt.text} / ${pt.pat} → ${v}`, hit: tone === "hit" });
+    const vd = $("ptVerdict");
+    if (vd) { vd.textContent = line; vd.className = "ptverdict " + tone; }
+    ptSay(tone === "hit" && pt.found >= 0 ? "wzór znaleziony - pętla się zatrzymała od razu (return), dalszych okien nie sprawdza" : "", tone === "hit" ? "eq" : "");
+    if (!fast) await sleep(ms * 0.5, token);
   }
 
   // ---- chapter 8: linear search. One step = an element just read (t[i], lista.get(i)) compared with the searched value
@@ -3387,6 +3992,28 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     if (e.inputType === "insertText" && e.data && e.data.length === 1 && /[\w.]/.test(e.data)) openPopup(false);
     else closePopup();
   });
+  /** A whole IntelliJ file (package/import + class X { ... }) -> just the inside of the class, one indent less.
+   *  null when the text is not a whole file, so a normal paste stays untouched. */
+  function unwrapFile(text) {
+    const t = text.replace(/\r\n?/g, "\n");
+    const m = t.match(/^[ \t]*(?:public\s+)?(?:final\s+)?class\s+\w+[^{]*\{/m);
+    if (!m) return null;
+    const head = t.slice(0, m.index).split("\n");
+    if (head.some((l) => l.trim() && !/^\s*(package|import)\s[^;]*;\s*$/.test(l) && !/^\s*(\/\/|\/\*|\*)/.test(l))) return null;
+    const close = t.lastIndexOf("}");
+    if (close < m.index + m[0].length || t.slice(close + 1).trim()) return null;
+    const lines = t.slice(m.index + m[0].length, close).replace(/^[ \t]*\n/, "").replace(/\s+$/, "").split("\n");
+    const ind = Math.min(...lines.filter((l) => l.trim()).map((l) => l.match(/^[ \t]*/)[0].length));
+    return lines.map((l) => l.slice(Math.min(ind, l.match(/^[ \t]*/)[0].length))).join("\n") + "\n";
+  }
+  // Ctrl+A, Ctrl+C in IntelliJ, Ctrl+V here: the game adds class Main and import java.util.* itself
+  ta.addEventListener("paste", (e) => {
+    if (!isClass()) return;
+    const code = unwrapFile((e.clipboardData && e.clipboardData.getData("text/plain")) || "");
+    if (code == null) return;
+    e.preventDefault();
+    edit(ta.selectionStart, ta.selectionEnd, code);
+  });
   ta.addEventListener("scroll", () => { syncScroll(); if (popup.open) drawPopup(); });
   ["click", "keyup"].forEach((t) => ta.addEventListener(t, (e) => {
     updateCaretUi();
@@ -3416,7 +4043,7 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
   // Chapter 10+: menu in a loop - keyboard, Scanner buffer, switch, do-while
   // =====================================================================
   let ml = null;
-  function menuOn() { return !!(chap && (chap.id === 10 || chap.id === 11) && isClass()); }
+  function menuOn() { return !!(chap && (chap.id === 10 || chap.id === 11 || (chap.id === 17 && cur && cur.view === "projekt")) && isClass()); }
   function bufCells(text) {
     return [...text].map((c) => c === "\n" ? `<span class="bcell nl" title="Enter">⏎</span>`
       : c === " " ? `<span class="bcell sp" title="spacja">␣</span>` : `<span class="bcell">${esc(c)}</span>`).join("");
@@ -3703,6 +4330,203 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     mlLoopEnd();
   }
 
+
+  // =====================================================================
+  // Chapter 16: files (the folder of the program), reading cursor, split, exceptions
+  // =====================================================================
+  let fp = null;
+  function filesOn() { return !!(chap && (chap.id === 16 || (chap.id === 17 && cur && cur.filepanel)) && isClass()); }
+  const shortExc = (c) => String(c || "").split(".").pop();
+  function fileLines(text) { return text == null ? [] : text.split("\n").filter((l, i, a) => !(i === a.length - 1 && l === "")); }
+  function fileReset() {
+    const on = filesOn();
+    $("fpanel").classList.toggle("on", on);
+    fp = { files: new Map(), last: null, tok: new Map(), toolKey: "" };
+    $("fpFiles").innerHTML = "";
+    $("fpExcBox").hidden = true;
+    $("fpToolBox").hidden = true;
+    $("fpExc").innerHTML = "";
+    $("fpTool").innerHTML = "";
+    if (!on) return;
+    const seed = (cur.tests && cur.tests[0] && cur.tests[0].files) || {};
+    Object.entries(seed).forEach(([name, text]) => fileGet(name, text == null ? "dir" : "file", fileLines(text)));
+    fileNone();
+  }
+  function fileNone() {
+    const box = $("fpFiles");
+    const n = box.querySelector(".none");
+    if (!fp.files.size && !n) box.insertAdjacentHTML("afterbegin", `<span class="none">w katalogu nie ma żadnego pliku</span>`);
+    else if (fp.files.size && n) n.remove();
+  }
+  function fileGet(name, kind, lines) {
+    let f = fp.files.get(name);
+    if (f) return f;
+    const el = document.createElement("div");
+    el.className = "fcard" + (kind === "ghost" ? " ghost" : "");
+    f = { name, kind: kind || "file", lines: lines || [], pend: [], partial: "", mode: null, cur: -1, el, lost: false };
+    fp.files.set(name, f);
+    $("fpFiles").appendChild(el);
+    fileDraw(f);
+    fileNone();
+    return f;
+  }
+  function fileDraw(f, newIdx) {
+    const tag = f.kind === "dir" ? "katalog, nie plik" : f.state || (f.mode === "w" ? "otwarty do zapisu" : f.mode === "r" ? "otwarty do czytania" : "na dysku");
+    let rows = f.lines.map((l, i) => `<div class="fline${i === f.cur ? " cur" : ""}${newIdx === "d" + i ? " new" : ""}"><i>${i + 1}</i><code>${esc(l)}</code></div>`).join("");
+    rows += f.pend.map((l, i) => `<div class="fline pend${f.lost ? " lost" : ""}${newIdx === "p" + i ? " new" : ""}"><i>·</i><code>${esc(l)}</code></div>`).join("");
+    if (f.partial) rows += `<div class="fline pend${f.lost ? " lost" : ""}"><i>·</i><code>${esc(f.partial)}</code></div>`;
+    if (!rows) rows = f.kind === "dir" ? `<div class="fempty">to jest folder - pliku o tej nazwie w nim nie otworzysz</div>` : `<div class="fempty">(pusty plik)</div>`;
+    f.el.innerHTML = `<div class="fh"><b>${esc(f.name)}</b><span class="fst">${esc(tag)}</span></div><div class="fbody">${rows}</div>${f.note ? `<div class="fnote${f.noteBad ? " bad" : ""}">${esc(f.note)}</div>` : ""}`;
+  }
+  function fileMark(f, cls) {
+    f.el.classList.remove("open-w", "open-r", "saved", "bad");
+    if (cls) f.el.classList.add(cls);
+  }
+  function fileTool(head, html) {
+    $("fpToolBox").hidden = false;
+    $("fpToolHead").innerHTML = head;
+    $("fpTool").innerHTML = html;
+  }
+  const chips = (s, cls) => [...s].map((c, i) => `<span class="ch ${cls ? cls(i) : ""}">${c === " " ? "␣" : esc(c)}</span>`).join("");
+  async function fileEvent(ev, prev, fast, ms, token) {
+    if (!fp) return;
+    const f = ev.f != null ? fp.files.get(ev.f) : null;
+    if (ev.t === "fopen") {
+      const g = fileGet(ev.f, "file", []);
+      if (g.kind === "ghost") { g.kind = "file"; g.el.classList.remove("ghost"); }
+      g.note = ""; g.noteBad = false;
+      if (!ev.ok) {
+        g.state = "BŁĄD: " + ev.why;
+        fileMark(g, "bad");
+        g.note = "Java rzuca wyjątek (FileNotFoundException)";
+        g.noteBad = true;
+        fileDraw(g);
+        caption(`otwiera ${ev.f} ${ev.md === "r" ? "do czytania" : "do zapisu"} - nie da się: ${ev.why}`, true);
+      } else {
+        g.mode = ev.md === "r" ? "r" : "w";
+        g.state = ev.md === "r" ? "otwarty do czytania" : ev.md === "a" ? "otwarty do dopisywania" : "otwarty do zapisu";
+        g.cur = -1;
+        g.lost = false;
+        g.pend = []; g.partial = "";
+        if (ev.md === "w" && g.lines.length) { g.lines = []; g.note = "FileWriter zaczyna od zera - stara zawartość zniknęła"; }
+        fileMark(g, ev.md === "r" ? "open-r" : "open-w");
+        fileDraw(g);
+        caption(`otwiera plik ${ev.f} ${ev.md === "r" ? "do czytania" : ev.md === "a" ? "do dopisywania (stare linie zostają)" : "do zapisu"}`);
+      }
+      fp.last = g;
+      if (!fast) await sleep(ms * 0.9, token);
+    } else if (ev.t === "fexists") {
+      const g = fp.files.get(ev.f) || fileGet(ev.f, ev.v ? "file" : "ghost", []);
+      if (!ev.v) { g.state = "nie ma takiego pliku"; fileDraw(g); }
+      fileTool(`<b>File.exists()</b> - pytanie o plik bez otwierania go`, `<div class="row"><span>new File("${esc(ev.f)}").exists()</span><span class="op">→</span><span class="res ${ev.v ? "yes" : "no"}">${ev.v}</span></div>`);
+      caption(`exists("${ev.f}") → ${ev.v}`, !ev.v ? "warn" : false);
+      if (!fast) await sleep(ms * 0.9, token);
+    } else if (ev.t === "fw" && f) {
+      const parts = ev.s.split("\n");
+      let idx = null;
+      parts.forEach((p, k) => {
+        f.partial += p;
+        if (k < parts.length - 1) { f.pend.push(f.partial); f.partial = ""; idx = "p" + (f.pend.length - 1); }
+      });
+      fileDraw(f, idx);
+      caption(`zapisuje do ${f.name}: «${ev.s.replace(/\n/g, "⏎")}» - na razie w pamięci, na dysk trafi dopiero po close()`);
+      if (!fast) await sleep(ms * 0.8, token);
+    } else if (ev.t === "fclose" && f) {
+      f.lines = f.lines.concat(f.pend, f.partial ? [f.partial] : []);
+      const had = f.pend.length + (f.partial ? 1 : 0);
+      f.pend = []; f.partial = ""; f.cur = -1;
+      f.state = f.mode === "w" ? "zamknięty - zapisane na dysku" : "zamknięty";
+      f.mode = null;
+      fileMark(f, had ? "saved" : null);
+      fileDraw(f, had ? "d" + (f.lines.length - 1) : null);
+      caption(`close(): ${f.name} zamknięty${had ? " - teraz wszystko jest naprawdę na dysku" : ""}`);
+      if (!fast) await sleep(ms * 0.9, token);
+    } else if (ev.t === "fr" || ev.t === "fhas") {
+      const g = f || fp.last;
+      if (!g) return;
+      if (ev.t === "fhas") {
+        fileTool(`<b>${esc(ev.k)}()</b> - czy jest coś jeszcze do czytania?`, `<div class="row"><span>${esc(ev.k)}()</span><span class="op">→</span><span class="res ${ev.v ? "yes" : "no"}">${ev.v}</span><span class="op">${ev.v ? "pętla idzie dalej" : "koniec pliku - pętla się kończy"}</span></div>`);
+        caption(`${ev.k}() → ${ev.v}`);
+        if (!fast) await sleep(ms * 0.6, token);
+        return;
+      }
+      if (ev.s === null) {
+        g.cur = -1;
+        fileDraw(g);
+        fileTool(`<b>${esc(ev.k)}()</b> - czytanie`, `<div class="row"><span>${esc(ev.k)}()</span><span class="op">→</span><span class="res no">${ev.k === "readLine" ? "null" : "nic już nie ma"}</span><span class="op">koniec pliku</span></div>`);
+        caption(`${ev.k}() → koniec pliku`, "warn");
+      } else {
+        if (ev.k === "readLine" || ev.k === "nextLine") g.cur += 1;
+        else {
+          // a token (next / nextInt): the cursor stands on the line holding the next unread word
+          let used = fp.tok.get(g.name) || 0;
+          const all = [];
+          g.lines.forEach((l, i) => l.split(/\s+/).filter(Boolean).forEach((w) => all.push(i)));
+          g.cur = all[used] != null ? all[used] : g.cur;
+          fp.tok.set(g.name, used + 1);
+        }
+        fileDraw(g);
+        fileTool(`<b>${esc(ev.k)}()</b> - czytanie`, `<div class="row"><span>${esc(ev.k)}()</span><span class="op">→</span><span class="res yes">"${esc(ev.s)}"</span></div>`);
+        caption(`${ev.k}() czyta z ${g.name}: «${ev.s}»`);
+      }
+      if (!fast) await sleep(ms * 0.9, token);
+    } else if (ev.t === "fsplit") {
+      const parts = ev.p;
+      let at = 0;
+      const cuts = new Set();
+      parts.forEach((pt, k) => {
+        const idx = pt === "" ? at : ev.s.indexOf(pt, at);
+        if (k > 0) for (let q = at; q < idx; q++) cuts.add(q);
+        at = idx < 0 ? at : idx + pt.length;
+      });
+      const trap = ev.re === "|";
+      fileTool(`<b>split("${esc(ev.re)}")</b> - tnie tekst na kawałki`,
+        `<div class="row">${chips(ev.s, (i) => cuts.has(i) ? "cut" : "")}</div><div class="op">↓ ${parts.length} ${parts.length === 1 ? "kawałek" : parts.length < 5 ? "kawałki" : "kawałków"}</div>`
+        + `<div class="row">${parts.map((pt, i) => `<span class="part${trap && parts.length > 2 ? " many" : ""}"><i>[${i}]</i>${esc(pt) || "&nbsp;"}</span>`).join("")}</div>`
+        + (trap ? `<div class="warn">Pułapka: w split() znak | oznacza „albo” (to wzorzec regex), więc tnie po każdej literze. Kreskę piszesz tak: split("\\|")</div>` : ""));
+      caption(trap ? `split("|") rozcięło tekst na ${parts.length} kawałków - po każdej literze!` : `split("${ev.re}") → ${parts.length} kawałki: ${parts.map((x) => "«" + x + "»").join(" ")}`, trap ? true : false);
+      if (!fast) await sleep(ms * 1.2, token);
+    } else if (ev.t === "fsub") {
+      fileTool(`<b>substring(${ev.a}, ${ev.b})</b> - wycina od numeru ${ev.a} do ${ev.b} (bez ${ev.b})`,
+        `<div class="row">${chips(ev.s, (i) => i >= ev.a && i < ev.b ? "in" : "")}</div><div class="op">↓</div><div class="row"><span class="part">${esc(ev.r) || "(pusty napis)"}</span></div>`);
+      caption(`substring(${ev.a}, ${ev.b}) → «${ev.r}»`);
+      if (!fast) await sleep(ms * 0.9, token);
+    } else if (ev.t === "caught") {
+      $("fpExcBox").hidden = false;
+      const msg = ev.msg != null ? ` (${esc(ev.msg)})` : "";
+      $("fpExc").innerHTML = `<div class="fexc caught"><b>${esc(shortExc(ev.c))}</b>${msg}<div class="jump">linia ${ev.from} rzuca wyjątek → <b>catch</b> w linii ${ev.l} go łapie → program idzie dalej</div></div>`;
+      if (!fast && ev.from > 0 && ev.from !== ev.l) {
+        setHl(ev.from, "err");
+        caption(`${shortExc(ev.c)} w linii ${ev.from}! Normalnie program by tu padł...`, true);
+        await sleep(ms * 1.0, token);
+        setHl(ev.l);
+      }
+      caption(`catch łapie ${shortExc(ev.c)} - program żyje i wchodzi do catch (linia ${ev.l})`, "warn");
+      if (!fast) await sleep(ms * 0.9, token);
+    }
+  }
+  // end of the program: the disk after the run is the truth (a writer that was never closed leaves nothing)
+  function fileFinish(t0) {
+    if (!filesOn() || !fp) return;
+    const disk = t0.files || {};
+    fp.files.forEach((f) => {
+      const unsaved = f.pend.length || f.partial;
+      if (unsaved) {
+        f.lost = true;
+        f.note = "Tego nigdy nie zamknięto - te linie zostały w pamięci programu i zniknęły. Plik na dysku jest pusty.";
+        f.noteBad = true;
+        f.state = "NIE zamknięty";
+        fileMark(f, "bad");
+        fileDraw(f);
+        caption("Plik nie został zamknięty - zapisane linie nie trafiły na dysk!", true);
+      }
+    });
+    if (t0.exc && t0.exc !== "TooManySteps" && t0.exc !== "OutputCap" && t0.exc !== "NoSuchMethod") {
+      $("fpExcBox").hidden = false;
+      $("fpExc").innerHTML = `<div class="fexc died"><b>PROGRAM PADŁ: ${esc(shortExc(t0.exc))}</b>${t0.excMsg != null ? " (" + esc(t0.excMsg) + ")" : ""}<div class="jump">nic go nie złapało, więc linie pod miejscem błędu (linia ${t0.excLine}) się nie wykonały</div></div>`;
+    }
+  }
+
   // =====================================================================
   // Run tool window
   // =====================================================================
@@ -3981,6 +4805,7 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
     if (isClass()) resetClassStage(); else resetStage(t0.start);
     mlStart(lastRun && lastRun.code != null ? lastRun.code : ta.value, data.events);
     abcReset();
+    vigReset();
     if (cur.pokaz) pokazRender(data.code != null ? data.code : ta.value);
     charName = "tab";
     let prev = null, printed = 0;
@@ -4009,8 +4834,10 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
       if (ev.t === "lget" && lists.get(ev.id)) lists.get(ev.id).boxes.forEach((b) => b.classList.remove("read"));
       if (ev.t === "out") pr.afterOut = true;
       if (srOn()) srNote(ev);
+      if (filesOn()) await fileEvent(ev, prev, fast, ms, token);
+      if (ptOn()) ptNote(ev);
       if (app && appOn()) appEvent(ev, prev);
-      if (LIST_EVENTS.has(ev.t) || ev.t === "lfind") { await listEvent(ev, prev, fast, ms, token); await pairEvent(ev, prev, fast, ms, token, data.events[evk + 1]); await sortEvent(ev, prev, fast, ms, token); if (app && appOn()) appRender(); prev = ev; continue; }
+      if (LIST_EVENTS.has(ev.t) || ev.t === "lfind") { await listEvent(ev, prev, fast, ms, token); await pairEvent(ev, prev, fast, ms, token, data.events[evk + 1]); await sortEvent(ev, prev, fast, ms, token); await binEvent(ev, fast, ms, token); if (app && appOn()) appRender(); prev = ev; continue; }
       if (abc.on && ABC_OWN.has(ev.t)) {
         await abcOwn(ev, prev, fast, ms, token);
       } else if (ev.t === "len") {
@@ -4039,6 +4866,7 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
         if (!fast) await sleep(ms * 0.6, token);
       } else if (ev.t === "ieq") {
         if (srOn()) await srStep(ev, fast, ms, token);
+        else if (ptOn() && ptReads.length >= 2 && ptReads.map((r) => r.v).sort().join() === [ev.a, ev.b].sort().join()) await ptCompare(ev, fast, ms, token);
         else {
           const [la, lb] = (ev.lab || "|").split("|");
           caption(`${la || ev.a} i ${lb || ev.b}: ${ev.a} ${ev.v ? "=" : "≠"} ${ev.b}  →  ${ev.v ? "równe" : "różne"}`);
@@ -4054,6 +4882,7 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
       } else if (ev.t === "arg") {
         const f = fstack[fstack.length - 1], caller = fstack[fstack.length - 2];
         const chip = frameVar(f, ev.name, ev.v, true);
+        if (ptOn()) ptArg(f, ev);
         if (chap.id >= 7) cardTag(chip, ev.obj);  // "kartka N" is taught in chapter 7
         const L = listRef(ev.v);
         if (L) addAlias(L, f, ev.name);
@@ -4063,6 +4892,8 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
       } else if (ev.t === "ret") {
         const f = fstack[fstack.length - 1], caller = fstack[fstack.length - 2];
         if (srOn() && f && sr && !sr.closed && sr.f === f) await srEnd(ev.v, fast, ms, token);
+        if (binOn() && f && bs && !bs.closed && bs.f === f) await binEnd(ev.v, fast, ms, token);
+        if (ptOn() && f) await ptRet(f, ev, fast, ms, token);
         if (f && f.m !== "main") {
           const r = f.el.querySelector(".fret");
           r.classList.add("on");
@@ -4089,6 +4920,9 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
         if (L) addAlias(L, frameOf(ev.m), ev.name);
         caption(`zmienna ${ev.name} pokazuje na listę`);
         if (!fast) await sleep(ms * 0.4, token);
+      } else if (ev.t === "sget" && ptOn() && (data.events[evk + 1] || {}).t === "ieq" || ev.t === "sget" && ptOn() && (data.events[evk + 1] || {}).t === "sget" && (data.events[evk + 2] || {}).t === "ieq") {
+        // part of a letter comparison: ptCompare draws it when the char == char check arrives
+        if (pt && !pt.closed) { const tt = ptTile("ptText", ev.i); if (tt && pt.text === ev.s && !fast) tt.classList.add("now"); }
       } else if (ev.t === "sget") {
         czClearTiles();
         czString(ev.s);
@@ -4097,12 +4931,17 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
         czCalc(`<span>charAt(${ev.i})</span><span class="op">→</span>${qt(ev.v)}<span class="note">znak '${esc(showCh(ev.v))}' to liczba ${ev.v}</span>`);
         caption(`czyta znak nr ${ev.i} z napisu: '${showCh(ev.v)}' = numer ${ev.v}`);
         if (!fast) await sleep(ms, token);
+      } else if (ev.t === "slen" && ptOn()) {
+        caption(`length() = ${ev.n} - tyle liter ma ten napis`);
+        if (!fast) await sleep(Math.min(ms * 0.35, 250), token);
       } else if (ev.t === "slen") {
         czClearTiles();
         czString(ev.s);
         $("czLen").classList.add("pulse");
         caption(`length() = ${ev.n} - tyle znaków ma napis`);
         if (!fast) await sleep(Math.min(ms * 0.35, 250), token);
+      } else if (ev.t === "soob" && ptOn() && ptOob(ev)) {
+        if (!fast) await sleep(ms, token);
       } else if (ev.t === "soob") {
         czClearTiles();
         czString(ev.s);
@@ -4297,6 +5136,7 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
       }
         if (abc.on) await abcAfter(ev, prev, fast, ms, token);
         await sortEvent(ev, prev, fast, ms, token);
+        await binEvent(ev, fast, ms, token);
         if (app && appOn() && (ev.t === "in" || ev.t === "out" || ev.t === "v" || ev.t === "ret")) appRender();
       } catch (e) {
         // a drawing problem must never hide the verdicts - skip this picture and go on
@@ -4316,9 +5156,11 @@ ul.tests li.no::before { content: "✗"; color: var(--bad); }
   function finish(data, printed) {
     const t0 = data.tests[0];
     if (srOn() && !t0.exc) srEnd(null, true, 0, anim.token);
+    if (binOn() && !t0.exc) binEnd(null, true, 0, anim.token);
     t0.end.forEach((v, i) => { if (boxes[i]) setLab(i, v); });
     pairSync(t0.tracked);
     sortFinish(t0);
+    fileFinish(t0);
     if (app && appOn()) { app.hot = null; app.settled = true; appRender(); }
     // output that was not animated (after the 3000-event cut)
     const outLines = t0.out.replace(/\n$/, "").split("\n");
